@@ -1,24 +1,25 @@
 import 'package:flutter/material.dart';
 
 class StateNotifier<T> extends ChangeNotifier implements ListenableState<T> {
+  @override
+  T? get value => _value;
+
   T? _value;
 
   StateNotifier({T? initValue}) : _value = initValue;
-
-  T? get value => _value;
-
-  void accept(T? newValue) {
-    if (_value == newValue) return;
-
-    _value = newValue;
-    notifyListeners();
-  }
 
   @override
   void addListener(VoidCallback listener) {
     super.addListener(listener);
 
     listener.call();
+  }
+
+  void accept(T? newValue) {
+    if (_value == newValue) return;
+
+    _value = newValue;
+    notifyListeners();
   }
 }
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:elementary/src/model.dart';
 import 'package:elementary/src/widget.dart';
 import 'package:flutter/foundation.dart';
@@ -11,8 +13,6 @@ abstract class WidgetModel<W extends WMWidget, M extends Model>
     with Diagnosticable
     implements IWM {
   final M _model;
-  WMElement? _element;
-  W? _widget;
 
   @protected
   M get model => _model;
@@ -30,12 +30,17 @@ abstract class WidgetModel<W extends WMWidget, M extends Model>
     return _element!;
   }
 
+  WMElement? _element;
+  W? _widget;
+  StreamSubscription<Object>? _errorSubscription;
+
   WidgetModel(this._model);
 
   @protected
   @mustCallSuper
   void onCreate() {
     _model.init();
+    _errorSubscription = _model.errorTranslator.listen(onErrorHandle);
     didChangeDependencies();
   }
 
@@ -46,20 +51,24 @@ abstract class WidgetModel<W extends WMWidget, M extends Model>
   void didChangeDependencies() {}
 
   @protected
+  void onErrorHandle(Object error) {}
+
+  @protected
   @mustCallSuper
   void dispose() {
+    _errorSubscription?.cancel();
     _model.dispose();
   }
 }
 
 class WMElement extends ComponentElement {
+  @override
+  WMWidget get widget => super.widget as WMWidget;
+
   late WidgetModel _wm;
 
   // хак из-за закрытого _firstBuild
   bool _isInitialized = false;
-
-  @override
-  WMWidget get widget => super.widget as WMWidget;
 
   WMElement(WMWidget widget) : super(widget);
 
@@ -70,9 +79,10 @@ class WMElement extends ComponentElement {
   void update(WMWidget newWidget) {
     super.update(newWidget);
 
-    var oldWidget = _wm.widget;
-    _wm._widget = newWidget;
-    _wm.didUpdateWidget(oldWidget);
+    final oldWidget = _wm.widget;
+    _wm
+      .._widget = newWidget
+      ..didUpdateWidget(oldWidget);
   }
 
   @override
@@ -86,8 +96,10 @@ class WMElement extends ComponentElement {
   void unmount() {
     super.unmount();
 
-    _wm.dispose();
-    _wm._element = null;
+    _wm
+      ..dispose()
+      .._element = null
+      .._widget = null;
   }
 
   @override
@@ -95,9 +107,10 @@ class WMElement extends ComponentElement {
     // хак из-за закрытого _firstBuild
     if (!_isInitialized) {
       _wm = widget.wmBuilder(this);
-      _wm._element = this;
-      _wm._widget = widget;
-      _wm.onCreate();
+      _wm
+        .._element = this
+        .._widget = widget
+        ..onCreate();
 
       _isInitialized = true;
     }
