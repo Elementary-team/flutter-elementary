@@ -25,7 +25,6 @@ class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
 
   TestPageWidgetModel(TestPageModel model) : super(model);
 
-
   @override
   Future<void> increment() async {
     _valueController.loading();
@@ -47,6 +46,18 @@ class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
     super.didChangeDependencies();
 
     _counterStyle = Theme.of(context).textTheme.headline4 ?? const TextStyle();
+  }
+
+  @override
+  void onErrorHandle(Object error) {
+    super.onErrorHandle(error);
+
+    // TODO(mjk): здесь можно юзать отдельную сущность DialogController
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(error.toString()),
+      ),
+    );
   }
 
   @override

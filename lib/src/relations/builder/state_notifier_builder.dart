@@ -42,15 +42,15 @@ class _StateNotifierBuilderState<T> extends State<StateNotifierBuilder<T>> {
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return widget.builder(context, value);
+  }
+
   void _valueChanged() {
     setState(() {
       value = widget.listenableState.value;
     });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return widget.builder(context, value);
   }
 }
 
@@ -73,14 +73,14 @@ class EntityStateNotifierBuilder<T> extends StatelessWidget {
     return StateNotifierBuilder<EntityState<T>>(
       listenableState: listenableEntityState,
       builder: (ctx, state) {
-        var entity = state!;
+        final entity = state!;
 
-        var eBuilder = errorBuilder;
+        final eBuilder = errorBuilder;
         if (entity.hasError && eBuilder != null) {
           return eBuilder(ctx, entity.error, entity.data);
         }
 
-        var lBuilder = loadingBuilder;
+        final lBuilder = loadingBuilder;
         if (entity.isLoading && lBuilder != null) {
           return lBuilder(ctx, entity.data);
         }
