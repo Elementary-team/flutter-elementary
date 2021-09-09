@@ -6,7 +6,7 @@ class TestPageModel extends Model {
   int get value => _value;
   var _value = 0;
 
-  TestPageModel(ErrorHandler errorHandler) : super(errorHandler);
+  TestPageModel(ErrorHandler errorHandler) : super(errorHandler: errorHandler);
 
   Future<int> increment([int val = 0]) async {
     await Future<void>.delayed(const Duration(seconds: 1));
