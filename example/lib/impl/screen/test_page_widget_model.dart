@@ -6,8 +6,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// Билдер не будет ли вводить в диссонанс с ui билдерами???
-TestPageWidgetModel testPageWidgetModelBuilder(BuildContext context) {
+TestPageWidgetModel testPageWidgetModelFactory(BuildContext context) {
   final model = context.read<TestPageModel>();
   return TestPageWidgetModel(model);
 }
@@ -35,8 +34,8 @@ class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
   }
 
   @override
-  void onCreate() {
-    super.onCreate();
+  void initWidgetModel() {
+    super.initWidgetModel();
 
     _valueController = EntityStateNotifier<int>.value(model.value);
   }

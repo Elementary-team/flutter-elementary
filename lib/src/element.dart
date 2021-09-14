@@ -5,10 +5,15 @@ import 'package:elementary/src/widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-typedef WidgetModelBuilder = WidgetModel Function(BuildContext context);
+/// Factory function for creating Widget Model.
+typedef WidgetModelFactory<T extends WidgetModel> = WidgetModel Function(
+  BuildContext context,
+);
 
+/// Base interface for all Widget Model.
 abstract class IWM {}
 
+/// Class that contains all presentation logic of the widget.
 abstract class WidgetModel<W extends WMWidget, M extends Model>
     with Diagnosticable
     implements IWM {
@@ -36,23 +41,39 @@ abstract class WidgetModel<W extends WMWidget, M extends Model>
 
   WidgetModel(this._model);
 
+  /// Called at first build for initialization of this Widget Model.
   @protected
   @mustCallSuper
-  void onCreate() {
+  void initWidgetModel() {
     _model.init();
     _errorSubscription = _model.errorTranslator.listen(onErrorHandle);
-    didChangeDependencies();
   }
 
+  /// Called whenever the widget configuration changes.
   @protected
   void didUpdateWidget(W oldWidget) {}
 
+  /// Called when a dependency of this Widget Model changes.
+  ///
+  /// For example, if Widget Model has reference an
+  /// [InheritedWidget] that later changed, this
+  /// method will called to notify about change.
+  ///
+  /// This method is also called immediately after [initWidgetModel].
+  /// It is safe to call [BuildContext.dependOnInheritedWidgetOfExactType]
+  /// from this method.
   @protected
   void didChangeDependencies() {}
 
+  /// Called whenever the Model use method handleError.
+  ///
+  /// This method is the place for presentation handling error like a
+  /// showing snackbar or something else.
   @protected
   void onErrorHandle(Object error) {}
 
+  /// Called when element with this Widget Model is removed from the tree
+  /// permanently.
   @protected
   @mustCallSuper
   void dispose() {
@@ -61,13 +82,14 @@ abstract class WidgetModel<W extends WMWidget, M extends Model>
   }
 }
 
+/// An element for managing a widget whose display depends on the Widget Model.
 class WMElement extends ComponentElement {
   @override
   WMWidget get widget => super.widget as WMWidget;
 
   late WidgetModel _wm;
 
-  // хак из-за закрытого _firstBuild
+  // private _firstBuild hack
   bool _isInitialized = false;
 
   WMElement(WMWidget widget) : super(widget);
@@ -104,13 +126,14 @@ class WMElement extends ComponentElement {
 
   @override
   void performRebuild() {
-    // хак из-за закрытого _firstBuild
+    // private _firstBuild hack
     if (!_isInitialized) {
-      _wm = widget.wmBuilder(this);
+      _wm = widget.wmFactory(this);
       _wm
         .._element = this
         .._widget = widget
-        ..onCreate();
+        ..initWidgetModel()
+        ..didChangeDependencies();
 
       _isInitialized = true;
     }

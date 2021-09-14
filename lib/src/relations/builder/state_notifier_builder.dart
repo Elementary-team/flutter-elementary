@@ -2,6 +2,7 @@ import 'package:elementary/src/relations/notifier/state_notifier.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+/// Builder for presentation ui part by [StateNotifier] property.
 class StateNotifierBuilder<T> extends StatefulWidget {
   final ListenableState<T> listenableState;
   final Widget Function(BuildContext context, T? value) builder;
@@ -54,6 +55,7 @@ class _StateNotifierBuilderState<T> extends State<StateNotifierBuilder<T>> {
   }
 }
 
+/// Builder for presentation ui part by [EntityStateNotifier] property.
 class EntityStateNotifierBuilder<T> extends StatelessWidget {
   final ListenableState<EntityState<T>> listenableEntityState;
   final DataWidgetBuilder<T> builder;
@@ -91,13 +93,22 @@ class EntityStateNotifierBuilder<T> extends StatelessWidget {
   }
 }
 
+/// Builder function for loading state.
+/// See also:
+///   [EntityState] - State of some logical entity.
 typedef LoadingWidgetBuilder<T> = Widget Function(
   BuildContext context,
   T? data,
 );
 
+/// Builder function for content state.
+/// See also:
+///   [EntityState] - State of some logical entity.
 typedef DataWidgetBuilder<T> = Widget Function(BuildContext context, T? data);
 
+/// Builder function for error state.
+/// See also:
+///   [EntityState] - State of some logical entity.
 typedef ErrorWidgetBuilder<T> = Widget Function(
   BuildContext context,
   Exception? e,

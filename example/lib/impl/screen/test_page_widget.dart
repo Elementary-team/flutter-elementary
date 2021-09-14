@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 class TestPageWidget extends WMWidget<ITestPageWidgetModel> {
   const TestPageWidget({
     Key? key,
-    WidgetModelBuilder wmBuilder = testPageWidgetModelBuilder,
-  }) : super(wmBuilder, key: key);
+    WidgetModelFactory wmFactory = testPageWidgetModelFactory,
+  }) : super(wmFactory, key: key);
 
   @override
   Widget build(ITestPageWidgetModel wm) {
