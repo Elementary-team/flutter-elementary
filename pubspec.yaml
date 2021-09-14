@@ -1,6 +1,6 @@
 name: elementary
 description: MVVM-inspired architectural library.
-version: 0.0.3-dev.2
+version: 0.0.3-dev.3
 repository: "https://github.com/surfstudio/flutter-elementary"
 issue_tracker: "https://github.com/surfstudio/flutter-elementary/issues"
 

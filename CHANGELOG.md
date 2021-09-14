@@ -14,3 +14,9 @@ Add error handling;
 
 Remove required error handler for model;
 Remove doWithHandle methods, use try/catch instead.
+
+## 0.0.3-dev.3
+
+Add base documentation.
+Rename WidgetModelBuilder to WidgetModelFactory.
+Rename onCreate method of WidgetModel to initWidgetModel.
