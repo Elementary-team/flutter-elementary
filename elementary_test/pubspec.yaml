@@ -11,12 +11,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  elementary: 0.0.3-dev.4
-  mocktail: 0.1.4
-  surf_lint_rules: ^1.0.0
-
-dev_dependencies:
   flutter_test:
     sdk: flutter
+  elementary: ^0.0.3-dev.4
+  mocktail: ^0.1.4
+  surf_lint_rules: ^1.0.0
+  meta: ^1.7.0
 
-flutter:
+dev_dependencies:

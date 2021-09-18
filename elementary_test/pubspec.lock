@@ -130,9 +130,9 @@ packages:
   elementary:
     dependency: "direct main"
     description:
-      path: "../elementary"
-      relative: true
-    source: path
+      name: elementary
+      url: "https://pub.dartlang.org"
+    source: hosted
     version: "0.0.3-dev.4"
   fake_async:
     dependency: transitive
@@ -161,7 +161,7 @@ packages:
     source: hosted
     version: "1.0.4"
   flutter_test:
-    dependency: "direct dev"
+    dependency: "direct main"
     description: flutter
     source: sdk
     version: "0.0.0"
@@ -236,7 +236,7 @@ packages:
     source: hosted
     version: "0.12.10"
   meta:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: meta
       url: "https://pub.dartlang.org"
