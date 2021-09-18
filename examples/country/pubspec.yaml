@@ -1,0 +1,40 @@
+name: country
+description: A new Flutter project.
+version: 1.0.0+1
+publish_to: none
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  elementary:
+    path: ../../elementary
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: 1.0.2
+  dio: 4.0.0
+  retrofit: 2.0.1
+  provider: 6.0.0
+  surf_lint_rules: 1.4.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # кодген для ретрофита
+  retrofit_generator: 2.0.1
+  # билдер для кодгена - flutter pub run build_runner build
+  build_runner: 2.1.2
+  # сериализация json
+  json_serializable: any
+  # голден тесты
+  golden_toolkit: ^0.10.0
+  # мокирование
+  mocktail: ^0.1.4
+  # тестирование elementary
+  elementary_test:
+    path: ../../elementary_test
+
+flutter:
+  uses-material-design: true
