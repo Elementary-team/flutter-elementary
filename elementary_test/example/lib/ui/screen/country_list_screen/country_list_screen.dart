@@ -91,29 +91,27 @@ class _CountryWidget extends StatelessWidget {
             bottom: 10,
             right: 10,
             left: 10,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return Row(
-                  children: [
-                    const Spacer(),
-                    Container(
-                      constraints: constraints.copyWith(minWidth: 0),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          color: Colors.white70,
-                      ),
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        data.name,
-                        style: countryNameStyle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+            child: LayoutBuilder(builder: (context, constraints) {
+              return Row(
+                children: [
+                  const Spacer(),
+                  Container(
+                    constraints: constraints.copyWith(minWidth: 0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: Colors.white70,
                     ),
-                  ],
-                );
-              }
-            ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      data.name,
+                      style: countryNameStyle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              );
+            }),
           )
         ],
       ),
