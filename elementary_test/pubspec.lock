@@ -374,7 +374,7 @@ packages:
     source: hosted
     version: "1.1.0"
   surf_lint_rules:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: surf_lint_rules
       url: "https://pub.dartlang.org"
