@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-
 /// Тесты для [CountryListScreenWidgetModel]
 void main() {
   late CountryListScreenModelMock model;
@@ -45,7 +44,7 @@ void main() {
   testWidgetModel<CountryListScreenWidgetModel, CountryListScreen>(
     'countryNameStyle should be AppTypography.title3 when headline4 not found',
     setUpWm,
-        (wm, tester, context) {
+    (wm, tester, context) {
       when(() => textTheme.headline4).thenReturn(null);
 
       tester.init();
