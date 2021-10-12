@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.3-dev.5
+
+* Model behaviour tested.
+* Widget behaviour tested.
+
 ## 0.0.3-dev.4
 
 * Infrastructure for testing all layers.

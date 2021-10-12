@@ -1,6 +1,6 @@
 name: elementary
 description: MVVM-inspired architectural library.
-version: 0.0.3-dev.4
+version: 0.0.3-dev.5
 repository: "https://github.com/surfstudio/flutter-elementary"
 issue_tracker: "https://github.com/surfstudio/flutter-elementary/issues"
 
@@ -16,6 +16,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  mocktail: ^0.2.0
   surf_lint_rules: ^1.0.0
 
 flutter:

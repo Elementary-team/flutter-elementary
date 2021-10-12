@@ -204,6 +204,7 @@ abstract class Model {
   /// Widget Model about error.
   @protected
   @mustCallSuper
+  @visibleForTesting
   void handleError(Object error) {
     _errorHandler?.handleError(error);
     _wmHandler?.call(error);
@@ -216,4 +217,10 @@ abstract class Model {
 
   /// Called when Widget Model disposing.
   void dispose() {}
+
+  @visibleForTesting
+  // ignore: use_setters_to_change_properties
+  void setupWmHandler(Function(Object)? function) {
+    _wmHandler = function;
+  }
 }
