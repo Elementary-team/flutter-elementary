@@ -4,7 +4,7 @@ import 'package:country/ui/screen/country_list_screen/country_list_screen.dart';
 import 'package:elementary/elementary.dart';
 
 /// Model for [CountryListScreen]
-class CountryListScreenModel extends Model {
+class CountryListScreenModel extends ElementaryModel {
   final CountryRepository _countryRepository;
 
   CountryListScreenModel(

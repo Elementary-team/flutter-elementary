@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.0-dev.1
+
+* Support 0.1.0-dev.1 elementary
+
 ## 0.0.3-dev.6
 
 * changed the supported `mocktail` version to `^0.2.0`.

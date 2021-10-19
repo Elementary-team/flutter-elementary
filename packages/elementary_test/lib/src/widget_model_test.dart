@@ -12,7 +12,7 @@ import 'package:mocktail/mocktail.dart';
 /// [setupWm] - function should return wm that will be test.
 /// [testFunction] - function that test wm.
 @isTest
-void testWidgetModel<WM extends WidgetModel, W extends WMWidget>(
+void testWidgetModel<WM extends WidgetModel, W extends ElementaryWidget>(
   String description,
   WM Function() setupWm,
   dynamic Function(WM wm, WMTester<WM, W> tester, WMContext context)
@@ -33,7 +33,7 @@ void testWidgetModel<WM extends WidgetModel, W extends WMWidget>(
 class WMContext extends Mock implements BuildContext {}
 
 /// Interface for control wm stage in test.
-abstract class WMTester<WM extends WidgetModel, W extends WMWidget> {
+abstract class WMTester<WM extends WidgetModel, W extends ElementaryWidget> {
   void init({W? initWidget});
 
   void update(W newWidget);
@@ -43,10 +43,10 @@ abstract class WMTester<WM extends WidgetModel, W extends WMWidget> {
   void unmount();
 }
 
-class _WMTestableElement<WM extends WidgetModel, W extends WMWidget>
+class _WMTestableElement<WM extends WidgetModel, W extends ElementaryWidget>
     extends WMContext
     with Diagnosticable
-    implements WMElement, WMTester<WM, W> {
+    implements Elementary, WMTester<WM, W> {
   final WM _wm;
 
   _WMTestableElement(this._wm);

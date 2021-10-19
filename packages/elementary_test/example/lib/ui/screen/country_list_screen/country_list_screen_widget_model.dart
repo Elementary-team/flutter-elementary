@@ -73,7 +73,7 @@ class CountryListScreenWidgetModel
 }
 
 /// Interface of [CountryListScreenWidgetModel]
-abstract class ICountryListWidgetModel extends IWM {
+abstract class ICountryListWidgetModel extends IWidgetModel {
   ListenableState<EntityState<Iterable<Country>>> get countryListState;
 
   TextStyle get countryNameStyle;
