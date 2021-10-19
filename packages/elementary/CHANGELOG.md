@@ -1,5 +1,9 @@
 # Changelog
 
+## next
+
+* Mark protected context in widget model.
+
 ## 0.0.3-dev.5
 
 * Model behaviour tested.
