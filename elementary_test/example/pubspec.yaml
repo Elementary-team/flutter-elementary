@@ -30,7 +30,7 @@ dev_dependencies:
   # голден тесты
   golden_toolkit: ^0.10.0
   # мокирование
-  mocktail: ^0.1.4
+  mocktail: ^0.2.0
   # тестирование elementary
   elementary_test:
     path: ../
