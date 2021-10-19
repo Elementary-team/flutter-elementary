@@ -17,7 +17,7 @@ void main() {
     testModel = _TestModel(errorHandler);
   });
 
-  test('Model methods must be called as many times as we call them', () {
+  test('ErrorHandler should get every error from handleError', () {
     final error = Exception('Test');
     final error2 = Exception('Test2');
 
@@ -29,7 +29,7 @@ void main() {
     verify(() => errorHandler.handleError(error2)).called(1);
   });
 
-  test('Model methods calls must be in order', () {
+  test('ErrorHandler should get error in order', () {
     final error = Exception('Test');
     final error2 = Exception('Test2');
 
@@ -43,7 +43,7 @@ void main() {
     ]);
   });
 
-  test('Overriding methods inside the Model should work correctly', () {
+  test('WidgetModel should get every error from handleError', () {
     testModel.setupWmHandler(_fakeWmHandler);
     final error = Exception('Test');
     final error2 = Exception('Test2');
@@ -56,7 +56,7 @@ void main() {
   });
 }
 
-class _TestModel extends Model {
+class _TestModel extends ElementaryModel {
   _TestModel(ErrorHandler errorHandler) : super(errorHandler: errorHandler);
 }
 
