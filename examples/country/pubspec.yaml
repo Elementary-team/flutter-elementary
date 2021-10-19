@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  elementary: ^0.0.3-dev.4
+  elementary: ^0.1.0-dev.1
   cupertino_icons: 1.0.2
   dio: ^4.0.0
   retrofit: ^2.0.1
@@ -23,17 +23,17 @@ dev_dependencies:
   # кодген для ретрофита
   retrofit_generator: ^2.0.1
   # билдер для кодгена - flutter pub run build_runner build
-  build_runner: ^2.1.2
+  build_runner: ^2.1.4
   # сериализация json
-  json_serializable: any
+  json_serializable: ^5.0.2
   # голден тесты
   golden_toolkit: ^0.10.0
   # мокирование
   mocktail: ^0.2.0
-  # тестирование elementary
-  elementary_test: ^0.0.3-dev.6
   # анализатор
   surf_lint_rules: ^1.4.0
+  # тестирование elementary
+  elementary_test: ^0.1.0-dev.1
 
 flutter:
   uses-material-design: true

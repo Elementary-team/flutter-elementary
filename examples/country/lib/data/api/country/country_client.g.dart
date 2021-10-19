@@ -17,11 +17,12 @@ class _CountryClient implements CountryClient {
   Future<List<CountryData>> getAll() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<CountryData>>(
-            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, 'https://restcountries.eu/rest/v2/all',
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, 'https://restcountries.com/v3.1/all',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!
