@@ -2,7 +2,6 @@ import 'package:country/domain/country/country.dart';
 import 'package:country/res/theme/app_typography.dart';
 import 'package:country/ui/screen/country_list_screen/country_list_screen.dart';
 import 'package:country/ui/screen/country_list_screen/country_list_screen_widget_model.dart';
-import 'package:country/utils/urls.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
@@ -14,11 +13,7 @@ void main() {
   const widget = CountryListScreen();
   final _countries = [
     Country(
-      capital: 'capital',
-      region: 'region',
-      subregion: 'subregion',
-      nativeName: 'nativeName',
-      flag: AppUrls.getFlagByCode('ru'),
+      flag: 'rf-flag-url',
       name: 'Russian Federation',
     ),
   ];

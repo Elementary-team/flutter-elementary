@@ -4,7 +4,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 
 /// Widget screen with list of countries.
-class CountryListScreen extends WMWidget<ICountryListWidgetModel> {
+class CountryListScreen extends ElementaryWidget<ICountryListWidgetModel> {
   const CountryListScreen({
     Key? key,
     WidgetModelFactory wmFactory = countryListScreenWidgetModelFactory,
