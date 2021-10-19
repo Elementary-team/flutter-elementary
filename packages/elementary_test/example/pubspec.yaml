@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  elementary: ^0.0.3-dev.4
+  elementary: ^0.1.0-dev.1
   cupertino_icons: 1.0.2
   dio: 4.0.0
   retrofit: 2.0.1
