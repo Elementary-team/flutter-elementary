@@ -35,6 +35,8 @@ class _AppDependenciesState extends State<AppDependencies> {
     _defaultErrorHandler = DefaultErrorHandler();
     _countryClient = CountryClient(_http);
     _countryRepository = CountryRepository(_countryClient);
+    // Uncomment to use mock instead real backend
+    // _countryRepository = MockCountryRepository();
 
     _countryListScreenModel = CountryListScreenModel(
       _countryRepository,
