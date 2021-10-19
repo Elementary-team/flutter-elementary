@@ -47,15 +47,20 @@ class GenerateWmCommand extends Command {
         ? await Directory(p.join(pathRaw, name)).create()
         : baseDir;
 
+    final className = name
+        .split("_")
+        .map((e) => e.substring(0, 1).toUpperCase() + e.substring(1))
+        .join();
     final modelFile = p.join(dir.path, name + '_model.dart');
-    final modelFuture = writeFile(filename: modelFile, text: modelText(name));
+    final modelFuture =
+        writeFile(filename: modelFile, text: modelText(className));
 
     final widgetFile = p.join(dir.path, name + '_widget.dart');
     final widgetFuture =
-        writeFile(filename: widgetFile, text: widgetText(name));
+        writeFile(filename: widgetFile, text: widgetText(name, className));
 
     final wmFile = p.join(dir.path, name + '_wm.dart');
-    final wmFuture = writeFile(filename: wmFile, text: wmText(name));
+    final wmFuture = writeFile(filename: wmFile, text: wmText(name, className));
 
     return Future.wait(
       [
@@ -73,24 +78,79 @@ class GenerateWmCommand extends Command {
     });
   }
 
-  String modelText(String templateName) {
+  String modelText(String className) {
     final buffer = StringBuffer()
-      ..write(templateName)
-      ..write(' model');
+      ..write('''import 'package:elementary/elementary.dart';
+
+class ${className}Model extends Model {
+  ${className}Model(ErrorHandler errorHandler) : super(errorHandler: errorHandler);
+}
+''');
     return buffer.toString();
   }
 
-  String widgetText(String templateName) {
+  String widgetText(String filename, String className) {
     final buffer = StringBuffer()
-      ..write(templateName)
-      ..write(' widget');
+      ..write('''import '${filename}_wm.dart';
+import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
+
+class ${className}Widget extends WMWidget<I${className}WidgetModel> {
+  const ${className}Widget({
+    Key? key,
+    WidgetModelFactory wmFactory = default${className}WidgetModelFactory,
+  }) : super(wmFactory, key: key);
+
+  @override
+  Widget build(I${className}WidgetModel wm) {
+    return Container();
+  }
+}
+''');
     return buffer.toString();
   }
 
-  String wmText(String templateName) {
+  String wmText(String filename, String className) {
     final buffer = StringBuffer()
-      ..write(templateName)
-      ..write(' wm');
+      ..write('''import '${filename}_model.dart';
+import '${filename}_widget.dart';
+import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
+
+abstract class I${className}WidgetModel extends IWM {
+}
+
+${className}WidgetModel default${className}WidgetModelFactory(BuildContext context) {
+  //final model = context.read<${className}Model>();
+  return ${className}WidgetModel(model);
+}
+
+class ${className}WidgetModel extends WidgetModel<${className}Widget, ${className}Model>
+    implements I${className}WidgetModel {
+  
+  ${className}WidgetModel(${className}Model model) : super(model);
+
+  @override
+  void initWidgetModel() {
+    super.initWidgetModel();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
+  void onErrorHandle(Object error) {
+    super.onErrorHandle(error);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}
+''');
     return buffer.toString();
   }
 
