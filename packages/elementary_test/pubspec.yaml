@@ -1,8 +1,9 @@
 name: elementary_test
 description: A testing library which makes it easy to test elementary used apps. Built to be used with the elementary architecture package.
 version: 0.1.0-dev.1
-repository: "https://github.com/surfstudio/flutter-elementary"
-issue_tracker: "https://github.com/surfstudio/flutter-elementary/issues"
+repository: "https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_test"
+issue_tracker: "https://github.com/Elementary-team/flutter-elementary/issues"
+homepage: "https://github.com/Elementary-team/flutter-elementary"
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
