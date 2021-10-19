@@ -2,7 +2,7 @@ import 'package:counter/impl/screen/test_page_widget_model.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 
-class TestPageWidget extends WMWidget<ITestPageWidgetModel> {
+class TestPageWidget extends ElementaryWidget<ITestPageWidgetModel> {
   const TestPageWidget({
     Key? key,
     WidgetModelFactory wmFactory = testPageWidgetModelFactory,

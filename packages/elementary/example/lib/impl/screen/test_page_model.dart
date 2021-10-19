@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:elementary/elementary.dart';
 
-class TestPageModel extends Model {
+class TestPageModel extends ElementaryModel {
   int get value => _value;
   var _value = 0;
 

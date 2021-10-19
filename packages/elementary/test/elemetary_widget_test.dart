@@ -10,10 +10,10 @@ void main() {
     wmWidget = const _TestWmWidget(_testWmFactory);
   });
 
-  test('WmWidget should create correct type element', () {
+  test('ElementaryWidget should create correct type element', () {
     final result = wmWidget.createElement();
 
-    expect(result, const TypeMatcher<WMElement>());
+    expect(result, const TypeMatcher<Elementary>());
   });
 }
 
@@ -21,11 +21,11 @@ _TestWidgetModel _testWmFactory(BuildContext context) {
   return _TestWidgetModel(_TestModel());
 }
 
-class _TestWmWidget extends WMWidget {
+class _TestWmWidget extends ElementaryWidget {
   const _TestWmWidget(WidgetModelFactory wmFactory) : super(wmFactory);
 
   @override
-  Widget build(IWM wm) {
+  Widget build(IWidgetModel wm) {
     throw UnimplementedError();
   }
 }
@@ -34,4 +34,4 @@ class _TestWidgetModel extends WidgetModel<_TestWmWidget, _TestModel> {
   _TestWidgetModel(_TestModel model) : super(model);
 }
 
-class _TestModel extends Model {}
+class _TestModel extends ElementaryModel {}

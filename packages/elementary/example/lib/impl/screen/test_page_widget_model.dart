@@ -67,7 +67,7 @@ class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
   }
 }
 
-abstract class ITestPageWidgetModel extends IWM {
+abstract class ITestPageWidgetModel extends IWidgetModel {
   ListenableState<EntityState<int>> get valueState;
 
   TextStyle get counterStyle;

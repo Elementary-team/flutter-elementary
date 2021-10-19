@@ -8,27 +8,28 @@ typedef WidgetModelFactory<T extends WidgetModel> = T Function(
 );
 
 /// Base interface for all Widget Model.
-abstract class IWM {}
+abstract class IWidgetModel {}
 
 /// A widget that use WidgetModel for build.
 ///
 /// You must provide [wmFactory] factory function to the constructor
 /// to instantiate WidgetModel. For testing, you can replace
 /// this function for returning mock.
-abstract class WMWidget<I extends IWM> extends Widget {
+abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
   final WidgetModelFactory wmFactory;
 
-  const WMWidget(
+  const ElementaryWidget(
     this.wmFactory, {
     Key? key,
   }) : super(key: key);
 
-  /// Creates a [WMElement] to manage this widget's location in the tree.
+  /// Creates a [Elementary] to manage this widget's location
+  /// in the tree.
   ///
   /// It is uncommon for subclasses to override this method.
   @override
   Element createElement() {
-    return WMElement(this);
+    return Elementary(this);
   }
 
   /// Describes the part of the user interface represented by this widget.
@@ -39,10 +40,9 @@ abstract class WMWidget<I extends IWM> extends Widget {
   Widget build(I wm);
 }
 
-/// Class that contains all presentation logic of the widget.
-abstract class WidgetModel<W extends WMWidget, M extends Model>
-    with Diagnosticable
-    implements IWM {
+/// Entity that contains all presentation logic of the widget.
+abstract class WidgetModel<W extends ElementaryWidget,
+    M extends ElementaryModel> with Diagnosticable implements IWidgetModel {
   final M _model;
 
   @protected
@@ -63,7 +63,7 @@ abstract class WidgetModel<W extends WMWidget, M extends Model>
     return _element!;
   }
 
-  WMElement? _element;
+  Elementary? _element;
   W? _widget;
 
   WidgetModel(this._model);
@@ -120,28 +120,28 @@ abstract class WidgetModel<W extends WMWidget, M extends Model>
 
   @visibleForTesting
   // ignore: use_setters_to_change_properties
-  void setupTestElement(WMElement? testElement) {
+  void setupTestElement(Elementary? testElement) {
     _element = testElement;
   }
 }
 
 /// An element for managing a widget whose display depends on the Widget Model.
-class WMElement extends ComponentElement {
+class Elementary extends ComponentElement {
   @override
-  WMWidget get widget => super.widget as WMWidget;
+  ElementaryWidget get widget => super.widget as ElementaryWidget;
 
   late WidgetModel _wm;
 
   // private _firstBuild hack
   bool _isInitialized = false;
 
-  WMElement(WMWidget widget) : super(widget);
+  Elementary(ElementaryWidget widget) : super(widget);
 
   @override
   Widget build() => widget.build(_wm);
 
   @override
-  void update(WMWidget newWidget) {
+  void update(ElementaryWidget newWidget) {
     super.update(newWidget);
 
     final oldWidget = _wm.widget;
@@ -195,11 +195,11 @@ class WMElement extends ComponentElement {
 /// [handleError] method. This method also notifies the Widget Model about the
 /// error that has occurred. You can use onErrorHandle method of Widget Model
 /// to handle on UI like show snackbar or something else.
-abstract class Model {
+abstract class ElementaryModel {
   final ErrorHandler? _errorHandler;
   void Function(Object)? _wmHandler;
 
-  Model({ErrorHandler? errorHandler}) : _errorHandler = errorHandler;
+  ElementaryModel({ErrorHandler? errorHandler}) : _errorHandler = errorHandler;
 
   /// Should be used for report error Error Handler if it was set and notify
   /// Widget Model about error.
