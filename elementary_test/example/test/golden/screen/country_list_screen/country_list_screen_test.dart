@@ -26,7 +26,7 @@ void main() {
   late ListenableEntityStateMock<Iterable<Country>> countryListStateMock;
 
   setUpAll(() {
-    registerFallbackValue<Uri>(UriFake());
+    registerFallbackValue(UriFake());
   });
 
   setUp(() {
