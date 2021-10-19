@@ -1,4 +1,4 @@
-package surf.elementary.country
+package com.example.country
 
 import io.flutter.embedding.android.FlutterActivity
 
