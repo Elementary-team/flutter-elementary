@@ -38,6 +38,11 @@ class GenerateWmCommand extends Command {
       return;
     }
 
+    if (!RegExp(r"^[a-z](_?[a-z0-9])*$").hasMatch(name)) {
+      print('"$name" is an illegal name');
+      return;
+    }
+
     final dir = isSubdirNeeded
         ? await Directory(p.join(pathRaw, name)).create()
         : baseDir;
