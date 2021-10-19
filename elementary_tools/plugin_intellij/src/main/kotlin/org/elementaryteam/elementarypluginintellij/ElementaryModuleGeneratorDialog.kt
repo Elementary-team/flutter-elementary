@@ -9,8 +9,10 @@ import com.intellij.psi.PsiDirectory
 import java.awt.GridLayout
 import javax.swing.*
 
-
-class ElementaryModuleGeneratorDialog(private val project: Project?, private val resourceDir: PsiDirectory) :
+class ElementaryModuleGeneratorDialog(
+    private val project: Project?,
+    private val resourceDir: PsiDirectory
+) :
     DialogWrapper(project) {
     private lateinit var dirPicker: TextFieldWithBrowseButton
     private lateinit var nameTextField: JTextField
@@ -56,20 +58,16 @@ class ElementaryModuleGeneratorDialog(private val project: Project?, private val
         // (_?[a-z0-9]) part means that every next symbol (or pair) must be either "_x" or "x"
         // so there will never be a "a___b" situation as well as "test_" one
         if (!nameTextField.text.matches(Regex("^[a-z](_?[a-z0-9])*$"))) {
-           return ValidationInfo("Please specify a valid file name", nameTextField)
+            return ValidationInfo("Please specify a valid file name", nameTextField)
         }
         return null
     }
 
-    override fun doOKAction() {
-        if (okAction.isEnabled) {
-            val pathOption = dirPicker.text
-            val nameOption = nameTextField.text
-            val subdirectoryOption = subdirectoryCheckbox.isSelected
-            println("I will pass the $pathOption to --path")
-            println("I will pass the $nameOption to --name")
-            println("I will pass the $subdirectoryOption to --create-subdirectory")
-            close(OK_EXIT_CODE)
-        }
+    fun getArgumentResults(): Array<String> {
+        val pathOption = dirPicker.text
+        val nameOption = nameTextField.text
+        val subdirectoryFlag =
+            if (subdirectoryCheckbox.isSelected) "--create-subdirectory" else "--no-create-subdirectory"
+        return arrayOf("--path", pathOption, "--name", nameOption, subdirectoryFlag)
     }
 }

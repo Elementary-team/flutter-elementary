@@ -5,6 +5,7 @@
     <vendor>Elementary Team</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>io.flutter</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="org.elementaryteam.elementarypluginintellij.services.MyApplicationService"/>
