@@ -12,28 +12,32 @@ dependencies:
 
   elementary: ^0.1.0-dev.1
   cupertino_icons: 1.0.2
-  dio: 4.0.0
-  retrofit: 2.0.1
-  provider: 6.0.0
-  surf_lint_rules: 1.4.0
+  dio: ^4.0.0
+  retrofit: ^2.0.1
+  provider: ^6.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   # кодген для ретрофита
-  retrofit_generator: 2.0.1
+  retrofit_generator: ^2.0.1
   # билдер для кодгена - flutter pub run build_runner build
-  build_runner: 2.1.2
+  build_runner: ^2.1.4
   # сериализация json
-  json_serializable: any
+  json_serializable: ^5.0.2
   # голден тесты
   golden_toolkit: ^0.10.0
   # мокирование
   mocktail: ^0.2.0
+  # анализатор
+  surf_lint_rules: ^1.4.0
   # тестирование elementary
   elementary_test:
     path: ../
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/mock_data/
