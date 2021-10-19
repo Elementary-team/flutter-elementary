@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.1-dev.1
+## 0.1.0-dev.1
 
 * Update naming from dev to release ready.
 * Mark protected context in widget model.
