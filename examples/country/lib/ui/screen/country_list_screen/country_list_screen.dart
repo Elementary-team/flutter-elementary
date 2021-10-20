@@ -18,27 +18,64 @@ class CountryListScreen extends ElementaryWidget<ICountryListWidgetModel> {
       ),
       body: EntityStateNotifierBuilder<Iterable<Country>>(
         listenableEntityState: wm.countryListState,
-        loadingBuilder: (_, __) => const Center(
-          child: Text('loading'),
+        loadingBuilder: (_, __) => const _LoadingWidget(),
+        errorBuilder: (_, __, ___) => const _ErrorWidget(),
+        builder: (_, countries) => _CountryList(
+          countries: countries,
+          nameStyle: wm.countryNameStyle,
         ),
-        errorBuilder: (_, __, ___) => const Center(
-          child: Text('Error'),
-        ),
-        builder: (_, countries) {
-          if (countries == null || countries.isEmpty) {
-            return const _EmptyList();
-          }
-
-          return ListView.separated(
-            itemBuilder: (_, index) => _CountryWidget(
-              data: countries.elementAt(index),
-              countryNameStyle: wm.countryNameStyle,
-            ),
-            separatorBuilder: (_, __) => const SizedBox(height: 8),
-            itemCount: countries.length,
-          );
-        },
       ),
+    );
+  }
+}
+
+class _LoadingWidget extends StatelessWidget {
+  const _LoadingWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('loading'),
+    );
+  }
+}
+
+class _ErrorWidget extends StatelessWidget {
+  const _ErrorWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('Error'),
+    );
+  }
+}
+
+class _CountryList extends StatelessWidget {
+  final Iterable<Country>? countries;
+  final TextStyle nameStyle;
+
+  const _CountryList({
+    Key? key,
+    required this.countries,
+    required this.nameStyle,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final countries = this.countries;
+
+    if (countries == null || countries.isEmpty) {
+      return const _EmptyList();
+    }
+
+    return ListView.separated(
+      itemBuilder: (_, index) => _CountryWidget(
+        data: countries.elementAt(index),
+        countryNameStyle: nameStyle,
+      ),
+      separatorBuilder: (_, __) => const SizedBox(height: 8),
+      itemCount: countries.length,
     );
   }
 }
@@ -91,27 +128,29 @@ class _CountryWidget extends StatelessWidget {
             bottom: 10,
             right: 10,
             left: 10,
-            child: LayoutBuilder(builder: (context, constraints) {
-              return Row(
-                children: [
-                  const Spacer(),
-                  Container(
-                    constraints: constraints.copyWith(minWidth: 0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                      color: Colors.white70,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Row(
+                  children: [
+                    const Spacer(),
+                    Container(
+                      constraints: constraints.copyWith(minWidth: 0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                        color: Colors.white70,
+                      ),
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        data.name,
+                        style: countryNameStyle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      data.name,
-                      style: countryNameStyle,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              );
-            }),
+                  ],
+                );
+              },
+            ),
           )
         ],
       ),
