@@ -1,6 +1,5 @@
 import 'package:counter/impl/screen/test_page_model.dart';
 import 'package:counter/impl/screen/test_page_widget.dart';
-import 'package:counter/utils/wrapper/theme_wrapper.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
