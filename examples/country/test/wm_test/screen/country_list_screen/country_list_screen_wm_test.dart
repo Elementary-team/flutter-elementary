@@ -4,7 +4,7 @@ import 'package:country/res/theme/app_typography.dart';
 import 'package:country/ui/screen/country_list_screen/country_list_screen.dart';
 import 'package:country/ui/screen/country_list_screen/country_list_screen_model.dart';
 import 'package:country/ui/screen/country_list_screen/country_list_screen_widget_model.dart';
-import 'package:country/utils/wrapper/theme_wrapper.dart';
+import 'package:elementary/elementary.dart';
 import 'package:elementary_test/elementary_test.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
