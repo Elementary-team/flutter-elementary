@@ -52,6 +52,7 @@ abstract class WidgetModel<W extends WMWidget, M extends Model>
   @visibleForTesting
   W get widget => _widget!;
 
+  @protected
   BuildContext get context {
     assert(() {
       if (_element == null) {
