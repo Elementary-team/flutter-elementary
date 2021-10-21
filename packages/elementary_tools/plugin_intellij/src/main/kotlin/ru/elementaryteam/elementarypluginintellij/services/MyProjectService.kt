@@ -1,7 +1,7 @@
-package org.elementaryteam.elementarypluginintellij.services
+package ru.elementaryteam.elementarypluginintellij.services
 
 import com.intellij.openapi.project.Project
-import org.elementaryteam.elementarypluginintellij.MyBundle
+import ru.elementaryteam.elementarypluginintellij.MyBundle
 
 class MyProjectService(project: Project) {
 

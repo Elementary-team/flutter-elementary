@@ -1,6 +1,6 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <id>org.elementaryteam.elementarypluginintellij</id>
+    <id>ru.elementaryteam.elementarypluginintellij</id>
     <name>elementary_plugin_intellij</name>
     <vendor>Elementary Team</vendor>
 
@@ -8,19 +8,19 @@
     <depends>io.flutter</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-        <applicationService serviceImplementation="org.elementaryteam.elementarypluginintellij.services.MyApplicationService"/>
-        <projectService serviceImplementation="org.elementaryteam.elementarypluginintellij.services.MyProjectService"/>
+        <applicationService serviceImplementation="ru.elementaryteam.elementarypluginintellij.services.MyApplicationService"/>
+        <projectService serviceImplementation="ru.elementaryteam.elementarypluginintellij.services.MyProjectService"/>
     </extensions>
 
     <applicationListeners>
-        <listener class="org.elementaryteam.elementarypluginintellij.listeners.MyProjectManagerListener"
+        <listener class="ru.elementaryteam.elementarypluginintellij.listeners.MyProjectManagerListener"
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 
     <actions>
         <group id="Elementary.Generators" text="_Elementary Generators" description="Generate boilerplate code for you">
             <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewFile"  />
-            <action id="Elementary.Generators.Module" class="org.elementaryteam.elementarypluginintellij.ElementaryModuleGeneratorMenuAction" text="_Elementary Module" description="Elementary MWWM Module template files" />
+            <action id="Elementary.Generators.Module" class="ru.elementaryteam.elementarypluginintellij.ElementaryModuleGeneratorMenuAction" text="_Elementary Module" description="Elementary MWWM Module template files" />
         </group>
     </actions>
 

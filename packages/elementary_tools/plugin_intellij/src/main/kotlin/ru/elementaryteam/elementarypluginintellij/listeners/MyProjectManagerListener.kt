@@ -1,9 +1,9 @@
-package org.elementaryteam.elementarypluginintellij.listeners
+package ru.elementaryteam.elementarypluginintellij.listeners
 
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.ProjectManagerListener
-import org.elementaryteam.elementarypluginintellij.services.MyProjectService
+import ru.elementaryteam.elementarypluginintellij.services.MyProjectService
 
 internal class MyProjectManagerListener : ProjectManagerListener {
 

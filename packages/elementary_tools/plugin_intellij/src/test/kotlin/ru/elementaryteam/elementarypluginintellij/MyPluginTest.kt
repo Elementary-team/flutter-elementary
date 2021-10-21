@@ -1,4 +1,4 @@
-package org.elementaryteam.elementarypluginintellij
+package ru.elementaryteam.elementarypluginintellij
 
 import com.intellij.ide.highlighter.XmlFileType
 import com.intellij.psi.xml.XmlFile

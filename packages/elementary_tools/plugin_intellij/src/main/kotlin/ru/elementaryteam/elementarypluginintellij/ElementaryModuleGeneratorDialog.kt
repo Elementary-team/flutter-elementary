@@ -1,10 +1,11 @@
-package org.elementaryteam.elementarypluginintellij
+package ru.elementaryteam.elementarypluginintellij
 
 import com.intellij.openapi.fileChooser.FileChooserDescriptor
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
 import com.intellij.openapi.ui.ValidationInfo
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.psi.PsiDirectory
 import java.awt.GridLayout
 import javax.swing.*
@@ -69,5 +70,9 @@ class ElementaryModuleGeneratorDialog(
         val subdirectoryFlag =
             if (subdirectoryCheckbox.isSelected) "--create-subdirectory" else "--no-create-subdirectory"
         return arrayOf("--path", pathOption, "--name", nameOption, subdirectoryFlag)
+    }
+
+    fun getGeneratedFilesDirectory(): VirtualFile {
+        return resourceDir.virtualFile;
     }
 }

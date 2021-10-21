@@ -68,11 +68,13 @@ class GenerateWmCommand extends Command {
         widgetFuture,
         wmFuture,
       ],
-    ).then((value) => print('done'), onError: (error, stackTrace) {
+    ).then((files) => files.forEach((file) => print('$file generated')), onError: (error, stackTrace) {
       if (error is FileSystemException) {
         print('cleaning up');
-        // TODO delete broken files
+        // TODO delete broken files (maybe all files?)
+        // TODO return exit code FILE_ERROR
       } else {
+        // should never happen in production
         throw error;
       }
     });
@@ -82,7 +84,7 @@ class GenerateWmCommand extends Command {
     final buffer = StringBuffer()
       ..write('''import 'package:elementary/elementary.dart';
 
-class ${className}Model extends Model {
+class ${className}Model extends ElementaryModel {
   ${className}Model(ErrorHandler errorHandler) : super(errorHandler: errorHandler);
 }
 ''');
@@ -91,11 +93,11 @@ class ${className}Model extends Model {
 
   String widgetText(String filename, String className) {
     final buffer = StringBuffer()
-      ..write('''import '${filename}_wm.dart';
-import 'package:elementary/elementary.dart';
+      ..write('''import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import '${filename}_wm.dart';
 
-class ${className}Widget extends WMWidget<I${className}WidgetModel> {
+class ${className}Widget extends ElementaryWidget<I${className}WidgetModel> {
   const ${className}Widget({
     Key? key,
     WidgetModelFactory wmFactory = default${className}WidgetModelFactory,
@@ -112,12 +114,12 @@ class ${className}Widget extends WMWidget<I${className}WidgetModel> {
 
   String wmText(String filename, String className) {
     final buffer = StringBuffer()
-      ..write('''import '${filename}_model.dart';
-import '${filename}_widget.dart';
-import 'package:elementary/elementary.dart';
+      ..write('''import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import '${filename}_model.dart';
+import '${filename}_widget.dart';
 
-abstract class I${className}WidgetModel extends IWM {
+abstract class I${className}WidgetModel extends IWidgetModel {
 }
 
 ${className}WidgetModel default${className}WidgetModelFactory(BuildContext context) {
@@ -154,7 +156,8 @@ class ${className}WidgetModel extends WidgetModel<${className}Widget, ${classNam
     return buffer.toString();
   }
 
-  Future<void> writeFile({
+  // returns filename on success
+  Future<String> writeFile({
     required String filename,
     required String text,
   }) async {
@@ -162,5 +165,6 @@ class ${className}WidgetModel extends WidgetModel<${className}Widget, ${classNam
     final sink = file.openWrite();
     sink.write(text);
     sink.close();
+    return filename;
   }
 }
