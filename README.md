@@ -18,7 +18,7 @@ This is a home to a family of Elementary library packages.
 
 ## Overview
 
-This is architecture library with the main goal to split code between different layers by responsibility, make code clear, simple, readable and easy testable.
+This is architecture library with the main goal to split code between different responsibility layers, make code clear, simple, readable and easy testable.
 This approach standing on MVVM architecture pattern and make with the respect to Clean Architecture.
 
 ## Sponsor
