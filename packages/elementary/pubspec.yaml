@@ -1,5 +1,5 @@
 name: elementary
-description: MVVM-inspired architectural library.
+description: This is architecture library with the main goal to split code between different responsibility layers, make code clear, simple, readable and easy testable. This approach standing on MVVM architecture pattern and make with the respect to Clean Architecture.
 version: 0.1.1
 repository: "https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary"
 issue_tracker: "https://github.com/Elementary-team/flutter-elementary/issues"
