@@ -1,5 +1,9 @@
 # Changelog
 
+## next
+
+* Add skip parameter for test.
+
 ## 0.1.1
 
 * Support 0.1.1 elementary
