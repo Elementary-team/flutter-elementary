@@ -11,22 +11,31 @@ import 'package:mocktail/mocktail.dart';
 /// [description] - description of test.
 /// [setupWm] - function should return wm that will be test.
 /// [testFunction] - function that test wm.
+/// [skip] - should skip the test. If passed a String or `true`, the test is
+/// skipped. If it's a String, it should explain why the test is skipped;
+/// this reason will be printed instead of running the test.
 @isTest
 void testWidgetModel<WM extends WidgetModel, W extends ElementaryWidget>(
   String description,
   WM Function() setupWm,
   dynamic Function(WM wm, WMTester<WM, W> tester, WMContext context)
-      testFunction,
-) {
+      testFunction, {
+  // ignore: avoid_annotating_with_dynamic
+  dynamic skip,
+}) {
   setUp(() {
     registerFallbackValue(WMContext());
   });
 
-  test(description, () async {
-    final wm = setupWm();
-    final element = _WMTestableElement<WM, W>(wm);
-    await testFunction(wm, element, element);
-  });
+  test(
+    description,
+    () async {
+      final wm = setupWm();
+      final element = _WMTestableElement<WM, W>(wm);
+      await testFunction(wm, element, element);
+    },
+    skip: skip,
+  );
 }
 
 /// Interface for emulating BuildContext behaviour.
