@@ -14,3 +14,4 @@ dependencies:
 
 dev_dependencies:
   lints: ^1.0.0
+  surf_lint_rules: ^1.0.0

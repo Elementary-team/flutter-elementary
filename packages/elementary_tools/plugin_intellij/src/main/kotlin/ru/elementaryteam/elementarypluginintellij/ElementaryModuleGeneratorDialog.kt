@@ -10,6 +10,12 @@ import com.intellij.psi.PsiDirectory
 import java.awt.GridLayout
 import javax.swing.*
 
+/**
+ * Dialog that helps you easily create new Elementary module with three fields:
+ * - module name via [nameTextField]
+ * - module path via [dirPicker]
+ * - mark to create a subdirectory via [subdirectoryCheckbox]
+ */
 class ElementaryModuleGeneratorDialog(
     private val project: Project?,
     private val resourceDir: PsiDirectory
@@ -51,6 +57,7 @@ class ElementaryModuleGeneratorDialog(
         return dialogPanel
     }
 
+    /* Checks that given filename is correct with the same regex as elementary_cli tool does */
     override fun doValidate(): ValidationInfo? {
         // TODO write some tests
         // should pass: "my_class_name", "my_1st_test"
@@ -64,6 +71,7 @@ class ElementaryModuleGeneratorDialog(
         return null
     }
 
+    /* Converts values taken from user to an array of commands for cli tool */
     fun getArgumentResults(): Array<String> {
         val pathOption = dirPicker.text
         val nameOption = nameTextField.text
@@ -73,6 +81,6 @@ class ElementaryModuleGeneratorDialog(
     }
 
     fun getGeneratedFilesDirectory(): VirtualFile {
-        return resourceDir.virtualFile;
+        return resourceDir.virtualFile
     }
 }

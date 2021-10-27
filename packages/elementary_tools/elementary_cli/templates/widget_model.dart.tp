@@ -1,0 +1,37 @@
+import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
+import 'filename_model.dart';
+import 'filename_widget.dart';
+
+abstract class IClassNameWidgetModel extends IWidgetModel {
+}
+
+ClassNameWidgetModel defaultClassNameWidgetModelFactory(BuildContext context) {
+  return ClassNameWidgetModel();
+}
+
+class ClassNameWidgetModel extends WidgetModel<ClassNameWidget, ClassNameModel>
+    implements IClassNameWidgetModel {
+
+  ClassNameWidgetModel(ClassNameModel model) : super(model);
+
+  @override
+  void initWidgetModel() {
+    super.initWidgetModel();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+  }
+
+  @override
+  void onErrorHandle(Object error) {
+    super.onErrorHandle(error);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+}

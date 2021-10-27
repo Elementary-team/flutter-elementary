@@ -1,5 +1,5 @@
 # elementary_plugin_intellij
-
+<!-- TODO rewrite readme -->
 <iframe frameborder="none" width="245px" height="48px" src="https://plugins.jetbrains.com/embeddable/install/17848"></iframe>
 <!-- TODO add more badges -->
 
