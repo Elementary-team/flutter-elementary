@@ -12,6 +12,9 @@ import io.flutter.pub.PubRoot
 import io.flutter.sdk.FlutterSdk
 import io.flutter.utils.ProgressHelper
 
+/**
+ * Action that lets to generate new elementary module
+ */
 class ElementaryModuleGeneratorMenuAction : FlutterSdkAction() {
 
     override fun startCommand(
@@ -30,7 +33,7 @@ class ElementaryModuleGeneratorMenuAction : FlutterSdkAction() {
                 "run",
                 "elementary_cli:elementary_tools",
                 "generate",
-                "wm"
+                "module"
             )
             val userDefinedArguments = dialog.getArgumentResults()
             val pubFullArguments = arrayOf(*pubGenericArguments, *userDefinedArguments)

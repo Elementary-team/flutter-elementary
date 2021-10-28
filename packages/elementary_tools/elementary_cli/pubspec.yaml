@@ -9,8 +9,9 @@ environment:
   sdk: '>=2.14.0 <3.0.0'
 
 dependencies:
-  path: ^1.8.0
   args: ^2.3.0
+  path: ^1.8.0
 
 dev_dependencies:
   lints: ^1.0.0
+  surf_lint_rules: ^1.0.0
