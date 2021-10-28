@@ -7,6 +7,7 @@ import 'package:elementary_cli/console_writer.dart';
 import 'package:elementary_cli/exit_code_exception.dart';
 import 'package:path/path.dart' as p;
 
+// ignore_for_file: avoid_types_on_closure_parameters
 /// `elementary_tools generate wm` command
 class GenerateModuleCommand extends Command<void> {
   static const pathOption = 'path';
@@ -101,7 +102,8 @@ class GenerateModuleCommand extends Command<void> {
           )),
     ).then((files) => files.forEach(ConsoleWriter.write)).catchError(
       // If some FileSystemException occurred - delete all files
-      (error, stackTrace) async {
+      // ignore-for-file:
+      (Object error, StackTrace stackTrace) async {
         await Future.wait(files.values.map((f) => f.delete()));
         // Then throw exception to return right exit code
         throw GenerationException();
@@ -153,7 +155,7 @@ class GenerateModuleCommand extends Command<void> {
             _readTemplateFile(templateName)
                 .then((fileContent) => templates[templateName] = fileContent)))
         .catchError(
-      (_) => throw GenerateTemplatesUnreachableException('FileSystemException'),
+      (Object _) => throw GenerateTemplatesUnreachableException('FileSystemException'),
       test: (e) => e is FileSystemException,
     );
   }
