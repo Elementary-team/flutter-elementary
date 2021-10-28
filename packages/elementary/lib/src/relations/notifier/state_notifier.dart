@@ -77,7 +77,8 @@ class EntityState<T> {
     this.isLoading = false,
     this.hasError = false,
     this.error,
-  });
+  })  : assert(error == null || hasError),
+        assert(!hasError && !isLoading || hasError != isLoading);
 
   /// Loading constructor
   const EntityState.loading([this.data])
