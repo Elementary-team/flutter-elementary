@@ -2,6 +2,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+/// Tests of the [ElementaryModel].
 void main() {
   late _TestModel testModel;
   late ErrorHandler errorHandler;
@@ -53,6 +54,14 @@ void main() {
 
     testModel.handleError(error2);
     expect(_fakeHandlerHub, same(error2));
+  });
+
+  test('Init should returns normally', () {
+    expect(() => testModel.init(), returnsNormally);
+  });
+
+  test('Dispose should returns normally', () {
+    expect(() => testModel.dispose(), returnsNormally);
   });
 }
 
