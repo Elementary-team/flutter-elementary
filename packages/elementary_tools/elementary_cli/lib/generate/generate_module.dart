@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
+import 'package:elementary_cli/console_writer.dart';
 import 'package:elementary_cli/exit_code_exception.dart';
 import 'package:path/path.dart' as p;
 
@@ -59,13 +60,15 @@ class GenerateModuleCommand extends Command<void> {
     final isSubdirNeeded = parsed[isSubdirNeededFlag] as bool;
 
     final baseDir = Directory(pathRaw);
-    if (!await baseDir.exists()) {
+    if (!baseDir.existsSync()) {
       throw NonExistentFolderException(pathRaw);
     }
 
-    if (!RegExp(r"^[a-z](_?[a-z0-9])*$").hasMatch(fileNameBase)) {
+    if (!RegExp(r'^[a-z](_?[a-z0-9])*$').hasMatch(fileNameBase)) {
       throw CommandLineUsageException(
-          argumentName: nameOption, argumentValue: fileNameBase);
+        argumentName: nameOption,
+        argumentValue: fileNameBase,
+      );
     }
 
     await _fillTemplates(templateDirRaw);
@@ -77,14 +80,13 @@ class GenerateModuleCommand extends Command<void> {
     _fillFiles(targetDirectory, fileNameBase);
 
     final className = fileNameBase
-        .split("_")
+        .split('_')
         .map((e) => e.substring(0, 1).toUpperCase() + e.substring(1))
         .join();
 
-
     // checking that we can create all files
     await Future.wait(files.values.map((file) async {
-      if (await file.exists()) {
+      if (file.existsSync()) {
         throw GeneratorTargetFileExistsException(p.canonicalize(file.path));
       }
     }));
@@ -97,10 +99,10 @@ class GenerateModuleCommand extends Command<void> {
             className: className,
             fileNameBase: fileNameBase,
           )),
-    ).then((files) => files.forEach(print)).catchError(
+    ).then((files) => files.forEach(ConsoleWriter.write)).catchError(
       // If some FileSystemException occurred - delete all files
       (error, stackTrace) async {
-        Future.wait(files.values.map((f) => f.delete()));
+        await Future.wait(files.values.map((f) => f.delete()));
         // Then throw exception to return right exit code
         throw GenerationException();
       },
@@ -123,7 +125,8 @@ class GenerateModuleCommand extends Command<void> {
     // If running not inside dart vm - exit
     if (!Platform.script.hasAbsolutePath) {
       throw GenerateTemplatesUnreachableException(
-          'script entry has no absolute path');
+        'script entry has no absolute path',
+      );
     }
     return p.join(Platform.script.path, templatesRelativeToExecutableDirectory);
   }
@@ -131,26 +134,28 @@ class GenerateModuleCommand extends Command<void> {
   Future<String> _readTemplateFile(String filename) async {
     final filepath = p.join(templatesDirectoryPath, filename);
     final file = File(filepath);
-    if (!await file.exists()) {
+    if (!file.existsSync()) {
       throw GenerateTemplatesUnreachableException(
-          'cannot find template file "$filepath"');
+        'cannot find template file "$filepath"',
+      );
     }
     return file.readAsString();
   }
 
   Future<void> _fillTemplates(String? templateDirRaw) async {
-    templateDirRaw ??= _defaultTemplateDirectoryPath();
-    templatesDirectoryPath = p.canonicalize(templateDirRaw);
+    final templateDir = templateDirRaw ?? _defaultTemplateDirectoryPath();
+    templatesDirectoryPath = p.canonicalize(templateDir);
     final templatesDirectory = Directory(templatesDirectoryPath);
-    if (!await templatesDirectory.exists()) {
+    if (!templatesDirectory.existsSync()) {
       throw NonExistentFolderException(templatesDirectoryPath);
     }
     await Future.wait(templateNames.map((templateName) =>
-        _readTemplateFile(templateName).then((fileContent) =>
-            templates[templateName] = fileContent))).catchError(
-        (_) =>
-            throw GenerateTemplatesUnreachableException('FileSystemException'),
-        test: (e) => e is FileSystemException);
+            _readTemplateFile(templateName)
+                .then((fileContent) => templates[templateName] = fileContent)))
+        .catchError(
+      (_) => throw GenerateTemplatesUnreachableException('FileSystemException'),
+      test: (e) => e is FileSystemException,
+    );
   }
 
   Future<String> _writeFile({
@@ -159,7 +164,7 @@ class GenerateModuleCommand extends Command<void> {
     required String fileNameBase,
     required String className,
   }) async {
-    final String content = template
+    final content = template
         .replaceAll('ClassName', className)
         .replaceAll('filename', fileNameBase);
     await file.create();
