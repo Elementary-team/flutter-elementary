@@ -54,6 +54,14 @@ void main() {
     testModel.handleError(error2);
     expect(_fakeHandlerHub, same(error2));
   });
+
+  test('Init should returns normally', () {
+    expect(() => testModel.init(), returnsNormally);
+  });
+
+  test('Dispose should returns normally', () {
+    expect(() => testModel.dispose(), returnsNormally);
+  });
 }
 
 class _TestModel extends ElementaryModel {

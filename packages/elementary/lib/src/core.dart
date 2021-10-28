@@ -46,6 +46,7 @@ abstract class WidgetModel<W extends ElementaryWidget,
   final M _model;
 
   @protected
+  @visibleForTesting
   M get model => _model;
 
   @protected
@@ -53,6 +54,7 @@ abstract class WidgetModel<W extends ElementaryWidget,
   W get widget => _widget!;
 
   @protected
+  @visibleForTesting
   BuildContext get context {
     assert(() {
       if (_element == null) {
@@ -101,6 +103,7 @@ abstract class WidgetModel<W extends ElementaryWidget,
   /// This method is the place for presentation handling error like a
   /// showing snackbar or something else.
   @protected
+  @visibleForTesting
   void onErrorHandle(Object error) {}
 
   /// Called when element with this Widget Model is removed from the tree
