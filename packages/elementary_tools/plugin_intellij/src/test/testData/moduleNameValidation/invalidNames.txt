@@ -1,0 +1,6 @@
+_no_way_you_can_start_with_underscore
+no_way_you_can_end_with_underscore_
+1no_way_you_can_start_with_number
+1_no_way_you_can_start_with_number_with_underscore
+MyClassName
+my___class___name

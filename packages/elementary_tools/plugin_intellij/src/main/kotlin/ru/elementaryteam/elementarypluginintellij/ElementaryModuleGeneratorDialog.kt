@@ -30,6 +30,20 @@ class ElementaryModuleGeneratorDialog(
         init()
     }
 
+    companion object {
+        // should pass: "my_class_name", "my_1st_test"
+        // should NOT pass: "MyClassName", "my___class___name", "1name"
+        // [a-z] part means that input must start with a letter
+        // (_?[a-z0-9]) part means that every next symbol (or pair) must be either "_x" or "x"
+        // so there will never be a "a___b" situation as well as "test_" one
+        fun validateModuleName(moduleName: String) : String? {
+            if (!moduleName.matches(Regex("^[a-z](_?[a-z0-9])*$"))) {
+                return "Please specify a valid file name"
+            }
+            return null
+        }
+    }
+
     override fun createCenterPanel(): JComponent {
         val dialogPanel = JPanel(GridLayout(0, 1))
         dialogPanel.grabFocus()
@@ -59,14 +73,9 @@ class ElementaryModuleGeneratorDialog(
 
     /* Checks that given filename is correct with the same regex as elementary_cli tool does */
     override fun doValidate(): ValidationInfo? {
-        // TODO write some tests
-        // should pass: "my_class_name", "my_1st_test"
-        // should NOT pass: "MyClassName", "my___class___name", "1name"
-        // [a-z] part means that input must start with a letter
-        // (_?[a-z0-9]) part means that every next symbol (or pair) must be either "_x" or "x"
-        // so there will never be a "a___b" situation as well as "test_" one
-        if (!nameTextField.text.matches(Regex("^[a-z](_?[a-z0-9])*$"))) {
-            return ValidationInfo("Please specify a valid file name", nameTextField)
+        val errorMessage = validateModuleName(nameTextField.text)
+        if (errorMessage != null) {
+            return ValidationInfo(errorMessage, nameTextField)
         }
         return null
     }
