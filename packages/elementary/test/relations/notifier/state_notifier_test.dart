@@ -13,12 +13,14 @@ void main() {
     expect(testNotifier.value, isNull);
   });
 
-  test('Value of notifier with initialValue should be equals to initialValue',
-      () {
-    testNotifier = StateNotifier<int>(initValue: 10);
+  test(
+    'Value of notifier with initialValue should be equals to initialValue',
+    () {
+      testNotifier = StateNotifier<int>(initValue: 10);
 
-    expect(testNotifier.value, 10);
-  });
+      expect(testNotifier.value, 10);
+    },
+  );
 
   test('Add listener should immediately once call this listener', () {
     var countCall = 0;

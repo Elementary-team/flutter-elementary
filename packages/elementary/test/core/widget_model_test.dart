@@ -66,38 +66,42 @@ void main() {
       expect(wm.context, same(elementary));
     });
 
-    testWidgets('Getting context after unmount should throw error',
-        (tester) async {
-      await tester.pumpWidget(widget);
-      await tester.pumpWidget(Container());
+    testWidgets(
+      'Getting context after unmount should throw error',
+      (tester) async {
+        await tester.pumpWidget(widget);
+        await tester.pumpWidget(Container());
 
-      FlutterError? error;
+        FlutterError? error;
 
-      try {
-        wm.context;
-        // ignore: avoid_catching_errors
-      } on FlutterError catch (e) {
-        error = e;
-      }
+        try {
+          wm.context;
+          // ignore: avoid_catching_errors
+        } on FlutterError catch (e) {
+          error = e;
+        }
 
-      expect(error, isNotNull);
-      expect(error!.message, 'This widget has been unmounted');
-    });
+        expect(error, isNotNull);
+        expect(error!.message, 'This widget has been unmounted');
+      },
+    );
 
-    testWidgets('Getting context before mount should throw error',
-        (tester) async {
-      FlutterError? error;
+    testWidgets(
+      'Getting context before mount should throw error',
+      (tester) async {
+        FlutterError? error;
 
-      try {
-        wm.context;
-        // ignore: avoid_catching_errors
-      } on FlutterError catch (e) {
-        error = e;
-      }
+        try {
+          wm.context;
+          // ignore: avoid_catching_errors
+        } on FlutterError catch (e) {
+          error = e;
+        }
 
-      expect(error, isNotNull);
-      expect(error!.message, 'This widget has been unmounted');
-    });
+        expect(error, isNotNull);
+        expect(error!.message, 'This widget has been unmounted');
+      },
+    );
 
     testWidgets('Getter widget should return correct widget', (tester) async {
       await tester.pumpWidget(widget);
