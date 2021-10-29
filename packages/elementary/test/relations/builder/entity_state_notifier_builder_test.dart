@@ -34,39 +34,45 @@ void main() {
     );
   });
 
-  testWidgets('When state with content should call build method',
-      (tester) async {
-    final testData = TestEntity();
-    testEntity = EntityState<TestEntity>(data: testData);
-    when(() => listenableState.value).thenReturn(testEntity);
+  testWidgets(
+    'When state with content should call build method',
+    (tester) async {
+      final testData = TestEntity();
+      testEntity = EntityState<TestEntity>(data: testData);
+      when(() => listenableState.value).thenReturn(testEntity);
 
-    await tester.pumpWidget(testingWidget);
+      await tester.pumpWidget(testingWidget);
 
-    verify(() => builder.call(any(), testData)).called(1);
-  });
+      verify(() => builder.call(any(), testData)).called(1);
+    },
+  );
 
-  testWidgets('When loading state should call loadingBuilder method',
-      (tester) async {
-    final testData = TestEntity();
-    testEntity = EntityState<TestEntity>.loading(testData);
-    when(() => listenableState.value).thenReturn(testEntity);
+  testWidgets(
+    'When loading state should call loadingBuilder method',
+    (tester) async {
+      final testData = TestEntity();
+      testEntity = EntityState<TestEntity>.loading(testData);
+      when(() => listenableState.value).thenReturn(testEntity);
 
-    await tester.pumpWidget(testingWidget);
+      await tester.pumpWidget(testingWidget);
 
-    verify(() => loaderBuilder.call(any(), testData)).called(1);
-  });
+      verify(() => loaderBuilder.call(any(), testData)).called(1);
+    },
+  );
 
-  testWidgets('When error state should call errorBuilder method',
-      (tester) async {
-    final testData = TestEntity();
-    final exception = Exception('test');
-    testEntity = EntityState<TestEntity>.error(exception, testData);
-    when(() => listenableState.value).thenReturn(testEntity);
+  testWidgets(
+    'When error state should call errorBuilder method',
+    (tester) async {
+      final testData = TestEntity();
+      final exception = Exception('test');
+      testEntity = EntityState<TestEntity>.error(exception, testData);
+      when(() => listenableState.value).thenReturn(testEntity);
 
-    await tester.pumpWidget(testingWidget);
+      await tester.pumpWidget(testingWidget);
 
-    verify(() => errorBuilder.call(any(), exception, testData)).called(1);
-  });
+      verify(() => errorBuilder.call(any(), exception, testData)).called(1);
+    },
+  );
 }
 
 class ListenableEntityStateMock<T> extends Mock

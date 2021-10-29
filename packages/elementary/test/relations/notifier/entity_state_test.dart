@@ -56,8 +56,10 @@ void main() {
   });
 
   test('Loading and Error in same time should throw assert exception', () {
-    expect(() => EntityState<int>(hasError: true, isLoading: true),
-        throwsAssertionError);
+    expect(
+      () => EntityState<int>(hasError: true, isLoading: true),
+      throwsAssertionError,
+    );
   });
 
   test('Loading constructor should create correct entity', () {

@@ -55,37 +55,43 @@ void main() {
     expect(factoryCalledCount, 1);
   });
 
-  testWidgets('For creating wm should be passed correct context',
-      (tester) async {
-    await tester.pumpWidget(widget);
+  testWidgets(
+    'For creating wm should be passed correct context',
+    (tester) async {
+      await tester.pumpWidget(widget);
 
-    final elementary = tester.element<Elementary>(
-      find.byElementType(Elementary),
-    );
+      final elementary = tester.element<Elementary>(
+        find.byElementType(Elementary),
+      );
 
-    expect(factoryCalledContext, same(elementary));
-  });
+      expect(factoryCalledContext, same(elementary));
+    },
+  );
 
-  testWidgets('For creating wm should be passed correct context',
-      (tester) async {
-    await tester.pumpWidget(widget);
+  testWidgets(
+    'For creating wm should be passed correct context',
+    (tester) async {
+      await tester.pumpWidget(widget);
 
-    final elementary = tester.element<Elementary>(
-      find.byElementType(Elementary),
-    );
+      final elementary = tester.element<Elementary>(
+        find.byElementType(Elementary),
+      );
 
-    expect(factoryCalledContext, same(elementary));
-  });
+      expect(factoryCalledContext, same(elementary));
+    },
+  );
 
-  testWidgets('First build should call correct widget model methods',
-      (tester) async {
-    await tester.pumpWidget(widget);
+  testWidgets(
+    'First build should call correct widget model methods',
+    (tester) async {
+      await tester.pumpWidget(widget);
 
-    verifyInOrder([
-      () => wm!.initWidgetModel(),
-      () => wm!.didChangeDependencies(),
-    ]);
-  });
+      verifyInOrder([
+        () => wm!.initWidgetModel(),
+        () => wm!.didChangeDependencies(),
+      ]);
+    },
+  );
 
   testWidgets('Element should use correct wm for building', (tester) async {
     await tester.pumpWidget(widget);
@@ -111,52 +117,55 @@ void main() {
   });
 
   testWidgets(
-      'Change dependencies should call didChangeDependencies widget model',
-      (tester) async {
-    final notifier = TestNotifier();
+    'Change dependencies should call didChangeDependencies widget model',
+    (tester) async {
+      final notifier = TestNotifier();
 
-    await tester.pumpWidget(
-      TestNotifierWidget(
-        test: notifier,
-        child: widget,
-      ),
-    );
+      await tester.pumpWidget(
+        TestNotifierWidget(
+          test: notifier,
+          child: widget,
+        ),
+      );
 
-    final elementary = tester.element<Elementary>(
-      find.byElementType(Elementary),
-    );
+      final elementary = tester.element<Elementary>(
+        find.byElementType(Elementary),
+      );
 
-    verify(() => wm!.didChangeDependencies()).called(1);
+      verify(() => wm!.didChangeDependencies()).called(1);
 
-    TestNotifierWidget.of(elementary);
+      TestNotifierWidget.of(elementary);
 
-    notifier.up();
+      notifier.up();
 
-    await tester.pump();
+      await tester.pump();
 
-    verify(() => wm!.didChangeDependencies()).called(1);
-  });
+      verify(() => wm!.didChangeDependencies()).called(1);
+    },
+  );
 
-  testWidgets('Element should have correct link with widget after update',
-      (tester) async {
-    await tester.pumpWidget(widget);
-    when(()=> wm!.widget).thenReturn(widget);
+  testWidgets(
+    'Element should have correct link with widget after update',
+    (tester) async {
+      await tester.pumpWidget(widget);
+      when(() => wm!.widget).thenReturn(widget);
 
-    final elementary = tester.element<Elementary>(
-      find.byElementType(Elementary),
-    );
+      final elementary = tester.element<Elementary>(
+        find.byElementType(Elementary),
+      );
 
-    final newWidget = ElementaryWidgetTest(
-      buildCallback: (_) {},
-      wmFactory: (_) {
-        return ElementaryWidgetModelMock();
-      },
-    );
+      final newWidget = ElementaryWidgetTest(
+        buildCallback: (_) {},
+        wmFactory: (_) {
+          return ElementaryWidgetModelMock();
+        },
+      );
 
-    await tester.pumpWidget(newWidget);
+      await tester.pumpWidget(newWidget);
 
-    expect(elementary.widget, same(newWidget));
-  });
+      expect(elementary.widget, same(newWidget));
+    },
+  );
 }
 
 class ElementaryWidgetTest
@@ -188,13 +197,13 @@ class ElementaryModelMock extends Mock implements ElementaryModel {}
 abstract class DiagnosticableMock extends Mock with Diagnosticable {}
 
 class TestNotifierWidget extends InheritedNotifier {
+  final TestNotifier test;
+
   const TestNotifierWidget({
     Key? key,
     required this.test,
     required Widget child,
   }) : super(key: key, child: child, notifier: test);
-
-  final TestNotifier test;
 
   static TestNotifier of(BuildContext context) {
     final widget =

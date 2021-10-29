@@ -16,8 +16,10 @@ abstract class IWidgetModel {}
 /// to instantiate WidgetModel. For testing, you can replace
 /// this function for returning mock.
 abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
+  /// Factory-function for creating WidgetModel
   final WidgetModelFactory wmFactory;
 
+  /// Create an instance of ElementaryWidget.
   const ElementaryWidget(
     this.wmFactory, {
     Key? key,
@@ -45,14 +47,18 @@ abstract class WidgetModel<W extends ElementaryWidget,
     M extends ElementaryModel> with Diagnosticable implements IWidgetModel {
   final M _model;
 
+  /// [ElementaryModel] for this WidgetModel.
+  /// Only one of business-logic dependencies, that WidgetModel needs.
   @protected
   @visibleForTesting
   M get model => _model;
 
+  /// Widget that use WidgetModel for build.
   @protected
   @visibleForTesting
   W get widget => _widget!;
 
+  /// A handle to the location of a WidgetModel in the tree.
   @protected
   @visibleForTesting
   BuildContext get context {
@@ -68,6 +74,7 @@ abstract class WidgetModel<W extends ElementaryWidget,
   Elementary? _element;
   W? _widget;
 
+  /// Create an instance of WidgetModel.
   WidgetModel(this._model);
 
   /// Called at first build for initialization of this Widget Model.
@@ -115,12 +122,16 @@ abstract class WidgetModel<W extends ElementaryWidget,
     _model.dispose();
   }
 
+  /// Method for setup WidgetModel for testing.
+  /// This method can be used to set widget.
   @visibleForTesting
   // ignore: use_setters_to_change_properties
   void setupTestWidget(W? testWidget) {
     _widget = testWidget;
   }
 
+  /// Method for setup WidgetModel for testing.
+  /// This method can be used to set element (BuildContext).
   @visibleForTesting
   // ignore: use_setters_to_change_properties
   void setupTestElement(Elementary? testElement) {
@@ -138,6 +149,7 @@ class Elementary extends ComponentElement {
   // private _firstBuild hack
   bool _isInitialized = false;
 
+  /// Create an instance of Elementary.
   Elementary(ElementaryWidget widget) : super(widget);
 
   @override
@@ -202,6 +214,7 @@ abstract class ElementaryModel {
   final ErrorHandler? _errorHandler;
   void Function(Object)? _wmHandler;
 
+  /// Create an instance of ElementaryModel.
   ElementaryModel({ErrorHandler? errorHandler}) : _errorHandler = errorHandler;
 
   /// Should be used for report error Error Handler if it was set and notify
@@ -222,6 +235,8 @@ abstract class ElementaryModel {
   /// Called when Widget Model disposing.
   void dispose() {}
 
+  /// Method for setup ElementaryModel for testing.
+  /// This method can be used to WidgetModels error handler.
   @visibleForTesting
   // ignore: use_setters_to_change_properties
   void setupWmHandler(Function(Object)? function) {
