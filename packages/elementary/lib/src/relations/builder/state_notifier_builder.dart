@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 class StateNotifierBuilder<T> extends StatefulWidget {
   /// State that used to detect change and rebuild.
   final ListenableState<T> listenableState;
+
   /// Function that used to describe the part of the user interface
   /// represented by this widget.
   final Widget Function(BuildContext context, T? value) builder;
@@ -72,7 +73,6 @@ class EntityStateNotifierBuilder<T> extends StatelessWidget {
 
   /// Builder that used to describe user interface when get error.
   final ErrorWidgetBuilder<T>? errorBuilder;
-
 
   /// Create an instance of EntityStateNotifierBuilder.
   const EntityStateNotifierBuilder({

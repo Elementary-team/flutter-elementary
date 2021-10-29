@@ -30,7 +30,8 @@ void main() {
     expect(themeFound, same(themeFound2));
   });
 
-  testWidgets('getTextTheme should find same TextTheme as Theme.of', (tester) async {
+  testWidgets('getTextTheme should find same TextTheme as Theme.of',
+      (tester) async {
     await tester.pumpWidget(testWidget);
 
     final context = tester.element(find.byKey(testKey));
