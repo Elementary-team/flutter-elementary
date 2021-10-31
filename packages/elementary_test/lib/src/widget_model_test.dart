@@ -43,12 +43,22 @@ class WMContext extends Mock implements BuildContext {}
 
 /// Interface for control wm stage in test.
 abstract class WMTester<WM extends WidgetModel, W extends ElementaryWidget> {
+  /// Initialize widget model to work.
   void init({W? initWidget});
 
+  /// Change the widget used to configure this element.
   void update(W newWidget);
 
+  /// Called when a dependency of this element changes.
   void didChangeDependencies();
 
+  /// Transition from the "inactive" to the "active" lifecycle state.
+  void activate();
+
+  /// Transition from the "active" to the "inactive" lifecycle state.
+  void deactivate();
+
+  /// Transition from the "inactive" to the "defunct" lifecycle state.
   void unmount();
 }
 
@@ -80,6 +90,16 @@ class _WMTestableElement<WM extends WidgetModel, W extends ElementaryWidget>
   @override
   void didChangeDependencies() {
     _wm.didChangeDependencies();
+  }
+
+  @override
+  void activate() {
+    _wm.activate();
+  }
+
+  @override
+  void deactivate() {
+    _wm.deactivate();
   }
 
   @override
