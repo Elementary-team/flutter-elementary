@@ -1,5 +1,9 @@
 # Changelog
 
+## next
+
+* Mixin for keep alive widget model.
+
 ## 0.1.1
 
 * Add theme wrapper.
