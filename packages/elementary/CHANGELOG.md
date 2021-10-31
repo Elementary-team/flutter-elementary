@@ -1,6 +1,6 @@
 # Changelog
 
-## next
+## 0.1.2
 
 * Mixin for keep alive widget model.
 
