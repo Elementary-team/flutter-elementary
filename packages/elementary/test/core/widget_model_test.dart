@@ -28,6 +28,14 @@ void main() {
       verify(() => model.dispose()).called(1);
     });
 
+    test('Activate WM should not throw error', () {
+      expect(() => wm.activate(), returnsNormally);
+    });
+
+    test('Deactivate WM should not throw error', () {
+      expect(() => wm.deactivate(), returnsNormally);
+    });
+
     test('WM should use correct model', () {
       final model1 = ElementaryModelMock();
       final wm1 = ElementaryWidgetModelTest(model1);

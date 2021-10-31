@@ -105,6 +105,20 @@ abstract class WidgetModel<W extends ElementaryWidget,
   @visibleForTesting
   void didChangeDependencies() {}
 
+  /// Called every time before build. This useful for simple lightweight actions
+  /// like notifying.
+  ///
+  /// !!!!!!!!!!!!!!!!!!
+  /// Do not use this method for async or resource-intensive operation.
+  /// !!!!!!!!!!!!!!!!!!
+  ///
+  /// Example of correct using is
+  /// AutomaticKeepAliveWidgetModelMixin.preBuildHook method.
+  @protected
+  @mustCallSuper
+  @visibleForTesting
+  void preBuildHook() {}
+
   /// Called whenever the Model use method handleError.
   ///
   /// This method is the place for presentation handling error like a
@@ -112,6 +126,38 @@ abstract class WidgetModel<W extends ElementaryWidget,
   @protected
   @visibleForTesting
   void onErrorHandle(Object error) {}
+
+  /// Called when this WidgetModel and Elementary are removed from the tree.
+  ///
+  /// Implementations of this method should end with a call to the inherited
+  /// method, as in `super.deactivate()`.
+  @protected
+  @mustCallSuper
+  @visibleForTesting
+  void deactivate() {}
+
+  /// Called when this WidgetModel and Elementary are reinserted into the tree
+  /// after having been removed via [deactivate].
+  ///
+  /// In most cases, after a WidgetModel has been deactivated, it is not
+  /// reinserted into the tree, and its [dispose] method will be called to
+  /// signal that it is ready to be garbage collected.
+  ///
+  /// In some cases, however, after a WidgetModel has been deactivated, it will
+  /// reinserted it into another part of the tree (e.g., if the
+  /// subtree containing this Elementary of this WidgetModel is grafted from
+  /// one location in the tree to another due to the use of a [GlobalKey]).
+  ///
+  /// This method does not called the first time a WidgetModel object
+  /// is inserted into the tree. Instead, calls [initWidgetModel] in
+  /// that situation.
+  ///
+  /// Implementations of this method should start with a call to the inherited
+  /// method, as in `super.activate()`.
+  @protected
+  @mustCallSuper
+  @visibleForTesting
+  void activate() {}
 
   /// Called when element with this Widget Model is removed from the tree
   /// permanently.
@@ -153,7 +199,26 @@ class Elementary extends ComponentElement {
   Elementary(ElementaryWidget widget) : super(widget);
 
   @override
-  Widget build() => widget.build(_wm);
+  Widget build() {
+    final Object? debugCheckForReturnedFuture = _wm.preBuildHook() as dynamic;
+    assert(() {
+      if (debugCheckForReturnedFuture is Future) {
+        throw FlutterError.fromParts(
+          <DiagnosticsNode>[
+            ErrorSummary(
+              '${_wm.runtimeType}.preBuildHook() returned a Future.',
+            ),
+            ErrorDescription(
+              'preBuildHook() must be void method without an `async` keyword.',
+            ),
+          ],
+        );
+      }
+      return true;
+    }());
+
+    return widget.build(_wm);
+  }
 
   @override
   void update(ElementaryWidget newWidget) {
@@ -170,6 +235,20 @@ class Elementary extends ComponentElement {
     super.didChangeDependencies();
 
     _wm.didChangeDependencies();
+  }
+
+  @override
+  void activate() {
+    super.activate();
+    _wm.activate();
+
+    markNeedsBuild();
+  }
+
+  @override
+  void deactivate() {
+    _wm.deactivate();
+    super.deactivate();
   }
 
   @override
