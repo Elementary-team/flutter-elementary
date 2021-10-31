@@ -109,12 +109,84 @@ void main() {
     expect(elementary.widget, same(widget));
   });
 
-  testWidgets('Unmount should call dispose from widget model', (tester) async {
-    await tester.pumpWidget(widget);
-    await tester.pumpWidget(Container());
+  testWidgets(
+    'Unmount should call deactivate from widget model',
+    (tester) async {
+      await tester.pumpWidget(widget);
+      await tester.pumpWidget(Container());
 
-    verify(() => wm!.dispose());
-  });
+      verify(() => wm!.deactivate()).called(1);
+    },
+  );
+
+  testWidgets(
+    'Unmount should call dispose from widget model',
+    (tester) async {
+      await tester.pumpWidget(widget);
+      await tester.pumpWidget(Container());
+
+      verify(() => wm!.dispose()).called(1);
+    },
+  );
+
+  testWidgets(
+    'Moving to another part of tree should call activate from widget model',
+    (tester) async {
+      void buildCallback(Object object) {
+        buildCallbackObject = object;
+      }
+
+      ElementaryWidgetModelMock factory(BuildContext ctx) {
+        factoryCalledContext = ctx;
+        factoryCalledCount++;
+        wm = ElementaryWidgetModelMock();
+        return wm!;
+      }
+
+      widget = ElementaryWidgetTest(
+        key: GlobalKey(debugLabel: 'test'),
+        wmFactory: factory,
+        buildCallback: buildCallback,
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Column(
+            children: [
+              Row(
+                key: const ValueKey<String>('firstRow'),
+                children: [
+                  widget,
+                ],
+              ),
+              Row(
+                key: const ValueKey<String>('secondRow'),
+              ),
+            ],
+          ),
+        ),
+      );
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Column(
+            children: [
+              Row(
+                key: const ValueKey<String>('firstRow'),
+              ),
+              Row(
+                key: const ValueKey<String>('secondRow'),
+                children: [
+                  widget,
+                ],
+              ),
+            ],
+          ),
+        ),
+      );
+
+      verify(() => wm!.activate()).called(1);
+    },
+  );
 
   testWidgets(
     'Change dependencies should call didChangeDependencies widget model',
@@ -166,6 +238,27 @@ void main() {
       expect(elementary.widget, same(newWidget));
     },
   );
+
+  testWidgets(
+    'Should throw flutter error when async preBuildHook',
+    (tester) async {
+      ElementaryWidgetModelMock factory(BuildContext ctx) {
+        factoryCalledContext = ctx;
+        factoryCalledCount++;
+        wm = ElementaryWidgetModelAsyncPreBuild();
+        return wm!;
+      }
+
+      widget = ElementaryWidgetTest(
+        wmFactory: factory,
+        buildCallback: (_) {},
+      );
+
+      await tester.pumpWidget(widget);
+
+      expect(tester.takeException(), isInstanceOf<FlutterError>());
+    },
+  );
 }
 
 class ElementaryWidgetTest
@@ -186,6 +279,13 @@ class ElementaryWidgetTest
 }
 
 class IElementaryWidgetModelMock extends IWidgetModel {}
+
+class ElementaryWidgetModelAsyncPreBuild extends ElementaryWidgetModelMock {
+  @override
+  Future<void> preBuildHook() async {
+    return Future<void>.value();
+  }
+}
 
 class ElementaryWidgetModelMock extends DiagnosticableMock
     implements

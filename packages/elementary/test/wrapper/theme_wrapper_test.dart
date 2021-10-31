@@ -19,26 +19,34 @@ void main() {
     themeWrapper = ThemeWrapper();
   });
 
-  testWidgets('getTheme should find same Theme as Theme.of', (tester) async {
-    await tester.pumpWidget(testWidget);
+  testWidgets(
+    'getTheme should find same Theme as Theme.of',
+    (tester) async {
+      await tester.pumpWidget(testWidget);
 
-    final context = tester.element(find.byKey(testKey));
+      final context = tester.element(find.byKey(testKey));
 
-    final themeFound = themeWrapper.getTheme(context);
-    final themeFound2 = Theme.of(context);
+      final themeFound = themeWrapper.getTheme(context);
+      final themeFound2 = Theme.of(context);
 
-    expect(themeFound, same(themeFound2));
-  });
+      expect(themeFound, same(themeFound2));
+    },
+  );
 
-  testWidgets('getTextTheme should find same TextTheme as Theme.of',
-      (tester) async {
-    await tester.pumpWidget(testWidget);
+  testWidgets(
+    'getTextTheme should find same TextTheme as Theme.of',
+    (tester) async {
+      await tester.pumpWidget(testWidget);
 
-    final context = tester.element(find.byKey(testKey));
+      final context = tester.element(find.byKey(testKey));
 
-    final themeFound = themeWrapper.getTextTheme(context);
-    final themeFound2 = Theme.of(context).textTheme;
+      final themeFound = themeWrapper.getTextTheme(context);
+      final themeFound2 = Theme.of(context).textTheme;
 
-    expect(themeFound, same(themeFound2));
-  });
+      expect(
+        themeFound,
+        same(themeFound2),
+      );
+    },
+  );
 }
