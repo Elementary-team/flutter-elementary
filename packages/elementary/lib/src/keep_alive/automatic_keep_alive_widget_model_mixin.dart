@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 /// A mixin with convenience methods for clients of [AutomaticKeepAlive].
 /// Used with [WidgetModel] subclasses.
-mixin AutomaticKeepAliveWidgetModelMixin on WidgetModel {
+mixin AutomaticKeepAliveWidgetModelMixin<W extends ElementaryWidget,
+    M extends ElementaryModel> on WidgetModel<W, M> {
   KeepAliveHandle? _keepAliveHandle;
   bool _wantKeepAlive = true;
 

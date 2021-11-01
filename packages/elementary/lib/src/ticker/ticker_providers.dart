@@ -6,8 +6,8 @@ import 'package:flutter/widgets.dart';
 /// Single ticker provider for [WidgetModel]
 /// based on [SingleTickerProviderStateMixin]
 /// https://api.flutter.dev/flutter/widgets/SingleTickerProviderStateMixin-mixin.html
-mixin SingleTickerProviderWidgetModelMixin on WidgetModel
-    implements TickerProvider {
+mixin SingleTickerProviderWidgetModelMixin<W extends ElementaryWidget,
+    M extends ElementaryModel> on WidgetModel<W, M> implements TickerProvider {
   Ticker? _ticker;
 
   @override
@@ -65,7 +65,8 @@ mixin SingleTickerProviderWidgetModelMixin on WidgetModel
 /// Ticker provider for [WidgetModel]
 /// based on [TickerProviderStateMixin]
 /// https://api.flutter.dev/flutter/widgets/TickerProviderStateMixin-mixin.html
-mixin TickerProviderWidgetModelMixin on WidgetModel implements TickerProvider {
+mixin TickerProviderWidgetModelMixin<W extends ElementaryWidget,
+    M extends ElementaryModel> on WidgetModel<W, M> implements TickerProvider {
   final _tickers = <Ticker>{};
 
   @override
