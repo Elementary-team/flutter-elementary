@@ -13,13 +13,14 @@ This is a home to a family of Elementary library packages.
 
 | Package       | Version       |
 | --------------|:-------------:|
-| elementary      | [![Pub Version](https://img.shields.io/pub/v/elementary?logo=dart&logoColor=white)](https://pub.dev/packages/elementary) |
-| elementary_test      | [![Pub Version](https://img.shields.io/pub/v/elementary_test?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_test)      |
+| [elementary](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary) | [![Pub Version](https://img.shields.io/pub/v/elementary?logo=dart&logoColor=white)](https://pub.dev/packages/elementary) |
+| [elementary_test](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_test)      | [![Pub Version](https://img.shields.io/pub/v/elementary_test?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_test)      |
 
 ## Elementary overview
 
-This is architecture library with the main goal to split code between different responsibility layers, make code clear, simple, readable and easy testable.
-This approach standing on MVVM architecture pattern and make with the respect to Clean Architecture.
+The primary goal of this library is to split code into different responsibility layers, thus making it clearer,
+simpler as well as more readable and testable. This approach is based on an architectural pattern called MVVM and
+the fundamentals of Clean Architecture.
 
 ## Sponsor
 

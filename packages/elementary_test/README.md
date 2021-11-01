@@ -9,22 +9,24 @@
 
 ## Description
 
-A testing library which makes it easy to test Elementary used apps. Useful with the Elementary architecture package.
+A handy testing library for the apps built with Elementary.
+This one’s helpful when used with the Elementary architecture package.
 
 ## Overview
 
-This library contains mechanisms for convenient testing of the WidgetModel of the Elementary package.
+This library offers some handy tools to test WidgetModel from the Elementary package.
 
 ### testWidgetModel method
 
-The main testing mechanism is the function testWidgetModel that starts the test execution.
-The required parameters are the name of the test, the function of preparing WidgetModel for testing,
-and the function of the test body. 
+The main testing tool is the testWidgetModel function that executes a test.
+The parameters it requires are the name of a test, the function preparing WidgetModel for testing,
+and the function of the test itself. 
 
 ### testFunction
 
-This is test body function. This function uses the WidgetModel passed to it to describe the behavior and check 
-the result, tester that allows you to regulate the stages of the WidgetModel life cycle, and the BuildContext mock.
+This is a function of a test itself. When passed the WidgetModel, this function describes its behavior and verifies
+the result. The function also uses a tester to manipulate the phases of a WidgetModel life cycle,
+and the BuildContext mock.
 
 ## How to use
 ```dart

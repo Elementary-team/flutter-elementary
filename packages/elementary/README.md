@@ -9,31 +9,30 @@
 
 ## Description
 
-This is architecture library with the main goal to split code between different responsibility layers, make code clear,
-simple, readable and easy testable.
-This approach standing on MVVM architecture pattern and make with the respect to Clean Architecture.
+The primary goal of this library is to split code into different responsibility layers, thus making it clearer, simpler
+as well as more readable and testable. This approach is based on an architectural pattern called MVVM and
+the fundamentals of Clean Architecture.
 
 ## Overview
 
-This library follow classic mvvm pattern splitting layers. There are Widget as View layer,
-WidgetModel as ViewModel layer and Model as Model layer.
+This library applies a classic principle of an MVVM pattern, which is layering. In it, we have Widget acting as a View
+layer, WidgetModel as a ViewModel layer, and Model as a Model layer.
 
 ### WidgetModel
 
-The key part in this chain of responsibility is the WidgetModel layer, which connects all other layers and represents 
-state to Widget. Moreover, it is the source of truth for constructing of the display. By the time build is called
-on the widget, the WidgetModel should provide it all data needs to build.
-The class representing this layer in the library is named by the same name WidgetModel.
-You can represent a state for display as a set of different properties.
-In order to clearly highlight the properties used for this purpose, you should use the IWidgetModel interface,
-whose subclasses determine what exactly will be provided.
-In order to simplify the connection of the display with these properties, you can use StateNotifier.
-A change in its state leads to notification of subscribers.
+The key part in this chain of responsibility is the WidgetModel layer that connects the rest of the layers together and
+describes state to Widget via a set of parameters. Moreover, it is the only source of truth when you build an image.
+By the time build is called on the widget, the WidgetModel should provide it with all the data needed for a build.
+The class representing this layer in the library has the same name – WidgetModel. You can describe a state
+to be rendered as a set of various properties. In order to determine the properties required, you should specify them
+in the IWidgetModel interface, the subclasses of which, in turn, determine what properties are used in this
+or that situation. In order to establish a quicker response to any changes in properties of a state object,
+you can use StateNotifier. Subscribers are then notified whenever a change occurs in a state.
 
-Through all this, the WidgetModel becomes place only for the description of presentation logic:
-what interaction happened and what state of properties as a result of this interaction.
+Due to this, the WidgetModel is the only place where presentation logic is described: what interaction took place
+and what occurred as a result.
 
-In the case with a data loading from the network, for example, the WidgetModel looks like this:
+For example, when data is loaded from the network, the WidgetModel looks like this:
 
 ```dart
 /// Widget Model for [CountryListScreen]
@@ -72,21 +71,21 @@ abstract class ICountryListWidgetModel extends IWidgetModel {
 }
 ```
 
-_The only place where we have access and need to interact with the BuildContext is the WidgetModel._
+_The only place where we have access to BuildContext and need to interact with it is WidgetModel._
 
 ### Model
 
-The only WidgetModel dependency related to business logic is Model.
-The class representing this layer in the library naming ElementaryModel.
-It's described free. This is done, among other things, in order to make it possible 
-to easily combine _elementary_ with others approach, which are aimed only to business logic.
+The only WidgetModel dependency related to business logic is Model. The class representing this layer in the library
+is called ElementaryModel. There is no declared way to define this one, meaning you can choose whichever way works best
+for your project. One of the reasons behind that is to provide an easy way to combine _elementary_ with other approaches
+related specifically to business logic.
 
 ### Widget
 
-Since any logic has already been described in the WidgetModel and Model, the Widget only needs to declare how the 
-display should look like in this time based on the WidgetModel properties.
-The class representing Widget layer in the library has named ElementaryWidget.
-The display is declared in the build method, the only argument of which is the IWidgetModel interface.
+Since all logic is already described in the WidgetModel and Model, Widget only needs to declare what a certain part of
+the interface should look like at a particular moment based on the WidgetModel properties. The class representing
+the Widget layer in the library is called ElementaryWidget. The build method called to display a widget only
+has one argument – the IWidgetModel interface.
 
 It looks like this:
 
@@ -112,7 +111,7 @@ Widget build(ICountryListWidgetModel wm) {
 
 ## How to test
 
-Since the layers turned out to be well separated from each other, they are easy to test with different test options.
+Since the layers are well-separated from each other, they are easy to test with a number of options available.
 
 * Use unit tests for Model layer;
 * Use widget and golden tests for Widget layer;
