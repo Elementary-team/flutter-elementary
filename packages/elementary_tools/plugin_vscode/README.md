@@ -1,5 +1,8 @@
 # elementary README
 
+## Dependencies installation
+`npm install git+https://github.com/Dart-Code/Dart-Code.git`
+
 <!-- TODO Rewrite -->
 This is the README for your extension "elementary". After writing up a brief description, we recommend including the following sections.
 
