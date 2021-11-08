@@ -1,0 +1,68 @@
+{
+	"name": "elementary",
+	"displayName": "elementary",
+	"description": "plugin for elementary",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.61.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"extensionDependencies": [
+		"Dart-Code.flutter"
+	],
+	"activationEvents": [
+		"onCommand:elementary.generate.module"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "elementary.generate.module",
+				"title": "Generate Elementary Module"
+			}
+		],
+		"menus": {
+			"commandPalette": [
+				{
+					"command": "elementary.generate.module",
+					"when": "1 === 2"
+				}
+			],
+			"explorer/context": [
+				{
+					"when": "dart-code:anyFlutterProjectLoaded && explorerResourceIsFolder",
+					"command": "elementary.generate.module",
+					"altOld": "markdown.showPreviewToSide",
+					"groupOld": "navigation"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.4",
+		"@types/mocha": "^9.0.0",
+		"@types/node": "^16.11.6",
+		"@types/vscode": "^1.61.0",
+		"@typescript-eslint/eslint-plugin": "^4.31.1",
+		"@typescript-eslint/parser": "^4.31.1",
+		"@vscode/test-electron": "^1.6.2",
+		"eslint": "^7.32.0",
+		"glob": "^7.1.7",
+		"mocha": "^9.1.1",
+		"typescript": "^4.4.3"
+	},
+	"dependencies": {
+		"dart-code": "github:Dart-Code/Dart-Code",
+		"help": "^3.0.2"
+	}
+}
