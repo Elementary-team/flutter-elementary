@@ -6,8 +6,12 @@ import 'package:flutter_test/flutter_test.dart';
 /// Тесты для [ClassNameWidgetModel]
 void main() {
 
+  late ClassNameModelMock model;
+
   ClassNameWidgetModel setUpWm() {
-    return ClassNameWidgetModel();
+    model = ClassNameModelMock();
+    // TODO: create WM instance
+    // return ClassNameWidgetModel(model);
   }
 
   testWidgetModel<ClassNameWidgetModel, ClassNameWidget>(
@@ -26,3 +30,6 @@ void main() {
       },
     );
 }
+
+class ClassNameModelMock extends Mock
+    implements ClassNameModel {}
