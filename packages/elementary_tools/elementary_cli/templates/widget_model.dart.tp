@@ -10,6 +10,8 @@ ClassNameWidgetModel defaultClassNameWidgetModelFactory(BuildContext context) {
   return ClassNameWidgetModel();
 }
 
+// TODO: cover with documentation
+/// Default widget model for ClassNameWidget
 class ClassNameWidgetModel extends WidgetModel<ClassNameWidget, ClassNameModel>
     implements IClassNameWidgetModel {
 
