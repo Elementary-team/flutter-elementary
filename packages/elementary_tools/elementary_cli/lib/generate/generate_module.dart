@@ -19,9 +19,9 @@ class GenerateModuleCommand extends TemplateGeneratorCommand {
   /// Maps template names to target suffixes
   @override
   Map<String, String> get templateToFilenameMap => {
-    'model.dart.tp': '_model.dart',
-    'widget.dart.tp': '_widget.dart',
-    'widget_model.dart.tp': '_wm.dart',
+    'model.dart.tp': 'filename_model.dart',
+    'widget.dart.tp': 'filename_widget.dart',
+    'widget_model.dart.tp': 'filename_wm.dart',
   };
 
   @override
