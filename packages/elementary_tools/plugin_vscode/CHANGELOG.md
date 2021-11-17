@@ -1,10 +1,18 @@
-# Change Log
+# Elementary Extension Changelog
 
-## [0.0.1]()
+## [Unreleased]
+### Added
+- Analyzer support
+- Live templates
+- More generating templates
 
-- Added elementary module generation
-- Added elementary wm test generation
-
-## [Unreleased]()
-
+## [0.0.1]
+### Added
 - Initial structure
+- `elementary module` generation UI
+- `elementary wm test` generation UI
+
+
+<!--TODO make real links -->
+[0.0.1]: https:link-to-unreleased-changelog-compare-git-tags
+[Unreleased]: https:link-to-unreleased-changelog-compare-git-tags
