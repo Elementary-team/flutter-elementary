@@ -11,15 +11,15 @@ export async function generateModuleCommand(...args: any[]) {
 
   // Step 2: getting package name
   let nameInputOptions: vscode.InputBoxOptions = {
-  	title: "New Elementary Module Name",
-  	prompt: "Please, enter module name:  (my_cool_module) ",
-  	placeHolder: "my_cool_module",
-  	value: "my_cool_module",
-  	validateInput: (value: string) => {
+    title: "New Elementary Module Name",
+    prompt: "Please, enter module name:  (my_cool_module) ",
+    placeHolder: "my_cool_module",
+    value: "my_cool_module",
+    validateInput: (value: string) => {
       if (!utils.isModuleName(value)) {
         return "Please, provide a valid name";
       }
-  	},
+    },
   };
 
   let nameValue = await vscode.window.showInputBox(nameInputOptions);
@@ -27,10 +27,10 @@ export async function generateModuleCommand(...args: any[]) {
 
   // Step 3: getting subdirectory option
   let quickPickOptions: vscode.QuickPickOptions = {
-  	title: "Create new subdirectory for module?",
-  	canPickMany: false,
-  	matchOnDescription: true,
-  	placeHolder: 'yes',
+    title: "Create new subdirectory for module?",
+    canPickMany: false,
+    matchOnDescription: true,
+    placeHolder: 'yes',
   };
 
   let sholdCreateSubdirString = await vscode.window.showQuickPick(['yes', 'no'], quickPickOptions);
@@ -38,9 +38,15 @@ export async function generateModuleCommand(...args: any[]) {
 
   let shouldCreateSubdir = sholdCreateSubdirString === 'yes';
 
+  // Step 3: generate target test file
   let subdirOption = shouldCreateSubdir ? '--create-subdirectory' : '--no-create-subdirectory';
   let cliOptions = ['--path', dir!.fsPath, '--name', nameValue, subdirOption];
 
-  await utils.runGenerateCommand('module', 'Genarating elemantary module', ...cliOptions);
+  let targetFilesRaw = await utils.runGenerateCommand('module', 'Generating elemantary module', ...cliOptions);
+
+  if (targetFilesRaw === null) { return; }
+
+  // Step 4: show target file in editor
+  utils.openGeneratedFilesInEditor(targetFilesRaw);
 }
 

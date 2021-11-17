@@ -4,7 +4,7 @@ import * as fs from 'fs';
 // should be run with `dart pub` of `flutter pub` executable as target
 const elementaryPubCommandArgsStart = ['global', 'run', 'elementary_cli:elementary_tools'];
 
-export async function runGenerateCommand(commandName: string, description: string, ...args: string[]) {
+export async function runGenerateCommand(commandName: string, description: string, ...args: string[]) : Promise<string | null> {
     const generateCommandArgsStart = elementaryPubCommandArgsStart.concat(['generate']);
 
     let dartCodeExt = vscode.extensions.getExtension('Dart-Code.dart-code');
@@ -16,15 +16,29 @@ export async function runGenerateCommand(commandName: string, description: strin
     let fullDescription = 'Elementary Tools: ' + description;
     let commandArgs = generateCommandArgsStart.concat([commandName]).concat(args);
 
-    let runResult;
+    let runResult = null;
     try {
         runResult = await pubGlobal.runCommandWithProgress('elementary_cli', fullDescription, commandArgs);
+        
+        // refreshing files in explorer, so it will show new files faster
+        vscode.commands.executeCommand('workbench.files.action.refreshFilesExplorer');
+
         vscode.window.showInformationMessage('Generated files:' + runResult);
     } catch (e) {
         console.log(e);
         vscode.window.showErrorMessage('Error: ' + e);
     }
+    return runResult.toString();
 };
+
+// expecting one-line-one-filename format
+export function openGeneratedFilesInEditor(filesString: string) {
+  filesString.split(/\r?\n/).forEach((file, index) => {
+    let targetUri = vscode.Uri.parse('file://' + file.trim());
+    vscode.workspace.openTextDocument(targetUri)
+      .then((moduleDoc) => vscode.window.showTextDocument(moduleDoc,  vscode.ViewColumn.Active));
+  });
+}
 
 // wheter string is 'right_module_name'
 export function isModuleName(subject: string): boolean {
@@ -57,7 +71,7 @@ export function getFileArgument(...argsRaw: any[]): vscode.Uri | null {
     let arg = argsRaw[0][0];
 
     if (arg instanceof vscode.Uri) {
-        return fs.statSync(arg.fsPath, undefined).isDirectory() ? arg : null;
+        return fs.statSync(arg.fsPath, undefined).isFile() ? arg : null;
     }
 
     return null;

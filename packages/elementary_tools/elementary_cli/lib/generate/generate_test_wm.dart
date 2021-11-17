@@ -89,7 +89,7 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
       basename = nameRaw;
     }
 
-    if (!targetDirectory.existsSync()) {
+    if (!targetDirectory.existsSync() && !smart) {
       throw NonExistentFolderException(targetDirectory.path);
     }
 

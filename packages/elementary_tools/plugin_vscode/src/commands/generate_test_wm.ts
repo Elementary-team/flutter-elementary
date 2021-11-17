@@ -1,62 +1,29 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
 import * as utils from '../utils/generate_command_utils';
 
+/// UI for 'generate test wm' cli command 
 export async function generateTestWmCommand(...args: any[]) {
 
-  // Step 1: getting work folder
-  let dirRaw = getDirArgument(args);
-  if (dirRaw === null) { return; }
-  let dir = dirRaw!;
+  // Step 1: getting source file
+  let sourceFileRaw = utils.getFileArgument(args);
+  if (sourceFileRaw === null) { return; }
+  let sourceFileUri = sourceFileRaw!;
 
-  // Step 2: getting package name
-  let nameInputOptions: vscode.InputBoxOptions = {
-  	title: "New Elementary Module Name",
-  	prompt: "Please, enter module name:  (my_cool_module) ",
-  	placeHolder: "my_cool_module",
-  	value: "my_cool_module",
-  	validateInput: (value: string) => {
-  		// same regex as in elementary_cli tool
-  		const nameValueRegex = RegExp('^[a-z](_?[a-z0-9])*$');
-  		if (!nameValueRegex.test(value)) {
-  			return "Please, provide a valid name";
-  		}
-  	},
-  };
+  // Step 2: getting root folder
+  if(vscode.workspace.workspaceFolders === undefined) { return; }
 
-  let nameValue = await vscode.window.showInputBox(nameInputOptions);
-  if (!nameValue) { return; }
+  let rootFolderUri = vscode.workspace.workspaceFolders[0].uri;
 
-  // Step 3: getting subdirectory option
-  let quickPickOptions: vscode.QuickPickOptions = {
-  	title: "Create new subdirectory for module?",
-  	canPickMany: false,
-  	matchOnDescription: true,
-  	placeHolder: 'yes',
-  };
+  // Step 3: generate target test file
+  let pathArgument = rootFolderUri.fsPath;
+  let nameArgument = sourceFileUri.fsPath;
+  let smartModeFlag = '-s';
 
-  let sholdCreateSubdirString = await vscode.window.showQuickPick(['yes', 'no'], quickPickOptions);
-  if (!sholdCreateSubdirString) { return; }
+  let cliOptions = ['wm', smartModeFlag, '--path', pathArgument, '--name', nameArgument];
 
-  let shouldCreateSubdir = sholdCreateSubdirString === 'yes';
+  let target = await utils.runGenerateCommand('test', 'Generating test', ...cliOptions);
+  if (target === null) { return; }
 
-  let subdirOption = shouldCreateSubdir ? '--create-subdirectory' : '--no-create-subdirectory';
-  let cliOptions = ['--path', dir!.fsPath, '--name', nameValue, subdirOption];
-
-  await utils.runGenerateCommand('module', 'Genarating elemantary module', ...cliOptions);
-}
-
-function getFileArgument(...argsRaw: any[]): vscode.Uri | null {
-
-	if (argsRaw.length !== 1) {
-		return null;
-	}
-
-	let arg = argsRaw[0][0];
-
-	if (arg instanceof vscode.Uri) {
-		return fs.statSync(arg.fsPath, undefined).isDirectory() ? arg : null;
-	}
-
-	return null;
+  // Step 4: show target file in editor
+  utils.openGeneratedFilesInEditor(target);
 }

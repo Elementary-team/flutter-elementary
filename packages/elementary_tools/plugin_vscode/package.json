@@ -17,7 +17,8 @@
 		"Dart-Code.flutter"
 	],
 	"activationEvents": [
-		"onCommand:elementary.generate.module"
+		"onCommand:elementary.generate.module",
+		"onCommand:elementary.generate.test.wm"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -25,6 +26,10 @@
 			{
 				"command": "elementary.generate.module",
 				"title": "Generate Elementary Module"
+			},
+			{
+				"command": "elementary.generate.test.wm",
+				"title": "Generate Test For Widget Model"
 			}
 		],
 		"menus": {
@@ -32,14 +37,20 @@
 				{
 					"command": "elementary.generate.module",
 					"when": "1 === 2"
+				},
+				{
+					"command": "elementary.generate.test.wm",
+					"when": "1 === 2"
 				}
 			],
 			"explorer/context": [
 				{
-					"when": "dart-code:anyFlutterProjectLoaded && explorerResourceIsFolder",
-					"command": "elementary.generate.module",
-					"altOld": "markdown.showPreviewToSide",
-					"groupOld": "navigation"
+					"when": "dart-code:anyFlutterProjectLoaded && !listMultiSelection && explorerResourceIsFolder",
+					"command": "elementary.generate.module"
+				},
+				{
+					"when": "dart-code:anyFlutterProjectLoaded && !listMultiSelection && resourceFilename =~ /_wm.dart$/",
+					"command": "elementary.generate.test.wm"
 				}
 			]
 		}

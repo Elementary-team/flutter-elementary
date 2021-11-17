@@ -12,7 +12,7 @@ export function activate(context: vscode.ExtensionContext) {
     };
 
     addCommand('elementary.generate.module', generateModuleCommand);
-    // addCommand('elementary.generate.test.wm', generateTestWmCommand);
+    addCommand('elementary.generate.test.wm', generateTestWmCommand);
 }
 
 // this method is called when extension is deactivated
