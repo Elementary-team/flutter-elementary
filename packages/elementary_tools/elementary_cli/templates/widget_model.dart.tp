@@ -16,24 +16,4 @@ class ClassNameWidgetModel extends WidgetModel<ClassNameWidget, ClassNameModel>
     implements IClassNameWidgetModel {
 
   ClassNameWidgetModel(ClassNameModel model) : super(model);
-
-  @override
-  void initWidgetModel() {
-    super.initWidgetModel();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
-  void onErrorHandle(Object error) {
-    super.onErrorHandle(error);
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }
