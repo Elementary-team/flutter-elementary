@@ -4,7 +4,7 @@ import * as fs from 'fs';
 // should be run with `dart pub` of `flutter pub` executable as target
 const elementaryPubCommandArgsStart = ['global', 'run', 'elementary_cli:elementary_tools'];
 
-export async function runGenerateCommand(commandName: string, description: string, ...args: string[]) : Promise<string | null> {
+export async function runGenerateCommand(commandName: string, description: string, ...args: string[]): Promise<string | null> {
     const generateCommandArgsStart = elementaryPubCommandArgsStart.concat(['generate']);
 
     let dartCodeExt = vscode.extensions.getExtension('Dart-Code.dart-code');
@@ -19,7 +19,7 @@ export async function runGenerateCommand(commandName: string, description: strin
     let runResult = null;
     try {
         runResult = await pubGlobal.runCommandWithProgress('elementary_cli', fullDescription, commandArgs);
-        
+
         // refreshing files in explorer, so it will show new files faster
         vscode.commands.executeCommand('workbench.files.action.refreshFilesExplorer');
 
@@ -33,11 +33,11 @@ export async function runGenerateCommand(commandName: string, description: strin
 
 // expecting one-line-one-filename format
 export function openGeneratedFilesInEditor(filesString: string) {
-  filesString.split(/\r?\n/).forEach((file, index) => {
-    let targetUri = vscode.Uri.parse('file://' + file.trim());
-    vscode.workspace.openTextDocument(targetUri)
-      .then((moduleDoc) => vscode.window.showTextDocument(moduleDoc,  vscode.ViewColumn.Active));
-  });
+    filesString.split(/\r?\n/).filter(String).forEach((file, index) => {
+        let targetUri = vscode.Uri.parse('file://' + file.trim());
+        vscode.workspace.openTextDocument(targetUri)
+            .then((moduleDoc) => vscode.window.showTextDocument(moduleDoc, vscode.ViewColumn.Active));
+    });
 }
 
 // wheter string is 'right_module_name'
