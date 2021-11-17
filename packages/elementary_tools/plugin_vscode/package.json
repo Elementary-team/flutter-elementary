@@ -1,8 +1,12 @@
 {
 	"name": "elementary",
-	"displayName": "elementary",
-	"description": "plugin for elementary",
+	"displayName": "Elementary",
+	"description": "Extension for better experience with Elementary",
 	"version": "0.0.1",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/Elementary-team/flutter-elementary.git"
+	},
 	"engines": {
 		"vscode": "^1.61.0"
 	},
