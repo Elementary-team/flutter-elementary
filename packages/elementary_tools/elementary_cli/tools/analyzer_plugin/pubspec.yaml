@@ -8,7 +8,7 @@ environment:
 
 dependencies:
   elementary_cli:
-    path: /home/alex/work/flutter-elementary/packages/elementary_tools/elementary_cli
+    path: ../../
 
 dev_dependencies:
   surf_lint_rules: ^1.0.0
