@@ -3,5 +3,6 @@
 ///
 /// !!! This not for Presentation Layer handling.
 abstract class ErrorHandler {
+  /// This method have to handle of passed error.
   void handleError(Object error);
 }

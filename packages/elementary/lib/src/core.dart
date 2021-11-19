@@ -16,8 +16,10 @@ abstract class IWidgetModel {}
 /// to instantiate WidgetModel. For testing, you can replace
 /// this function for returning mock.
 abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
+  /// Factory-function for creating WidgetModel
   final WidgetModelFactory wmFactory;
 
+  /// Create an instance of ElementaryWidget.
   const ElementaryWidget(
     this.wmFactory, {
     Key? key,
@@ -45,14 +47,20 @@ abstract class WidgetModel<W extends ElementaryWidget,
     M extends ElementaryModel> with Diagnosticable implements IWidgetModel {
   final M _model;
 
+  /// [ElementaryModel] for this WidgetModel.
+  /// Only one of business-logic dependencies, that WidgetModel needs.
   @protected
+  @visibleForTesting
   M get model => _model;
 
+  /// Widget that use WidgetModel for build.
   @protected
   @visibleForTesting
   W get widget => _widget!;
 
+  /// A handle to the location of a WidgetModel in the tree.
   @protected
+  @visibleForTesting
   BuildContext get context {
     assert(() {
       if (_element == null) {
@@ -66,6 +74,7 @@ abstract class WidgetModel<W extends ElementaryWidget,
   Elementary? _element;
   W? _widget;
 
+  /// Create an instance of WidgetModel.
   WidgetModel(this._model);
 
   /// Called at first build for initialization of this Widget Model.
@@ -96,12 +105,59 @@ abstract class WidgetModel<W extends ElementaryWidget,
   @visibleForTesting
   void didChangeDependencies() {}
 
+  /// Called every time before build. This useful for simple lightweight actions
+  /// like notifying.
+  ///
+  /// !!!!!!!!!!!!!!!!!!
+  /// Do not use this method for async or resource-intensive operation.
+  /// !!!!!!!!!!!!!!!!!!
+  ///
+  /// Example of correct using is
+  /// AutomaticKeepAliveWidgetModelMixin.preBuildHook method.
+  @protected
+  @mustCallSuper
+  @visibleForTesting
+  void preBuildHook() {}
+
   /// Called whenever the Model use method handleError.
   ///
   /// This method is the place for presentation handling error like a
   /// showing snackbar or something else.
   @protected
+  @visibleForTesting
   void onErrorHandle(Object error) {}
+
+  /// Called when this WidgetModel and Elementary are removed from the tree.
+  ///
+  /// Implementations of this method should end with a call to the inherited
+  /// method, as in `super.deactivate()`.
+  @protected
+  @mustCallSuper
+  @visibleForTesting
+  void deactivate() {}
+
+  /// Called when this WidgetModel and Elementary are reinserted into the tree
+  /// after having been removed via [deactivate].
+  ///
+  /// In most cases, after a WidgetModel has been deactivated, it is not
+  /// reinserted into the tree, and its [dispose] method will be called to
+  /// signal that it is ready to be garbage collected.
+  ///
+  /// In some cases, however, after a WidgetModel has been deactivated, it will
+  /// reinserted it into another part of the tree (e.g., if the
+  /// subtree containing this Elementary of this WidgetModel is grafted from
+  /// one location in the tree to another due to the use of a [GlobalKey]).
+  ///
+  /// This method does not called the first time a WidgetModel object
+  /// is inserted into the tree. Instead, calls [initWidgetModel] in
+  /// that situation.
+  ///
+  /// Implementations of this method should start with a call to the inherited
+  /// method, as in `super.activate()`.
+  @protected
+  @mustCallSuper
+  @visibleForTesting
+  void activate() {}
 
   /// Called when element with this Widget Model is removed from the tree
   /// permanently.
@@ -112,12 +168,16 @@ abstract class WidgetModel<W extends ElementaryWidget,
     _model.dispose();
   }
 
+  /// Method for setup WidgetModel for testing.
+  /// This method can be used to set widget.
   @visibleForTesting
   // ignore: use_setters_to_change_properties
   void setupTestWidget(W? testWidget) {
     _widget = testWidget;
   }
 
+  /// Method for setup WidgetModel for testing.
+  /// This method can be used to set element (BuildContext).
   @visibleForTesting
   // ignore: use_setters_to_change_properties
   void setupTestElement(Elementary? testElement) {
@@ -135,10 +195,30 @@ class Elementary extends ComponentElement {
   // private _firstBuild hack
   bool _isInitialized = false;
 
+  /// Create an instance of Elementary.
   Elementary(ElementaryWidget widget) : super(widget);
 
   @override
-  Widget build() => widget.build(_wm);
+  Widget build() {
+    final Object? debugCheckForReturnedFuture = _wm.preBuildHook() as dynamic;
+    assert(() {
+      if (debugCheckForReturnedFuture is Future) {
+        throw FlutterError.fromParts(
+          <DiagnosticsNode>[
+            ErrorSummary(
+              '${_wm.runtimeType}.preBuildHook() returned a Future.',
+            ),
+            ErrorDescription(
+              'preBuildHook() must be void method without an `async` keyword.',
+            ),
+          ],
+        );
+      }
+      return true;
+    }());
+
+    return widget.build(_wm);
+  }
 
   @override
   void update(ElementaryWidget newWidget) {
@@ -155,6 +235,20 @@ class Elementary extends ComponentElement {
     super.didChangeDependencies();
 
     _wm.didChangeDependencies();
+  }
+
+  @override
+  void activate() {
+    super.activate();
+    _wm.activate();
+
+    markNeedsBuild();
+  }
+
+  @override
+  void deactivate() {
+    _wm.deactivate();
+    super.deactivate();
   }
 
   @override
@@ -199,6 +293,7 @@ abstract class ElementaryModel {
   final ErrorHandler? _errorHandler;
   void Function(Object)? _wmHandler;
 
+  /// Create an instance of ElementaryModel.
   ElementaryModel({ErrorHandler? errorHandler}) : _errorHandler = errorHandler;
 
   /// Should be used for report error Error Handler if it was set and notify
@@ -219,6 +314,8 @@ abstract class ElementaryModel {
   /// Called when Widget Model disposing.
   void dispose() {}
 
+  /// Method for setup ElementaryModel for testing.
+  /// This method can be used to WidgetModels error handler.
   @visibleForTesting
   // ignore: use_setters_to_change_properties
   void setupWmHandler(Function(Object)? function) {
