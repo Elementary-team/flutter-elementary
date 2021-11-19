@@ -1,7 +1,7 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
     <id>ru.elementaryteam.elementarypluginintellij</id>
-    <name>elementary_plugin_intellij</name>
+    <name>Elementary</name>
     <vendor>Elementary Team</vendor>
 
     <depends>com.intellij.modules.platform</depends>
@@ -17,10 +17,30 @@
                   topic="com.intellij.openapi.project.ProjectManagerListener"/>
     </applicationListeners>
 
+
+    <!--
+    <action id="Github.Create.Gist" class="org.jetbrains.plugins.github.GithubCreateGistAction">
+        <add-to-group group-id="EditorPopupMenu"/>
+        <add-to-group group-id="ProjectViewPopupMenu"/>
+        <add-to-group group-id="EditorTabPopupMenu"/>
+        <add-to-group group-id="ConsoleEditorPopupMenu"/>
+    </action>
+    -->
+
     <actions>
+
+
         <group id="Elementary.Generators" text="_Elementary Generators" description="Generate boilerplate code for you">
             <add-to-group group-id="NewGroup" anchor="after" relative-to-action="NewFile"  />
             <action id="Elementary.Generators.Module" class="ru.elementaryteam.elementarypluginintellij.ElementaryModuleGeneratorMenuAction" text="_Elementary Module" description="Elementary MWWM Module template files" />
+        </group>
+        <group id="Elementary.TestGenerators" text="_Elementary Generators" description="Generate boilerplate code for you">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+            <action id="Elementary.Generators.Test.Wm" class="ru.elementaryteam.elementarypluginintellij.ElementaryModuleGeneratorMenuAction" text="_Elementary Module 2" description="Generate Widget Model Test" />
+        </group>
+        <group id="Elementary.TestGenerators2" text="_Elementary Generators" description="Generate boilerplate code for you">
+            <add-to-group group-id="BasicEditorPopupMenu" anchor="last"/>
+            <action id="Elementary.Generators.Test.Wm.A" class="ru.elementaryteam.elementarypluginintellij.ElementaryModuleGeneratorMenuAction" text="_Elementary Module 3" description="Generate Widget Model Test" />
         </group>
     </actions>
 

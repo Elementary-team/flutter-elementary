@@ -1,6 +1,4 @@
-<!-- Keep a Changelog guide -> https://keepachangelog.com -->
-
-# elementary_plugin_intellij Changelog
+# Elementary Plugin Changelog
 
 ## [Unreleased]
 ### Added
@@ -11,7 +9,8 @@
 ## [0.0.1]
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
-- `New -> Elementary Module` template
+- `Elementary Module` template
+- `Elementary Widget Model Test` template
 - Generated files indexing
 
 <!--TODO make real links -->

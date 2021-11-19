@@ -2,36 +2,27 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:args/command_runner.dart';
 import 'package:elementary_cli/console_writer.dart';
 import 'package:elementary_cli/exit_code_exception.dart';
+import 'package:elementary_cli/generate/generate.dart';
 import 'package:path/path.dart' as p;
 
-// ignore_for_file: avoid_types_on_closure_parameters
-/// `elementary_tools generate wm` command
-class GenerateModuleCommand extends Command<void> {
+/// `elementary_tools generate module` command
+class GenerateModuleCommand extends TemplateGeneratorCommand {
   static const pathOption = 'path';
   static const nameOption = 'name';
-  static const templatesDirOption = 'templates';
   static const isSubdirNeededFlag = 'create-subdirectory';
 
-  /// Maps template names to target suffixes
-  static const suffixes = {
-    'model.dart.tp': '_model.dart',
-    'widget.dart.tp': '_widget.dart',
-    'widget_model.dart.tp': '_wm.dart',
-  };
-
-  /// Default path to directory in project is `elementary_cli/templates`
-  static const templatesRelativeToExecutableDirectory = '../../templates';
-
-  /// Maps template names to contents
-  Map<String, String> templates = {};
-
   /// Maps template names to files
-  Map<String, File> files = {};
+  late Map<String, File> files;
 
-  late String templatesDirectoryPath;
+  /// Maps template names to target suffixes
+  @override
+  Map<String, String> get templateToFilenameMap => {
+    'model.dart.tp': 'filename_model.dart',
+    'widget.dart.tp': 'filename_widget.dart',
+    'widget_model.dart.tp': 'filename_wm.dart',
+  };
 
   @override
   String get description => 'Generates template elementary mwwm files';
@@ -39,24 +30,40 @@ class GenerateModuleCommand extends Command<void> {
   @override
   String get name => 'module';
 
-  List<String> get templateNames => suffixes.keys.toList(growable: false);
+  @override
+  bool get takesArguments => false;
 
-  List<String> get fileSuffixes => suffixes.values.toList(growable: false);
 
   @override
   ArgParser get argParser {
     return ArgParser()
-      ..addOption(pathOption, abbr: 'p', defaultsTo: '.')
-      ..addOption(nameOption, abbr: 'n', mandatory: true)
-      ..addOption(templatesDirOption, abbr: 't')
-      ..addFlag(isSubdirNeededFlag, abbr: 's');
+      ..addOption(
+        nameOption,
+        abbr: 'n',
+        mandatory: true,
+        help: 'Name of module in snake case',
+        valueHelp: 'my_cool_module',
+      )
+      ..addOption(
+        pathOption,
+        abbr: 'p',
+        defaultsTo: '.',
+        help: 'Path to directory where module files will be generated',
+        valueHelp: 'dir1/dir2',
+      )
+      ..addFlag(
+        isSubdirNeededFlag,
+        abbr: 's',
+        help: 'Should we generate subdirectory for module?',
+      )
+      // path to templates directory (mostly for testing purposes)
+      ..addTemplatePathOption();
   }
 
   @override
   Future<void> run() async {
     final parsed = argResults!;
     final pathRaw = parsed[pathOption] as String;
-    final templateDirRaw = parsed[templatesDirOption] as String?;
     final fileNameBase = parsed[nameOption] as String;
     final isSubdirNeeded = parsed[isSubdirNeededFlag] as bool;
 
@@ -65,44 +72,42 @@ class GenerateModuleCommand extends Command<void> {
       throw NonExistentFolderException(pathRaw);
     }
 
-    if (!RegExp(r'^[a-z](_?[a-z0-9])*$').hasMatch(fileNameBase)) {
+    if (!TemplateGeneratorCommand.moduleNameRegexp.hasMatch(fileNameBase)) {
       throw CommandLineUsageException(
         argumentName: nameOption,
         argumentValue: fileNameBase,
       );
     }
 
-    await _fillTemplates(templateDirRaw);
+    // getting templates contents
+    await fillTemplates();
 
+    // with `simpleTemplateToFileMap` all files will
+    // be generated in one directory
     final targetDirectory = isSubdirNeeded
         ? await Directory(p.join(pathRaw, fileNameBase)).create()
         : baseDir;
 
-    _fillFiles(targetDirectory, fileNameBase);
+    files = simpleTemplateToFileMap(targetDirectory, fileNameBase);
 
-    final className = fileNameBase
-        .split('_')
-        .map((e) => e.substring(0, 1).toUpperCase() + e.substring(1))
-        .join();
+    await checkTargetFilesExistance(files.values);
 
-    // checking that we can create all files
-    await Future.wait(files.values.map((file) async {
-      if (file.existsSync()) {
-        throw GeneratorTargetFileExistsException(p.canonicalize(file.path));
-      }
-    }));
+    final className = snakeToCamelCase(fileNameBase);
+
+    // modification of template content
+    String contentCreator(String template) => template
+        .replaceAll('ClassName', className)
+        .replaceAll('filename', fileNameBase);
 
     // Creating and writing all files
-    return Future.wait(
-      templateNames.map((templateName) => _writeFile(
-            template: templates[templateName]!,
+    await Future.wait(
+      templateNames.map((templateName) => writeFile(
             file: files[templateName]!,
-            className: className,
-            fileNameBase: fileNameBase,
+            content: contentCreator(templates[templateName]!),
           )),
     ).then((files) => files.forEach(ConsoleWriter.write)).catchError(
       // If some FileSystemException occurred - delete all files
-      // ignore-for-file:
+      // ignore: avoid_types_on_closure_parameters
       (Object error, StackTrace stackTrace) async {
         await Future.wait(files.values.map((f) => f.delete()));
         // Then throw exception to return right exit code
@@ -110,67 +115,5 @@ class GenerateModuleCommand extends Command<void> {
       },
       test: (error) => error is FileSystemException,
     );
-  }
-
-  void _fillFiles(Directory targetDirectory, String fileNameBase) {
-    for (final templateName in templateNames) {
-      files[templateName] = File(
-        p.join(
-          targetDirectory.path,
-          fileNameBase + suffixes[templateName]!,
-        ),
-      );
-    }
-  }
-
-  String _defaultTemplateDirectoryPath() {
-    // If running not inside dart vm - exit
-    if (!Platform.script.hasAbsolutePath) {
-      throw GenerateTemplatesUnreachableException(
-        'script entry has no absolute path',
-      );
-    }
-    return p.join(Platform.script.path, templatesRelativeToExecutableDirectory);
-  }
-
-  Future<String> _readTemplateFile(String filename) async {
-    final filepath = p.join(templatesDirectoryPath, filename);
-    final file = File(filepath);
-    if (!file.existsSync()) {
-      throw GenerateTemplatesUnreachableException(
-        'cannot find template file "$filepath"',
-      );
-    }
-    return file.readAsString();
-  }
-
-  Future<void> _fillTemplates(String? templateDirRaw) async {
-    final templateDir = templateDirRaw ?? _defaultTemplateDirectoryPath();
-    templatesDirectoryPath = p.canonicalize(templateDir);
-    final templatesDirectory = Directory(templatesDirectoryPath);
-    if (!templatesDirectory.existsSync()) {
-      throw NonExistentFolderException(templatesDirectoryPath);
-    }
-    await Future.wait(templateNames.map((templateName) =>
-            _readTemplateFile(templateName)
-                .then((fileContent) => templates[templateName] = fileContent)))
-        .catchError(
-      (Object _) => throw GenerateTemplatesUnreachableException('FileSystemException'),
-      test: (e) => e is FileSystemException,
-    );
-  }
-
-  Future<String> _writeFile({
-    required String template,
-    required File file,
-    required String fileNameBase,
-    required String className,
-  }) async {
-    final content = template
-        .replaceAll('ClassName', className)
-        .replaceAll('filename', fileNameBase);
-    await file.create();
-    await file.writeAsString(content);
-    return file.path;
   }
 }
