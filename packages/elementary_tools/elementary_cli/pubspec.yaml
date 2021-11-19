@@ -1,0 +1,20 @@
+name: elementary_cli
+description: CLI utilities for Elementary
+version: 0.0.1
+
+executables:
+  elementary_tools:
+
+environment:
+  sdk: '>=2.14.0 <3.0.0'
+
+dependencies:
+  analyzer: ^2.7.0
+  analyzer_plugin: ^0.8.0
+  args: ^2.3.0
+  dart_code_metrics: ^4.6.0
+  path: ^1.8.0
+
+dev_dependencies:
+  lints: ^1.0.0
+  surf_lint_rules: ^1.0.0

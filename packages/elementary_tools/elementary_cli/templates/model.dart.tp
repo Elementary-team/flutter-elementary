@@ -1,0 +1,7 @@
+import 'package:elementary/elementary.dart';
+
+// TODO: cover with documentation
+/// Default Elementary model for ClassName module
+class ClassNameModel extends ElementaryModel {
+  ClassNameModel(ErrorHandler errorHandler) : super(errorHandler: errorHandler);
+}

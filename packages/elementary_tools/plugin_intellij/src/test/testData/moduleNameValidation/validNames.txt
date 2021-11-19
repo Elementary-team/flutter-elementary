@@ -1,0 +1,6 @@
+abcd
+my_cool_module
+some_very_long_module_name_here
+module_name_w1th_number_one
+module_name_with_number_1
+s0me_w3ird_l00king_module_name
