@@ -1,6 +1,6 @@
 name: elementary
 description: MVVM-inspired architectural library.
-version: 0.1.0-dev.1
+version: 0.1.1
 repository: "https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary"
 issue_tracker: "https://github.com/Elementary-team/flutter-elementary/issues"
 homepage: "https://github.com/Elementary-team/flutter-elementary"

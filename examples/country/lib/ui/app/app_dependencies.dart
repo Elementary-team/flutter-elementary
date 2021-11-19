@@ -3,8 +3,8 @@ import 'package:country/data/repository/country/country_repository.dart';
 import 'package:country/ui/app/app.dart';
 import 'package:country/ui/screen/country_list_screen/country_list_screen_model.dart';
 import 'package:country/utils/error/default_error_handler.dart';
-import 'package:country/utils/wrapper/theme_wrapper.dart';
 import 'package:dio/dio.dart';
+import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

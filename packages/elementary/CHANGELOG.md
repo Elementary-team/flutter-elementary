@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+* Add theme wrapper.
+
 ## 0.1.0-dev.1
 
 * Update naming from dev to release ready.

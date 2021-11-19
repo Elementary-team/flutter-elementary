@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+* Support 0.1.1 elementary
+
 ## 0.1.0-dev.1
 
 * Support 0.1.0-dev.1 elementary
