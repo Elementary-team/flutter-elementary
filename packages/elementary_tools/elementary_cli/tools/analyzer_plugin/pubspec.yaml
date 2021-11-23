@@ -7,8 +7,7 @@ environment:
   sdk: '>=2.14.0 <3.0.0'
 
 dependencies:
-  elementary_cli:
-    path: ../../
+  elementary_cli: ^0.0.1
 
 dev_dependencies:
   surf_lint_rules: ^1.0.0
