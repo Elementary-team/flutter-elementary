@@ -1,1 +1,0 @@
-# Elementary analyzer plugin
