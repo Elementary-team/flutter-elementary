@@ -105,20 +105,6 @@ abstract class WidgetModel<W extends ElementaryWidget,
   @visibleForTesting
   void didChangeDependencies() {}
 
-  /// Called every time before build. This useful for simple lightweight actions
-  /// like notifying.
-  ///
-  /// !!!!!!!!!!!!!!!!!!
-  /// Do not use this method for async or resource-intensive operation.
-  /// !!!!!!!!!!!!!!!!!!
-  ///
-  /// Example of correct using is
-  /// AutomaticKeepAliveWidgetModelMixin.preBuildHook method.
-  @protected
-  @mustCallSuper
-  @visibleForTesting
-  void preBuildHook() {}
-
   /// Called whenever the Model use method handleError.
   ///
   /// This method is the place for presentation handling error like a
@@ -200,23 +186,6 @@ class Elementary extends ComponentElement {
 
   @override
   Widget build() {
-    final Object? debugCheckForReturnedFuture = _wm.preBuildHook() as dynamic;
-    assert(() {
-      if (debugCheckForReturnedFuture is Future) {
-        throw FlutterError.fromParts(
-          <DiagnosticsNode>[
-            ErrorSummary(
-              '${_wm.runtimeType}.preBuildHook() returned a Future.',
-            ),
-            ErrorDescription(
-              'preBuildHook() must be void method without an `async` keyword.',
-            ),
-          ],
-        );
-      }
-      return true;
-    }());
-
     return widget.build(_wm);
   }
 
