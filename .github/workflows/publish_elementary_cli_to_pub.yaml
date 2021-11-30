@@ -2,7 +2,7 @@
 # Example: 'elementary_cli_v1.0.0'
 name: Elementary CLI
 on:
-  create:
+  push:
     tags:
       - 'elementary_cli_v*'
 

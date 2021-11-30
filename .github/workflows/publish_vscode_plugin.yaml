@@ -2,7 +2,7 @@
 # Example: 'plugin_vscode_v1.0.0'
 name: VSCode plugin
 on:
-  create:
+  push:
     tags:
       - 'plugin_vscode_v*'
 

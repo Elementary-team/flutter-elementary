@@ -2,7 +2,7 @@
 # Example: 'plugin_intellij_v1.0.0'
 name: Intellij plugin
 on:
-  create:
+  push:
     tags:
       - 'plugin_intellij_v*'
 
