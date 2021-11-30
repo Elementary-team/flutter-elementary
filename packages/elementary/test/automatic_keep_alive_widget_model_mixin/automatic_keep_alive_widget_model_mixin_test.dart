@@ -117,8 +117,6 @@ void main() {
       expect(find.byKey(secondTabKey), findsNothing);
       expect(find.byKey(firstWidgetKey), findsNothing);
       expect(find.byKey(lastWidgetKey), findsOneWidget);
-
-      testWidgetModel.setupWantKeepAlive(false);
     },
   );
 
@@ -173,8 +171,6 @@ void main() {
       expect(find.byKey(secondTabKey), findsNothing);
       expect(find.byKey(firstWidgetKey), findsOneWidget);
       expect(find.byKey(lastWidgetKey), findsNothing);
-
-      testWidgetModel.setupWantKeepAlive(true);
     },
   );
 
