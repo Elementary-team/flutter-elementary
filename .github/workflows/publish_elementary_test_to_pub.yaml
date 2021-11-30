@@ -1,6 +1,6 @@
 # Runs for every tag starting with 'elementary_test_v' keyword
 # Example: 'elementary_test_v1.0.0'
-name: Publish Elementary package to pub.dev
+name: Elementary Test
 on:
   create:
     tags:

@@ -1,6 +1,6 @@
 # Runs for every tag starting with 'elementary_cli_v' keyword
 # Example: 'elementary_cli_v1.0.0'
-name: Publish Elementary CLI package to pub.dev
+name: Elementary CLI
 on:
   create:
     tags:

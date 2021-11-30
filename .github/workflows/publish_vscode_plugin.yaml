@@ -1,6 +1,6 @@
 # Runs for every tag starting with 'plugin_vscode_v' keyword
 # Example: 'plugin_vscode_v1.0.0'
-name: Publish VSCode plugin
+name: VSCode plugin
 on:
   create:
     tags:

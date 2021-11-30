@@ -1,10 +1,12 @@
 # Runs for every tag starting with 'elementary_v' keyword
 # Example: 'elementary_v1.0.0'
-name: Publish Elementary package to pub.dev
+name: Elementary
 on:
-  create:
-    tags:
-      - 'elementary_v*'
+  release:
+    types: [published]
+#  create:
+#    tags:
+#      - 'elementary_v*'
 
 # Must be set:
 # secrets.PUB_CREDENTIAL_JSON - Google Account credential
