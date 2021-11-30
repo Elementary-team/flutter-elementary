@@ -238,27 +238,6 @@ void main() {
       expect(elementary.widget, same(newWidget));
     },
   );
-
-  testWidgets(
-    'Should throw flutter error when async preBuildHook',
-    (tester) async {
-      ElementaryWidgetModelMock factory(BuildContext ctx) {
-        factoryCalledContext = ctx;
-        factoryCalledCount++;
-        wm = ElementaryWidgetModelAsyncPreBuild();
-        return wm!;
-      }
-
-      widget = ElementaryWidgetTest(
-        wmFactory: factory,
-        buildCallback: (_) {},
-      );
-
-      await tester.pumpWidget(widget);
-
-      expect(tester.takeException(), isInstanceOf<FlutterError>());
-    },
-  );
 }
 
 class ElementaryWidgetTest
@@ -279,13 +258,6 @@ class ElementaryWidgetTest
 }
 
 class IElementaryWidgetModelMock extends IWidgetModel {}
-
-class ElementaryWidgetModelAsyncPreBuild extends ElementaryWidgetModelMock {
-  @override
-  Future<void> preBuildHook() async {
-    return Future<void>.value();
-  }
-}
 
 class ElementaryWidgetModelMock extends DiagnosticableMock
     implements

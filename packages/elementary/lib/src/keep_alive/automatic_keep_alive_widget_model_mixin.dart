@@ -34,15 +34,6 @@ mixin AutomaticKeepAliveWidgetModelMixin<W extends ElementaryWidget,
     super.deactivate();
   }
 
-  @override
-  void preBuildHook() {
-    if (_wantKeepAlive && _keepAliveHandle == null) {
-      _ensureKeepAlive();
-    }
-
-    super.preBuildHook();
-  }
-
   void _updateKeepAlive() {
     if (_wantKeepAlive) {
       if (_keepAliveHandle == null) {
