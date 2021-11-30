@@ -7,19 +7,10 @@ on:
       - 'plugin_intellij_v*'
 
 # Must be set:
-# secrets.VS_MARKETPLACE_TOKEN  - PERSONAL ACCESS TOKEN
+# secrets.INTELLIJ_TOKEN - PERSONAL ACCESS TOKEN
 # Deploy uses gradle: (https://plugins.jetbrains.com/docs/intellij/deployment.html)
 jobs:
   Publish-Vscode-plugin:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: npm ci
-      - name: Publish to Visual Studio Marketplace
-        uses: HaaLeo/publish-vscode-extension@v0
-        with:
-          pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
-          registryUrl: https://marketplace.visualstudio.com
-          packagePath: './packages/elementary_tools/plugin_vscode'
+      - run: echo To Be Implemented

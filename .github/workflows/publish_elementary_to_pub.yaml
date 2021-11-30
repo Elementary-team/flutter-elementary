@@ -15,7 +15,6 @@ jobs:
     steps:
       - name: Flutter Install
         uses: subosito/flutter-action@v1.5.3
-        run: echo Flutter Installed
 
       - name: Flutter Pub Publish action
         uses: sakebook/actions-flutter-pub-publisher@v1.3.1
