@@ -66,7 +66,7 @@ void main() {
         error.toStringDeep().split('\n').take(13).join('\n'),
         equalsIgnoringHashCodes(
           'FlutterError\n'
-          '   TestWidgetModel#991c6 was disposed with an active Ticker.\n'
+          '   TestWidgetModel#00000 was disposed with an active Ticker.\n'
           '   TestWidgetModel created a Ticker via its\n'
           '   TickerProviderWidgetModelMixin, but at the time dispose() was\n'
           '   called on the mixin, that Ticker was still active. The Ticker\n'
