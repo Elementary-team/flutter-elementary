@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>ru.elementaryteam.elementarypluginintellij</id>
     <name>Elementary</name>
-    <vendor>Elementary Team</vendor>
+    <vendor>ElementaryTeam</vendor>
 
     <depends>com.intellij.modules.platform</depends>
     <depends>io.flutter</depends>

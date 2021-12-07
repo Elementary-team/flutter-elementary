@@ -11,22 +11,31 @@ import 'package:mocktail/mocktail.dart';
 /// [description] - description of test.
 /// [setupWm] - function should return wm that will be test.
 /// [testFunction] - function that test wm.
+/// [skip] - should skip the test. If passed a String or `true`, the test is
+/// skipped. If it's a String, it should explain why the test is skipped;
+/// this reason will be printed instead of running the test.
 @isTest
 void testWidgetModel<WM extends WidgetModel, W extends ElementaryWidget>(
   String description,
   WM Function() setupWm,
   dynamic Function(WM wm, WMTester<WM, W> tester, WMContext context)
-      testFunction,
-) {
+      testFunction, {
+  // ignore: avoid_annotating_with_dynamic
+  dynamic skip,
+}) {
   setUp(() {
     registerFallbackValue(WMContext());
   });
 
-  test(description, () async {
-    final wm = setupWm();
-    final element = _WMTestableElement<WM, W>(wm);
-    await testFunction(wm, element, element);
-  });
+  test(
+    description,
+    () async {
+      final wm = setupWm();
+      final element = _WMTestableElement<WM, W>(wm);
+      await testFunction(wm, element, element);
+    },
+    skip: skip,
+  );
 }
 
 /// Interface for emulating BuildContext behaviour.
@@ -34,12 +43,22 @@ class WMContext extends Mock implements BuildContext {}
 
 /// Interface for control wm stage in test.
 abstract class WMTester<WM extends WidgetModel, W extends ElementaryWidget> {
+  /// Initialize widget model to work.
   void init({W? initWidget});
 
+  /// Change the widget used to configure this element.
   void update(W newWidget);
 
+  /// Called when a dependency of this element changes.
   void didChangeDependencies();
 
+  /// Transition from the "inactive" to the "active" lifecycle state.
+  void activate();
+
+  /// Transition from the "active" to the "inactive" lifecycle state.
+  void deactivate();
+
+  /// Transition from the "inactive" to the "defunct" lifecycle state.
   void unmount();
 }
 
@@ -71,6 +90,16 @@ class _WMTestableElement<WM extends WidgetModel, W extends ElementaryWidget>
   @override
   void didChangeDependencies() {
     _wm.didChangeDependencies();
+  }
+
+  @override
+  void activate() {
+    _wm.activate();
+  }
+
+  @override
+  void deactivate() {
+    _wm.deactivate();
   }
 
   @override

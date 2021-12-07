@@ -1,5 +1,18 @@
 # Changelog
 
+## next
+
+* Remove useless prebuild hook.
+* Add tests for keep alive mixin and ticker provider mixin.
+
+## 0.1.3
+
+* Add constraints to ticker mixins and keep alive mixin.
+
+## 0.1.2
+
+* Mixin for keep alive widget model.
+
 ## 0.1.1
 
 * Add theme wrapper.
