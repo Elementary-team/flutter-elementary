@@ -9,3 +9,4 @@ Plugin for intellij-based platforms
 
 ## [VSCode Plugin](./plugin_vscode)
 Plugin for VSCode
+

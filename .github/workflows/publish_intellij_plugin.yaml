@@ -1,0 +1,16 @@
+# Runs for every tag starting with 'plugin_intellij_v' keyword
+# Example: 'plugin_intellij_v1.0.0'
+name: Intellij plugin
+on:
+  push:
+    tags:
+      - 'plugin_intellij_v*'
+
+# Must be set:
+# secrets.INTELLIJ_TOKEN - PERSONAL ACCESS TOKEN
+# Deploy uses gradle: (https://plugins.jetbrains.com/docs/intellij/deployment.html)
+jobs:
+  Publish-Vscode-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo To Be Implemented

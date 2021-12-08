@@ -1,0 +1,29 @@
+# Runs for every tag starting with 'elementary_v' keyword
+# Example: 'elementary_v1.0.0'
+name: Elementary
+on:
+#  release:
+#    types: [published]
+  push:
+    tags:
+      - 'elementary_v*'
+
+# Must be set:
+# secrets.PUB_CREDENTIAL_JSON - Google Account credential
+# (https://github.com/marketplace/actions/publish-dart-flutter-package#credential)
+jobs:
+  Publish-Elementary-package:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Flutter Install
+        uses: subosito/flutter-action@v1.5.3
+
+      - name: Flutter Pub Publish action
+        uses: sakebook/actions-flutter-pub-publisher@v1.3.1
+        with:
+          package_directory: './packages/elementary'
+          credential: ${{ secrets.PUB_CREDENTIAL_JSON }}
+          flutter_package: true
+          skip_test: false
+          # TODO: dry_run: false
+          dry_run: true
