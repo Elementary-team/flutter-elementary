@@ -6,7 +6,12 @@
 <!-- ATTENTION: To keep everything working, do not remove `<!- ... ->` sections. -->
 
 <!-- Plugin description -->
-Plugin for better experience with [Elementary](https://pub.dev/packages/elementary)
+Support for developing <a href="https://flutter.dev/">Flutter</a> applications with <a href="https://pub.dev/packages/elementary">Elementary</a> library. Plugin for better experience using Elementary library.<br/>
+Provides the ability to quickly and easy create code entity templates and generate a test template.<br/>
+
+For generation plugin using cli dart util - <a href="https://pub.dev/packages/elementary_cli">elementary_cli</a>.<br/>
+Use context menu in Project tab to create in selected place ElementaryWidget, WidgetModel, ElementaryModel.<br/>
+Use context menu on WidgetModel class to create tests for WidgetModel.
 <!-- Plugin description end -->
 
 ## Installation
