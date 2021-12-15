@@ -1,6 +1,6 @@
 # Elementary
 
-![Elementary Cover](https://i.ibb.co/jgkB4ZN/Elementary-Logo.png)
+<img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo" style="margin:50px 0px">
 
 [![Pub Version](https://img.shields.io/pub/v/elementary?logo=dart&logoColor=white)](https://pub.dev/packages/elementary)
 [![Pub Likes](https://badgen.net/pub/likes/elementary)](https://pub.dev/packages/elementary)
@@ -15,8 +15,18 @@ the fundamentals of Clean Architecture.
 
 ## Overview
 
+Благодаря продуманному разделению ответственностей Elementary позволит легко управлять тем, что именно в данный момент отображается и связывать это с бизнес-логикой приложения. Прежде чем подробно рассказывать про устройство, предлагаю посмотреть на схему и убедиться насколько Elementary прост в работе.
+
+<img src="https://i.ibb.co/rk4sxDf/3.gif" alt="Elementary scheme">
+
+## Technical Overview
+
 This library applies a classic principle of an MVVM pattern, which is layering. In it, we have Widget acting as a View
 layer, WidgetModel as a ViewModel layer, and Model as a Model layer.
+
+А работает все это вместе максимально близко к тому, как устроен сам Flutter.
+
+
 
 ### WidgetModel
 
