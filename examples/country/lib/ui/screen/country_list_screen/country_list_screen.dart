@@ -76,6 +76,7 @@ class _CountryList extends StatelessWidget {
       ),
       separatorBuilder: (_, __) => const SizedBox(height: 8),
       itemCount: countries.length,
+      cacheExtent: 800,
     );
   }
 }
