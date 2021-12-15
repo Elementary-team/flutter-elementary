@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+* Add skip parameter for test.
+* Add new lifecycle methods for testing.
+
 ## 0.1.1
 
 * Support 0.1.1 elementary

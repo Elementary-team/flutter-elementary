@@ -38,8 +38,10 @@ class GenerateCommand extends Command<void> {
 /// * * do not forget about `addTemplatePathOption`
 /// * override GeneratorCommand's `templateToFilenameMap`
 abstract class TemplateGeneratorCommand extends Command<void> {
+
   /// Default path to directory in project is `elementary_cli/lib/templates`
   static const templatesRelativeToExecutableDirectory = '../lib/templates';
+
   static const templatesDirOption = 'templates';
 
   static final moduleNameRegexp = RegExp(r'^[a-z](_?[a-z0-9])*$');

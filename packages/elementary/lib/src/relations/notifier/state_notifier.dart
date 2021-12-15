@@ -9,6 +9,7 @@ class StateNotifier<T> extends ChangeNotifier implements ListenableState<T> {
 
   T? _value;
 
+  /// Create an instance of StateNotifier.
   StateNotifier({T? initValue}) : _value = initValue;
 
   @override
@@ -37,6 +38,7 @@ abstract class ListenableState<T> extends Listenable {
 ///
 /// Empty initial value create empty EntityState for initial value.
 class EntityStateNotifier<T> extends StateNotifier<EntityState<T>> {
+  /// Create an instance of EntityStateNotifier.
   EntityStateNotifier([EntityState<T>? initialData])
       : super(initValue: initialData ?? EntityState<T>());
 
@@ -72,12 +74,14 @@ class EntityState<T> {
   /// Exception from state.
   final Exception? error;
 
+  /// Create an instance of EntityState.
   const EntityState({
     this.data,
     this.isLoading = false,
     this.hasError = false,
     this.error,
-  });
+  })  : assert(error == null || hasError),
+        assert(!hasError && !isLoading || hasError != isLoading);
 
   /// Loading constructor
   const EntityState.loading([this.data])

@@ -1,0 +1,17 @@
+import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
+import 'filename_wm.dart';
+
+// TODO: cover with documentation
+/// Main widget for ClassName module
+class ClassNameWidget extends ElementaryWidget<IClassNameWidgetModel> {
+  const ClassNameWidget({
+    Key? key,
+    WidgetModelFactory wmFactory = defaultClassNameWidgetModelFactory,
+  }) : super(wmFactory, key: key);
+
+  @override
+  Widget build(IClassNameWidgetModel wm) {
+    return Container();
+  }
+}

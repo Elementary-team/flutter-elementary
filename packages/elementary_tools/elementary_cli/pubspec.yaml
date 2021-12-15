@@ -1,6 +1,10 @@
 name: elementary_cli
 description: CLI utilities for Elementary
+
 version: 0.0.2
+repository: "https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_tools/elementary_cli"
+issue_tracker: "https://github.com/Elementary-team/flutter-elementary/issues"
+homepage: "https://github.com/Elementary-team/flutter-elementary"
 
 executables:
   elementary_tools:
