@@ -13,7 +13,7 @@ Extension for better experience with Elementary
 
 ## Requirements
 
-* Install [Elementary CLI][cli] to global pub
+* Install and activate [Elementary CLI][cli] to global pub
 
 [cli]: https://github.com/Elementary-team/flutter-elementary/tree/elementary_tools/packages/elementary_tools/elementary_cli
 
