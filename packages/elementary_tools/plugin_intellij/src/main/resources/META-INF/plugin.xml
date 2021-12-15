@@ -19,6 +19,7 @@
 
     <change-notes>Initial release.</change-notes>
 
+
     <extensions defaultExtensionNs="com.intellij">
         <applicationService serviceImplementation="ru.elementaryteam.elementarypluginintellij.services.MyApplicationService"/>
         <projectService serviceImplementation="ru.elementaryteam.elementarypluginintellij.services.MyProjectService"/>

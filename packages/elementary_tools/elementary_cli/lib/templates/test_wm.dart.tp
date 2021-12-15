@@ -1,0 +1,35 @@
+import 'package:elementary_test/elementary_test.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+/// Тесты для [ClassNameWidgetModel]
+void main() {
+
+  late ClassNameModelMock model;
+
+  ClassNameWidgetModel setUpWm() {
+    model = ClassNameModelMock();
+    // TODO: create WM instance
+    // return ClassNameWidgetModel(model);
+  }
+
+  testWidgetModel<ClassNameWidgetModel, ClassNameWidget>(
+    'myfirsttestcase',
+    setUpWm,
+    (wm, tester, context) {
+      // my first test
+    },
+  );
+
+  testWidgetModel<ClassNameWidgetModel, ClassNameWidget>(
+      'mysecondtestcase',
+      setUpWm,
+      (wm, tester, context) {
+        // my second test
+      },
+    );
+}
+
+class ClassNameModelMock extends Mock
+    implements ClassNameModel {}

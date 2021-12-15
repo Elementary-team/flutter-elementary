@@ -1,0 +1,25 @@
+# Runs for every tag starting with 'plugin_vscode_v' keyword
+# Example: 'plugin_vscode_v1.0.0'
+name: VSCode plugin
+on:
+  push:
+    tags:
+      - 'plugin_vscode_v*'
+
+# Must be set:
+# secrets.VS_MARKETPLACE_TOKEN  - PERSONAL ACCESS TOKEN
+# (https://code.visualstudio.com/api/working-with-extensions/publishing-extension#get-a-personal-access-token)
+jobs:
+  Publish-Vscode-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm ci
+      - name: Publish to Visual Studio Marketplace
+        uses: HaaLeo/publish-vscode-extension@v0
+        with:
+          pat: ${{ secrets.VS_MARKETPLACE_TOKEN }}
+          registryUrl: https://marketplace.visualstudio.com
+          packagePath: './packages/elementary_tools/plugin_vscode'

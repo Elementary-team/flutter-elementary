@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:isolate';
 
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
@@ -37,8 +38,10 @@ class GenerateCommand extends Command<void> {
 /// * * do not forget about `addTemplatePathOption`
 /// * override GeneratorCommand's `templateToFilenameMap`
 abstract class TemplateGeneratorCommand extends Command<void> {
-  /// Default path to directory in project is `elementary_cli/templates`
-  static const templatesRelativeToExecutableDirectory = '../../templates';
+
+  /// Default path to directory in project is `elementary_cli/lib/templates`
+  static const templatesRelativeToExecutableDirectory = '../lib/templates';
+
   static const templatesDirOption = 'templates';
 
   static final moduleNameRegexp = RegExp(r'^[a-z](_?[a-z0-9])*$');
@@ -62,7 +65,7 @@ abstract class TemplateGeneratorCommand extends Command<void> {
   /// Fills `templates` map with <templateName, fileContent> pairs
   Future<void> fillTemplates() async {
     final templateDirRaw = argResults![templatesDirOption] as String?;
-    final templateDir = templateDirRaw ?? defaultTemplateDirectoryPath();
+    final templateDir = templateDirRaw ?? await defaultTemplateDirectoryPath();
     templatesDirectoryPath = p.canonicalize(templateDir);
     final templatesDirectory = Directory(templatesDirectoryPath);
     if (!templatesDirectory.existsSync()) {
@@ -80,14 +83,41 @@ abstract class TemplateGeneratorCommand extends Command<void> {
   }
 
   /// Gets default template directory path
-  String defaultTemplateDirectoryPath() {
+  Future<String> defaultTemplateDirectoryPath() async {
     // If running not inside dart vm - exit
     if (!Platform.script.hasAbsolutePath) {
       throw GenerateTemplatesUnreachableException(
         'script entry has no absolute path',
       );
     }
-    return p.join(Platform.script.path, templatesRelativeToExecutableDirectory);
+    final defaultDirPath = p.join(p.dirname(Platform.script.path), templatesRelativeToExecutableDirectory);
+    final dir = Directory(defaultDirPath);
+    if (!dir.existsSync()) {
+      dir.createSync(recursive: true);
+    }
+    // copy template files from package to executable dir
+    await copyTemplatesToScriptPath(defaultDirPath);
+    return defaultDirPath;
+  }
+
+  /// Copy templates to default directory
+  Future<void> copyTemplatesToScriptPath(String defaultTemplateDirPath) async {
+    // TODO(AlexeyBukin): make generator for this list
+    const resources = [
+      'package:elementary_cli/templates/widget.dart.tp',
+      'package:elementary_cli/templates/model.dart.tp',
+      'package:elementary_cli/templates/test_wm.dart.tp',
+      'package:elementary_cli/templates/widget_model.dart.tp',
+    ];
+
+    for (final resource in resources) {
+      final resolvedUri = await Isolate.resolvePackageUri(Uri.parse(resource));
+      if (resolvedUri != null) {
+        final fileWithExtension = p.split(resolvedUri.toString()).last;
+        File.fromUri(resolvedUri)
+            .copySync(p.join(defaultTemplateDirPath, fileWithExtension));
+      }
+    }
   }
 
   /// Reads template file
