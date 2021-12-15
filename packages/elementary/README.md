@@ -26,7 +26,7 @@ layer, WidgetModel as a ViewModel layer, and Model as a Model layer.
 
 А работает все это вместе максимально близко к тому, как устроен сам Flutter.
 
-
+<img src="https://i.ibb.co/yyZYwcd/elementary-scheme.png" alt="Elementary scheme">
 
 ### WidgetModel
 
