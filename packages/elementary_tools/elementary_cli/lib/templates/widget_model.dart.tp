@@ -1,0 +1,19 @@
+import 'package:elementary/elementary.dart';
+import 'package:flutter/material.dart';
+import 'filename_model.dart';
+import 'filename_widget.dart';
+
+abstract class IClassNameWidgetModel extends IWidgetModel {
+}
+
+ClassNameWidgetModel defaultClassNameWidgetModelFactory(BuildContext context) {
+  return ClassNameWidgetModel();
+}
+
+// TODO: cover with documentation
+/// Default widget model for ClassNameWidget
+class ClassNameWidgetModel extends WidgetModel<ClassNameWidget, ClassNameModel>
+    implements IClassNameWidgetModel {
+
+  ClassNameWidgetModel(ClassNameModel model) : super(model);
+}
