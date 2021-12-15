@@ -15,7 +15,9 @@ the fundamentals of Clean Architecture.
 
 ## Overview
 
-Благодаря продуманному разделению ответственностей Elementary позволит легко управлять тем, что именно в данный момент отображается и связывать это с бизнес-логикой приложения. Прежде чем подробно рассказывать про устройство, предлагаю посмотреть на схему и убедиться насколько Elementary прост в работе.
+Thanks to its elaborately separated concerns, Elementary makes it easier to manage whatever is displayed at a particular
+moment and bind it with the business logic of your app. Now, before we get into detail about its structure, let's look
+at the graph so that you can see for yourself how easy it is to work with Elementary.
 
 <img src="https://i.ibb.co/rk4sxDf/3.gif" alt="Elementary scheme">
 
@@ -24,7 +26,7 @@ the fundamentals of Clean Architecture.
 This library applies a classic principle of an MVVM pattern, which is layering. In it, we have Widget acting as a View
 layer, WidgetModel as a ViewModel layer, and Model as a Model layer.
 
-А работает все это вместе максимально близко к тому, как устроен сам Flutter.
+And all of that put together works pretty similar to Flutter itself.
 
 <img src="https://i.ibb.co/yyZYwcd/elementary-scheme.png" alt="Elementary scheme">
 
