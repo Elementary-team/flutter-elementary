@@ -1,7 +1,8 @@
 # Changelog
 
-## next
+## 1.0.0
 
+* First stable release
 * Remove useless prebuild hook.
 * Add tests for keep alive mixin and ticker provider mixin.
 
