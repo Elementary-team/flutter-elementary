@@ -1,6 +1,6 @@
 # Flutter Elementary repository
 
-![Elementary Cover](https://i.ibb.co/jgkB4ZN/Elementary-Logo.png)
+<img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo" style="margin:50px 0px">
 
 [![Pub Version](https://img.shields.io/pub/v/elementary?logo=dart&logoColor=white)](https://pub.dev/packages/elementary)
 [![Pub Likes](https://badgen.net/pub/likes/elementary)](https://pub.dev/packages/elementary)
