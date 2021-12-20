@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - "flutter-elementary/packages/elementary/**"
+      - "packages/elementary/**"
       - ".github/workflows/elementary.yaml"
 
 jobs:
