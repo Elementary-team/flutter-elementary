@@ -176,7 +176,7 @@ void main() {
 
   testWidgets(
     'Switching wantKeepAlive from true(default) to false should change '
-        'the behavior of the widget',
+    'the behavior of the widget',
     (tester) async {
       testWidgetModel = TestWidgetModel(
         model: model,
