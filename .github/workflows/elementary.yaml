@@ -41,7 +41,7 @@ jobs:
         run: echo | grep -q Technical Overview packages/elementary/README.md ; echo $?
 
       - name: Install dependencies
-        run: packages\elementary>flutter pub get
+        run: packages\elementary flutter pub get
 
       - name: Run dependency validator
         run: |
