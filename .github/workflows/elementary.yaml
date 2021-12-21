@@ -98,7 +98,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: packages/elementary
+        working-directory: packages/elementary/example
 
     steps:
       # Setup Java environment in order to build the Android app.
@@ -127,7 +127,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: packages/elementary
+        working-directory: packages/elementary/example
 
     steps:
       - name: Checkout
