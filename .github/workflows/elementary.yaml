@@ -38,13 +38,13 @@ jobs:
         run: echo Content is ok!
 
       - name: Check Description
-        run: echo | grep -q Description packages/elementary/README.md ; echo $?
+        run: echo | grep -q Description README.md ; echo $?
 
       - name: Check Overview
-        run: echo | grep -q Overview packages/elementary/README.md ; echo $?
+        run: echo | grep -q Overview README.md ; echo $?
 
       - name: Check Technical Overview
-        run: echo | grep -q Technical Overview packages/elementary/README.md ; echo $?
+        run: echo | grep -q Technical Overview README.md ; echo $?
 
       - name: Install dependencies
         run: flutter pub get
