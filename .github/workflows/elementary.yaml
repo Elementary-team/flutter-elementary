@@ -9,7 +9,7 @@ on:
       - ".github/workflows/elementary.yaml"
 
 jobs:
-  build:
+  analysis:
     runs-on: ubuntu-latest
 
     defaults:
