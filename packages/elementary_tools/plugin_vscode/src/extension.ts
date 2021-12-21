@@ -1,10 +1,13 @@
 import * as vscode from 'vscode';
 import { generateModuleCommand } from './commands/generate_module';
 import { generateTestWmCommand } from './commands/generate_test_wm';
+import { activateCliTools } from './utils/activate_cli_tools';
 
 // This method is called when extension is activated
 // Extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) : Promise<void> {
+    
+    await activateCliTools();
 
     let addCommand = (name: string, lambda: (...args: any[]) => Promise<void>) =>{
         let registration = vscode.commands.registerCommand(name, lambda);
