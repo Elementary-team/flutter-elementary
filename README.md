@@ -15,6 +15,7 @@ This is a home to a family of Elementary library packages.
 | --------------|:-------------:|
 | [elementary](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary) | [![Pub Version](https://img.shields.io/pub/v/elementary?logo=dart&logoColor=white)](https://pub.dev/packages/elementary) |
 | [elementary_test](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_test)      | [![Pub Version](https://img.shields.io/pub/v/elementary_test?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_test)      |
+| [elementary_cli](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_tools/elementary_cli)      | [![Pub Version](https://img.shields.io/pub/v/elementary_cli?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_cli)      |
 
 ## Elementary overview
 
