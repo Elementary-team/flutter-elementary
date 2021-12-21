@@ -38,7 +38,7 @@ jobs:
         run: echo | grep -q Overview packages/elementary/README.md ; echo $?
 
       - name: Check Technical Overview
-        run: echo | grep -q Technical Overview README.md ; echo $?
+        run: echo | grep -q Technical Overview packages/elementary/README.md ; echo $?
 
       - name: Install dependencies
         run: flutter pub get
