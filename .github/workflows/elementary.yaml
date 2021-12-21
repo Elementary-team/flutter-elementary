@@ -11,7 +11,6 @@ on:
 jobs:
   analysis:
     runs-on: ubuntu-latest
-
     defaults:
       run:
         shell: bash
@@ -68,6 +67,10 @@ jobs:
   testing:
     needs: analysis
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: packages/elementary
 
     steps:
       - name: Checkout
@@ -91,6 +94,10 @@ jobs:
   build_android_example:
     needs: analysis
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: packages/elementary
 
     steps:
       # Setup Java environment in order to build the Android app.
@@ -111,10 +118,16 @@ jobs:
         run: |
           cd example
           flutter pub get
+          flutter pub get
           flutter build apk
   build_ios_example:
     needs: analysis
     runs-on: macos-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: packages/elementary
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
