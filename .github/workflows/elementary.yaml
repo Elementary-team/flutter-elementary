@@ -9,8 +9,14 @@ on:
       - ".github/workflows/elementary.yaml"
 
 jobs:
-  analysis:
+  build:
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        shell: bash
+        working-directory: packages/elementary
+
 
     steps:
       - name: Checkout
@@ -41,7 +47,7 @@ jobs:
         run: echo | grep -q Technical Overview packages/elementary/README.md ; echo $?
 
       - name: Install dependencies
-        run: packages\elementary flutter pub get
+        run: flutter pub get
 
       - name: Run dependency validator
         run: |
