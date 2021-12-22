@@ -97,7 +97,7 @@ jobs:
         if: success()
         run: |
           flutter test --coverage
-          bash <(curl -s https://codecov.io/bash) -f coverage/lcov.info
+          bash <(curl -s https://codecov.io/bash) -f coverage/lcov.info -F elementary
 
   build_android_example:
     needs: analysis
