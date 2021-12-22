@@ -1,7 +1,14 @@
-name: build elementary
+name: elementary analysis
 
 on:
   pull_request:
+    branches:
+      - main
+    paths:
+      - "packages/elementary/**"
+      - ".github/workflows/elementary.yaml"
+
+  push:
     branches:
       - main
     paths:
