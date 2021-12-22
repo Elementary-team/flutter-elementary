@@ -3,6 +3,7 @@
 <img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo" style="margin:50px 0px">
 
 [![Pub Version](https://img.shields.io/pub/v/elementary?logo=dart&logoColor=white)](https://pub.dev/packages/elementary)
+[![Coverage Status](https://img.shields.io/codecov/c/github/Elementary-team/flutter-elementary?flag=elementary&logo=codecov&logoColor=white)](https://app.codecov.io/gh/Elementary-team/flutter-elementary)
 [![Pub Likes](https://badgen.net/pub/likes/elementary)](https://pub.dev/packages/elementary)
 [![Pub popularity](https://badgen.net/pub/popularity/elementary)](https://pub.dev/packages/elementary)
 ![Flutter Platform](https://badgen.net/pub/flutter-platform/elementary)

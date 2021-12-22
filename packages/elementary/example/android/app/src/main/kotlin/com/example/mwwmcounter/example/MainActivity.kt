@@ -1,4 +1,4 @@
-package com.example.counter
+package com.example.mwwmcounter.example
 
 import io.flutter.embedding.android.FlutterActivity
 

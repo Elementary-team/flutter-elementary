@@ -1,7 +1,5 @@
 import 'package:elementary/elementary.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -176,7 +174,7 @@ void main() {
 
   testWidgets(
     'Switching wantKeepAlive from true(default) to false should change '
-        'the behavior of the widget',
+    'the behavior of the widget',
     (tester) async {
       testWidgetModel = TestWidgetModel(
         model: model,
