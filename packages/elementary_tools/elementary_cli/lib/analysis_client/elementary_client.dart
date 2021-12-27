@@ -1,9 +1,5 @@
-// Copyright (c) 2018, the Dart project authors. Please see the AUTHORS file
-// for details. All rights reserved. Use of this source code is governed by a
-// BSD-style license that can be found in the LICENSE file.
-
 import 'dart:async';
-import 'dart:io' show Directory, File, FileMode, Platform, ProcessSignal, exit;
+import 'dart:io';
 
 import 'package:analysis_server_client/handler/connection_handler.dart';
 import 'package:analysis_server_client/handler/notification_handler.dart';
@@ -32,14 +28,25 @@ class ElementaryClient {
     await server.send(SERVER_REQUEST_SET_SUBSCRIPTIONS,
         ServerSetSubscriptionsParams([ServerService.STATUS]).toJson());
 
+    final root = Directory.current.path;
+    // ConsoleWriter.write('Analysis root: $root');
+
     // TODO(AlexeyBukin): make root a parameter
     await server.send(
         ANALYSIS_REQUEST_SET_ANALYSIS_ROOTS,
-        AnalysisSetAnalysisRootsParams([Directory.current.path], const [])
+        AnalysisSetAnalysisRootsParams([root], const [])
             .toJson());
+    await handler.analysisCompleter.future;
+
+
+
+    // ODO(AlexeyBukin): await on SET_ANALYSIS_ROOTS request with a callback from handler
+    // await Future<void>.delayed(Duration(seconds: 5));
   }
 
-  Future<void> applyImportFixes(String file) async {
+  Future<void> applyImportFixes(String filepath) async {
+    final file = path.normalize(path.absolute(filepath));
+    ConsoleWriter.write('file to apply: $file');
     final jsonAnswer = await server.send(
         ANALYSIS_REQUEST_GET_ERRORS, AnalysisGetErrorsParams(file).toJson());
     final answer = AnalysisGetErrorsResult.fromJson(
@@ -47,17 +54,27 @@ class ElementaryClient {
     final fixableErrors = await Future.wait(answer.errors
         .where((e) => e.hasFix ?? false)
         .map((e) => getErrorFixes(e.location)));
+    ConsoleWriter.write('length ${fixableErrors.length}');
     for (final error in fixableErrors) {
       for (final errorFixes in error) {
-        errorFixes.fixes
-            .where((f) => f.message.startsWith('Import'))
-            .forEach(_applyImportFix);
+        ConsoleWriter.write('fix ${error.length}');
+        for (final fix in errorFixes.fixes) {
+          ConsoleWriter.write('message: ${ fix.message}');
+          if (fix.message.startsWith("Import library 'package:")) {
+            ConsoleWriter.write('import ${ errorFixes.fixes.length}');
+            _applyImportFix(fix);
+          }
+        }
+        // errorFixes.fixes
+        //     .where((f) => f.message.startsWith('Import'))
+        //     .forEach(_applyImportFix);
       }
     }
     // organize imports
   }
 
   void _applyImportFix(SourceChange fix) {
+    ConsoleWriter.write('58');
     // parallel work on multiple files makes no sense with imports
     // because there will be only one file in all cases
     for (final sourceFileEdit in fix.edits) {
@@ -68,6 +85,7 @@ class ElementaryClient {
       final code = file.readAsStringSync();
       final newCode = SourceEdit.applySequence(code, sourceFileEdit.edits);
       file.writeAsStringSync(newCode);
+      ConsoleWriter.write('68');
     }
   }
 
@@ -164,6 +182,8 @@ class ElementaryHandler with NotificationHandler, ConnectionHandler {
   final Server server;
   int errorCount = 0;
 
+  late Completer<void> analysisCompleter = Completer<void>();
+
   Completer<List<AnalysisError>> onAnalysisErrorsCompleter =
       Completer<List<AnalysisError>>();
   String onAnalysisErrorsFile = '';
@@ -226,6 +246,9 @@ class ElementaryHandler with NotificationHandler, ConnectionHandler {
   void onServerStatus(ServerStatusParams params) {
     final analysisStatus = params.analysis;
     if (analysisStatus != null && !analysisStatus.isAnalyzing) {
+      if (!analysisCompleter.isCompleted) {
+        analysisCompleter.complete();
+      }
       // // Whenever the server stops analyzing,
       // // print a brief summary of what issues have been found.
       // if (errorCount == 0) {
@@ -239,54 +262,54 @@ class ElementaryHandler with NotificationHandler, ConnectionHandler {
   }
 }
 
-/// A simple application that uses the analysis server to analyze a package.
-void main(List<String> args) async {
-  var target = await parseArgs(args);
-  ConsoleWriter.write('Analyzing $target');
-
-  // Launch the server
-  var server = Server();
-  await server.start();
-
-  // Connect to the server
-  var handler = ElementaryHandler(server);
-  server.listenToOutput(notificationProcessor: handler.handleEvent);
-  if (!await handler.serverConnected(timeLimit: const Duration(seconds: 15))) {
-    exit(1);
-  }
-
-  // Request analysis
-  await server.send(SERVER_REQUEST_SET_SUBSCRIPTIONS,
-      ServerSetSubscriptionsParams([ServerService.STATUS]).toJson());
-  await server.send(ANALYSIS_REQUEST_SET_ANALYSIS_ROOTS,
-      AnalysisSetAnalysisRootsParams([target], const []).toJson());
-
-  // Continue to watch for analysis until the user presses Ctrl-C
-  late StreamSubscription<ProcessSignal> subscription;
-  subscription = ProcessSignal.sigint.watch().listen((_) async {
-    ConsoleWriter.write('Exiting...');
-    // ignore: unawaited_futures
-    subscription.cancel();
-    await server.stop();
-  });
-}
-
-Future<String> parseArgs(List<String> args) async {
-  if (args.length != 1) {
-    printUsageAndExit('Expected exactly one directory');
-  }
-  final dir = Directory(path.normalize(path.absolute(args[0])));
-  if (!dir.existsSync()) {
-    printUsageAndExit('Could not find directory ${dir.path}');
-  }
-  return dir.path;
-}
-
-void printUsageAndExit(String errorMessage) {
-  ConsoleWriter.write(errorMessage);
-  ConsoleWriter.write('');
-  final appName = path.basename(Platform.script.toFilePath());
-  ConsoleWriter.write('Usage: $appName <directory path>');
-  ConsoleWriter.write('  Analyze the *.dart source files in <directory path>');
-  exit(1);
-}
+// /// A simple application that uses the analysis server to analyze a package.
+// void main(List<String> args) async {
+//   var target = await parseArgs(args);
+//   ConsoleWriter.write('Analyzing $target');
+//
+//   // Launch the server
+//   var server = Server();
+//   await server.start();
+//
+//   // Connect to the server
+//   var handler = ElementaryHandler(server);
+//   server.listenToOutput(notificationProcessor: handler.handleEvent);
+//   if (!await handler.serverConnected(timeLimit: const Duration(seconds: 15))) {
+//     exit(1);
+//   }
+//
+//   // Request analysis
+//   await server.send(SERVER_REQUEST_SET_SUBSCRIPTIONS,
+//       ServerSetSubscriptionsParams([ServerService.STATUS]).toJson());
+//   await server.send(ANALYSIS_REQUEST_SET_ANALYSIS_ROOTS,
+//       AnalysisSetAnalysisRootsParams([target], const []).toJson());
+//
+//   // Continue to watch for analysis until the user presses Ctrl-C
+//   late StreamSubscription<ProcessSignal> subscription;
+//   subscription = ProcessSignal.sigint.watch().listen((_) async {
+//     ConsoleWriter.write('Exiting...');
+//     // ignore: unawaited_futures
+//     subscription.cancel();
+//     await server.stop();
+//   });
+// }
+//
+// Future<String> parseArgs(List<String> args) async {
+//   if (args.length != 1) {
+//     printUsageAndExit('Expected exactly one directory');
+//   }
+//   final dir = Directory(path.normalize(path.absolute(args[0])));
+//   if (!dir.existsSync()) {
+//     printUsageAndExit('Could not find directory ${dir.path}');
+//   }
+//   return dir.path;
+// }
+//
+// void printUsageAndExit(String errorMessage) {
+//   ConsoleWriter.write(errorMessage);
+//   ConsoleWriter.write('');
+//   final appName = path.basename(Platform.script.toFilePath());
+//   ConsoleWriter.write('Usage: $appName <directory path>');
+//   ConsoleWriter.write('  Analyze the *.dart source files in <directory path>');
+//   exit(1);
+// }

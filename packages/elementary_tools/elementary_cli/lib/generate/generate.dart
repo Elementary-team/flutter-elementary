@@ -37,7 +37,6 @@ class GenerateAnalysis extends Command<void> {
 
     await client.start();
     await client.applyImportFixes(pathRaw);
-    // await client.analyzeFile(pathRaw);
     await client.stop();
   }
 }
