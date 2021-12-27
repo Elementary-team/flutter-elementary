@@ -13,6 +13,8 @@ environment:
   sdk: '>=2.14.0 <3.0.0'
 
 dependencies:
+  analysis_server_client:
+    path: tools/analysis_server_client
   analyzer: ^2.7.0
   analyzer_plugin: ^0.8.0
   args: ^2.3.0

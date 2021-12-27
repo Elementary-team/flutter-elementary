@@ -4,13 +4,53 @@ import 'dart:isolate';
 
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
+import 'package:elementary_cli/analysis_client/elementary_client.dart';
 import 'package:elementary_cli/exit_code_exception.dart';
 import 'package:elementary_cli/generate/generate_module.dart';
 import 'package:elementary_cli/generate/generate_test.dart';
 import 'package:path/path.dart' as p;
 
+class GenerateAnalysis extends Command<void> {
+  @override
+  String get description => 'analysis';
+
+  @override
+  String get name => 'analysis';
+
+  @override
+  ArgParser get argParser {
+    return ArgParser()
+      ..addOption(
+        'file',
+        abbr: 'f',
+        mandatory: true,
+        help: 'path to file',
+        valueHelp: 'path/to/file.dart',
+      );
+  }
+
+  @override
+  Future<void> run() async {
+    final parsed = argResults!;
+    final pathRaw = parsed['file'] as String;
+    final client = ElementaryClient();
+
+    await client.start();
+    await client.applyImportFixes(pathRaw);
+    // await client.analyzeFile(pathRaw);
+    await client.stop();
+  }
+}
+
 /// `elementary_tools generate` command
 class GenerateCommand extends Command<void> {
+
+  GenerateCommand() {
+    addSubcommand(GenerateModuleCommand());
+    addSubcommand(GenerateTestCommand());
+    addSubcommand(GenerateAnalysis());
+  }
+
   static const templatesUnreachable =
       FileSystemException('Generator misses template files');
 
@@ -23,10 +63,7 @@ class GenerateCommand extends Command<void> {
   @override
   bool get takesArguments => false;
 
-  GenerateCommand() {
-    addSubcommand(GenerateModuleCommand());
-    addSubcommand(GenerateTestCommand());
-  }
+
 }
 
 /// Command that generates files from templates
