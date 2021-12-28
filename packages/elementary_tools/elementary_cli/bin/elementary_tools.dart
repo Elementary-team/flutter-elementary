@@ -8,7 +8,6 @@ import 'package:elementary_cli/logger.dart';
 
 /// Main entry for `elementary_tools` command
 Future<void> main(List<String> arguments) async {
-  enableInfoLogging();
 
   const commandName = 'elementary_tools';
   const commandDescription = 'CLI utilities for Elementary';
