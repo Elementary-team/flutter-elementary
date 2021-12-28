@@ -2,7 +2,7 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:elementary_cli/analysis_client/elementary_client.dart';
 import 'package:elementary_cli/commands/generate/generate.dart';
-import 'package:elementary_cli/logger.dart';
+import 'package:elementary_cli/utils/logger.dart';
 import 'package:logging/logging.dart';
 
 class FixImportsCommand extends Command<void> {

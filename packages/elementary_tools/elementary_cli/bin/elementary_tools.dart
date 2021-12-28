@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 import 'package:elementary_cli/commands/fix/fix.dart';
 import 'package:elementary_cli/commands/generate/generate.dart';
-import 'package:elementary_cli/exit_code_exception.dart';
-import 'package:elementary_cli/logger.dart';
+import 'package:elementary_cli/utils/exit_code_exception.dart';
+import 'package:elementary_cli/utils/logger.dart';
 
 /// Main entry for `elementary_tools` command
 Future<void> main(List<String> arguments) async {

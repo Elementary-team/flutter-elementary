@@ -6,7 +6,7 @@ import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
 import 'package:elementary_cli/commands/generate/generate_module.dart';
 import 'package:elementary_cli/commands/generate/generate_test/generate_test.dart';
-import 'package:elementary_cli/exit_code_exception.dart';
+import 'package:elementary_cli/utils/exit_code_exception.dart';
 import 'package:path/path.dart' as p;
 
 /// `elementary_tools generate` command

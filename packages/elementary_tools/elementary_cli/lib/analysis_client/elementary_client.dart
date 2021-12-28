@@ -5,7 +5,7 @@ import 'package:analysis_server_client/handler/connection_handler.dart';
 import 'package:analysis_server_client/handler/notification_handler.dart';
 import 'package:analysis_server_client/protocol.dart';
 import 'package:analysis_server_client/server.dart';
-import 'package:elementary_cli/exit_code_exception.dart';
+import 'package:elementary_cli/utils/exit_code_exception.dart';
 import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:pub_semver/pub_semver.dart';
