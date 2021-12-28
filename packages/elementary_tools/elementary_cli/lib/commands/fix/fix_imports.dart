@@ -6,9 +6,6 @@ import 'package:elementary_cli/utils/logger.dart';
 import 'package:logging/logging.dart';
 
 class FixImportsCommand extends Command<void> {
-
-  final log = Logger('FixImportsCommand');
-
   @override
   String get description => 'imports';
 
@@ -18,7 +15,7 @@ class FixImportsCommand extends Command<void> {
   @override
   ArgParser get argParser {
     return ArgParser()
-    ..addVerboseLoggingFlag()
+      ..addVerboseLoggingFlag()
       ..addOption(
         'file',
         abbr: 'f',
@@ -34,14 +31,18 @@ class FixImportsCommand extends Command<void> {
     applyLoggingSettings(parsed);
 
     final pathRaw = parsed['file'] as String;
-    await pureRun(pathRaw);
+    await pureRun([pathRaw]);
   }
 
-  Future<void> pureRun(String pathRaw) async {
+  static Future<void> pureRun(List<String> files) async {
+    final log = Logger('FixImportsCommand')
+      ..info("Running 'fix imports' command...")
+      ..info('Target: $files');
     final client = ElementaryClient();
     await client.start();
-    await client.applyImportFixes(pathRaw);
+    await Future.wait(files.map(client.applyImportFixes));
+    // await client.applyImportFixes(pathRaw);
     await client.stop();
+    log.info("Running 'fix imports' command... Done.");
   }
-
 }

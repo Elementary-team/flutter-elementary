@@ -10,9 +10,8 @@ import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:pub_semver/pub_semver.dart';
 
-
 /// Some actions implicitly start new analysis
-/// To wait
+/// To await on them use Future getter [analysisCompletion]
 class ElementaryClient {
   final log = Logger('ElementaryClient');
   final Server server = Server();

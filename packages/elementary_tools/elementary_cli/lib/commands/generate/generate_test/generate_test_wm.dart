@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:elementary_cli/analysis_client/elementary_client.dart';
+import 'package:elementary_cli/commands/fix/fix_imports.dart';
 import 'package:elementary_cli/commands/generate/generate.dart';
 import 'package:elementary_cli/utils/exit_code_exception.dart';
 import 'package:elementary_cli/utils/logger.dart';
@@ -135,12 +135,7 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
           )),
     )
         .then((files) async {
-          final client = ElementaryClient();
-
-          await client.start();
-          await Future.wait(files.map(client.applyImportFixes));
-          await client.stop();
-
+          await FixImportsCommand.pureRun(files);
           return files;
         })
         .then((files) => files.forEach(ConsoleWriter.write))
