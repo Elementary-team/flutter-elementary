@@ -1,8 +1,12 @@
 import 'package:args/command_runner.dart';
-import 'package:elementary_cli/generate/generate_test_wm.dart';
+import 'package:elementary_cli/commands/generate/generate_test_wm.dart';
 
 /// `elementary_tools generate test` command
 class GenerateTestCommand extends Command<void> {
+
+  GenerateTestCommand() {
+    addSubcommand(GenerateTestWmCommand());
+  }
 
   @override
   String get description => 'Generates template files for tests';
@@ -12,8 +16,4 @@ class GenerateTestCommand extends Command<void> {
 
   @override
   bool get takesArguments => false;
-
-  GenerateTestCommand() {
-    addSubcommand(GenerateTestWmCommand());
-  }
 }

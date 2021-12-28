@@ -11,18 +11,19 @@ abstract class ExitCodeException {
 /// Exception thrown when arguments are incorrect.
 class CommandLineUsageException extends IOException
     implements ExitCodeException {
-  final String message;
-  final String argumentName;
-  final String argumentValue;
-
-  @override
-  int get exitCode => 64;
 
   CommandLineUsageException({
     this.message = '',
     this.argumentName = '',
     this.argumentValue = '',
   });
+
+  final String message;
+  final String argumentName;
+  final String argumentValue;
+
+  @override
+  int get exitCode => 64;
 
   @override
   String toString() {
@@ -88,4 +89,20 @@ class NonExistentFileException extends FileSystemException
 
   NonExistentFileException(String filePath)
       : super('File does not exist', filePath);
+}
+
+/// Exception thrown when server timed out to connect.
+class ServerTimeoutException implements ExitCodeException, Exception {
+
+  ServerTimeoutException(this.message);
+
+  final String message;
+
+  @override
+  int get exitCode => 70;
+
+  @override
+  String toString() {
+    return message;
+  }
 }

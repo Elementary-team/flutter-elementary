@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:elementary_cli/commands/generate/generate.dart';
 import 'package:elementary_cli/console_writer.dart';
 import 'package:elementary_cli/exit_code_exception.dart';
-import 'package:elementary_cli/generate/generate.dart';
+import 'package:elementary_cli/logger.dart';
 import 'package:path/path.dart' as p;
 
 /// `elementary_tools generate module` command
@@ -56,6 +57,7 @@ class GenerateModuleCommand extends TemplateGeneratorCommand {
         abbr: 's',
         help: 'Should we generate subdirectory for module?',
       )
+      ..addVerboseLoggingFlag()
       // path to templates directory (mostly for testing purposes)
       ..addTemplatePathOption();
   }
@@ -66,6 +68,8 @@ class GenerateModuleCommand extends TemplateGeneratorCommand {
     final pathRaw = parsed[pathOption] as String;
     final fileNameBase = parsed[nameOption] as String;
     final isSubdirNeeded = parsed[isSubdirNeededFlag] as bool;
+
+    applyLoggingSettings(parsed);
 
     final baseDir = Directory(pathRaw);
     if (!baseDir.existsSync()) {

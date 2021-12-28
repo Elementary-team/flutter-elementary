@@ -5,240 +5,192 @@ import 'package:analysis_server_client/handler/connection_handler.dart';
 import 'package:analysis_server_client/handler/notification_handler.dart';
 import 'package:analysis_server_client/protocol.dart';
 import 'package:analysis_server_client/server.dart';
-import 'package:elementary_cli/console_writer.dart';
+import 'package:elementary_cli/exit_code_exception.dart';
+import 'package:logging/logging.dart';
 import 'package:path/path.dart' as path;
 import 'package:pub_semver/pub_semver.dart';
 
-class ElementaryClient {
-  ElementaryClient() {
-    server = Server();
-  }
 
-  late final Server server;
-  late final ElementaryHandler handler;
+/// Some actions implicitly start new analysis
+/// To wait
+class ElementaryClient {
+  final log = Logger('ElementaryClient');
+  final Server server = Server();
+  late final ElementaryHandler handler = ElementaryHandler(server);
+
+  Future<String> get analysisCompletion => handler.analysisStatusStream.first;
 
   Future<void> start() async {
+    log.fine('Starting connection with analysis server...');
     await server.start();
-    handler = ElementaryHandler(server);
     server.listenToOutput(notificationProcessor: handler.handleEvent);
     if (!await handler.serverConnected(
         timeLimit: const Duration(seconds: 15))) {
-      throw "Cannot connect to dart analysis server";
+      throw ServerTimeoutException('Cannot connect to dart analysis server');
     }
     await server.send(SERVER_REQUEST_SET_SUBSCRIPTIONS,
         ServerSetSubscriptionsParams([ServerService.STATUS]).toJson());
 
     final root = Directory.current.path;
-    // ConsoleWriter.write('Analysis root: $root');
+    log.fine('Analysis root: ${path.toUri(root)}');
 
     // TODO(AlexeyBukin): make root a parameter
-    await server.send(
-        ANALYSIS_REQUEST_SET_ANALYSIS_ROOTS,
-        AnalysisSetAnalysisRootsParams([root], const [])
-            .toJson());
-    await handler.analysisCompleter.future;
+    await server.send(ANALYSIS_REQUEST_SET_ANALYSIS_ROOTS,
+        AnalysisSetAnalysisRootsParams([root], const []).toJson());
+    await handler.analysisStatusStream.first;
 
-
-
-    // ODO(AlexeyBukin): await on SET_ANALYSIS_ROOTS request with a callback from handler
-    // await Future<void>.delayed(Duration(seconds: 5));
+    log.fine('Starting connection with analysis server... Done.');
   }
 
   Future<void> applyImportFixes(String filepath) async {
+    log.fine('Applying Import fixes...');
     final file = path.normalize(path.absolute(filepath));
-    ConsoleWriter.write('file to apply: $file');
+    log.fine('Target: ${path.toUri(file)}');
     final jsonAnswer = await server.send(
-        ANALYSIS_REQUEST_GET_ERRORS, AnalysisGetErrorsParams(file).toJson());
+      ANALYSIS_REQUEST_GET_ERRORS,
+      AnalysisGetErrorsParams(file).toJson(),
+    );
     final answer = AnalysisGetErrorsResult.fromJson(
-        ResponseDecoder(null), r'$', jsonAnswer);
+      ResponseDecoder(null),
+      r'$',
+      jsonAnswer,
+    );
     final fixableErrors = await Future.wait(answer.errors
         .where((e) => e.hasFix ?? false)
         .map((e) => getErrorFixes(e.location)));
-    ConsoleWriter.write('length ${fixableErrors.length}');
+    final importFixes = List<SourceEdit>.empty(growable: true);
     for (final error in fixableErrors) {
       for (final errorFixes in error) {
-        ConsoleWriter.write('fix ${error.length}');
-        for (final fix in errorFixes.fixes) {
-          ConsoleWriter.write('message: ${ fix.message}');
-          if (fix.message.startsWith("Import library 'package:")) {
-            ConsoleWriter.write('import ${ errorFixes.fixes.length}');
-            _applyImportFix(fix);
-          }
-        }
-        // errorFixes.fixes
-        //     .where((f) => f.message.startsWith('Import'))
-        //     .forEach(_applyImportFix);
+        // Apply only package imports to avoid double imports
+        importFixes.addAll(
+          errorFixes.fixes
+              .where((f) => f.message.startsWith("Import library 'package:"))
+              .expand((fix) => fix.edits)
+              .where((edit) => edit.file == file)
+              .expand((edit) => edit.edits),
+        );
       }
     }
-    // organize imports
-  }
+    // avoid same imports for different errors
+    final importStrings =
+        importFixes.map((f) => f.replacement).toSet().toList();
 
-  void _applyImportFix(SourceChange fix) {
-    ConsoleWriter.write('58');
-    // parallel work on multiple files makes no sense with imports
-    // because there will be only one file in all cases
-    for (final sourceFileEdit in fix.edits) {
-      final file = File(sourceFileEdit.file);
-      if (!file.existsSync()) {
-        throw 'FILE DOES NOT EXISTS';
-      }
-      final code = file.readAsStringSync();
-      final newCode = SourceEdit.applySequence(code, sourceFileEdit.edits);
-      file.writeAsStringSync(newCode);
-      ConsoleWriter.write('68');
+    // The new analysis session will start after some files' contents updated
+    if (importStrings.isNotEmpty) {
+      _insertImportEdits(file, importStrings);
+    } else {
+      log.fine('No fixes found');
     }
-  }
+    await analysisCompletion;
 
-  Future<void> analyzeFile(String file) async {
-    // final dir = Directory.current;
-    // ConsoleWriter.write(dir);
-
-    final fileEntity = File(path.normalize(path.absolute(file)));
-    if (!fileEntity.existsSync()) {
-      throw "file does not exist";
-    }
-    final filePath = fileEntity.path;
-    final dirPath = path.dirname(filePath);
-
-    final c = Completer<List<AnalysisError>>();
-    handler
-      ..onAnalysisErrorsCompleter = c
-      ..onAnalysisErrorsFile = filePath;
-
-    // Request analysis
-    await server.send(
-        ANALYSIS_REQUEST_SET_ANALYSIS_ROOTS,
-        AnalysisSetAnalysisRootsParams(
-            [dirPath, Directory.current.path], const []).toJson());
-    // await server.send(ANALYSIS_REQUEST_GET_ERRORS,
-    //     AnalysisGetErrorsParams(filePath).toJson());
-    final errors = await c.future;
+    // logging experiments...
     //
-    // errors.forEach((error) {
-    //   var loc = error.location;
-    //   var corr = error.correction;
-    //   ConsoleWriter.write('  ${error.message} • ${loc.startLine}:${loc.startColumn}  - $corr');
-    // });
+    // await logFunction(
+    //   function: organizeImports,
+    //   lambda: () => organizeImports(file)
+    // );
 
-    await Future.wait(errors.map((e) => getErrorFixes(e.location)));
+    await organizeImports(file);
+    // organize imports
+
+    log.fine('Applying Import fixes... Done.');
   }
 
-  // Future<void> getErrorAssists(Location location) async {
-  //   final file = location.file;
-  //   final offset = location.offset;
-  //   final length = location.length;
-  //   final answerJson = await server.send(EDIT_REQUEST_GET_ASSISTS,
-  //       EditGetAssistsParams(file, offset, length).toJson());
-  //   // fianl jsonDecoder = ResponseDecoder(null);
-  //   final answer = EditGetAssistsResult.fromJson( ResponseDecoder(null), r'$', answerJson);
-  //   // final assists = answer?['assists'] as List<dynamic>;
-  //   // final assistsTrue = assists.cast<Map<String, Object?>>();
-  //   // final message = assistsTrue.map((e) => e['message']).join("\n");
-  //   final text = answer.assists.map((a) => '${a.id} * ${a.message} : ${a.edits}').join("\n");
-  //   ConsoleWriter.write(text);
+  // logging experiments...
+  //
+  // dynamic logFunction({
+  //   required Function function,
+  //   required Function lambda,
+  // }) {
+  //   final splitted = function.toString().split("'");
+  //   final functionName = splitted.length > 1 ? splitted[1] : 'anonimous';
+  //   log.info('Calling $functionName...');
+  //   final dynamic result = lambda.call();
+  //   log.info('Calling $functionName... Done.');
+  //   return result;
   // }
 
+  /// Gets and applies import edits, unsafe for FileDoesNotExists...
+  Future<void> organizeImports(String filepath) async {
+    // log.info(organizeImports.toString().split("'")[1]);
+    log.fine('Organizing imports...');
+    final file = File(filepath);
+    final answerJson = await server.send(
+      EDIT_REQUEST_ORGANIZE_DIRECTIVES,
+      EditOrganizeDirectivesParams(filepath).toJson(),
+    );
+    final answer = EditOrganizeDirectivesResult.fromJson(
+      ResponseDecoder(null),
+      r'$',
+      answerJson,
+    );
+    final code = file.readAsStringSync();
+    final newCode = SourceEdit.applySequence(code, answer.edit.edits);
+    file.writeAsStringSync(newCode);
+    log.fine('Organizing imports... Done.');
+  }
+
+  /// inserts [edits] to [filepath], unsafe for FileDoesNotExists...
+  void _insertImportEdits(String filepath, List<String> edits) {
+    log.fine('Inserting import edits...');
+    final file = File(filepath);
+    final code = file.readAsStringSync();
+    final newCode = '${edits.join()}\n$code';
+    file.writeAsStringSync(newCode);
+    log.fine('Inserting import edits... Done.');
+  }
+
   Future<List<AnalysisErrorFixes>> getErrorFixes(Location location) async {
+    log.fine('Getting error fixes...');
     final file = location.file;
     final offset = location.offset;
     final answerJson = await server.send(
         EDIT_REQUEST_GET_FIXES, EditGetFixesParams(file, offset).toJson());
-    // fianl jsonDecoder = ResponseDecoder(null);
-    final answer =
-        EditGetFixesResult.fromJson(ResponseDecoder(null), r'$', answerJson);
-    // final assists = answer?['assists'] as List<dynamic>;
-    // final assistsTrue = assists.cast<Map<String, Object?>>();
-    // final message = assistsTrue.map((e) => e['message']).join("\n");
-    String fixesToString(List<SourceChange> fixes) {
-      return fixes.map((f) {
-        var report = '\n*----- ${f.id} - ${f.message}';
-        // TODO(Alexbukin): find a better way to identify source change
-        // .id property is optional, also may have postfix numbers
-        if (f.message.startsWith('Import')) {
-          report += f.edits
-              .map((e) =>
-                  '\n          apply ${e.edits.map((e) => e.replacement)}')
-              .join();
-        }
-        return report;
-      }).join();
-    }
-
-    final text = answer.fixes
-        .map((a) =>
-            '${a.error.code} * ${a.error.message} : ${fixesToString(a.fixes)}')
-        .join("\n");
-    ConsoleWriter.write(text);
+    final answer = EditGetFixesResult.fromJson(
+      ResponseDecoder(null),
+      r'$',
+      answerJson,
+    );
+    log.fine('Getting error fixes... Done.');
     return answer.fixes;
   }
 
   Future<void> stop() async {
+    log.fine('Closing connection with analysis server...');
+    handler.stop();
     await server.stop();
+    log.fine('Closing connection with analysis server... Done.');
   }
 }
 
 class ElementaryHandler with NotificationHandler, ConnectionHandler {
-  @override
-  final Server server;
-  int errorCount = 0;
-
-  late Completer<void> analysisCompleter = Completer<void>();
-
-  Completer<List<AnalysisError>> onAnalysisErrorsCompleter =
-      Completer<List<AnalysisError>>();
-  String onAnalysisErrorsFile = '';
-
   ElementaryHandler(this.server);
 
-  @override
-  void onAnalysisErrors(AnalysisErrorsParams params) {
-    // params.
-
-    // ConsoleWriter.write('params: ${params.toString()}');
-    //
-    // var errors = params.errors;
-    // var first = true;
-    // for (var error in errors) {
-    //   if (error.type.name == 'TODO') {
-    //     // Ignore these types of "errors"
-    //     continue;
-    //   }
-    //   if (first) {
-    //     first = false;
-    //     ConsoleWriter.write('${params.file}:');
-    //   }
-    //   var loc = error.location;
-    //   ConsoleWriter.write('  ${error.message} • ${loc.startLine}:${loc.startColumn}');
-    //   ++errorCount;
-    // }
-
-    if (params.file == onAnalysisErrorsFile) {
-      if (!onAnalysisErrorsCompleter.isCompleted) {
-        onAnalysisErrorsCompleter.complete(
-            params.errors.where((element) => element.hasFix ?? false).toList());
-      }
-    }
+  void stop() {
+    _analysisStreamController.close();
   }
 
+  final StreamController<String> _analysisStreamController =
+      StreamController<String>.broadcast();
+  late Stream<String> analysisStatusStream = _analysisStreamController.stream;
+
   @override
-  void onFailedToConnect() {
-    ConsoleWriter.write('Failed to connect to server');
-  }
+  final Server server;
 
   @override
   void onProtocolNotSupported(Version version) {
-    ConsoleWriter.write(
+    Logger.root.severe(
         'Expected protocol version $PROTOCOL_VERSION, but found $version');
   }
 
   @override
   void onServerError(ServerErrorParams params) {
     if (params.isFatal) {
-      ConsoleWriter.write('Fatal Server Error: ${params.message}');
+      Logger.root.severe('Fatal Server Error: ${params.message}');
     } else {
-      ConsoleWriter.write('Server Error: ${params.message}');
+      Logger.root.warning('Server Error: ${params.message}');
     }
-    ConsoleWriter.write(params.stackTrace);
+    Logger.root.warning(params.stackTrace);
     super.onServerError(params);
   }
 
@@ -246,70 +198,9 @@ class ElementaryHandler with NotificationHandler, ConnectionHandler {
   void onServerStatus(ServerStatusParams params) {
     final analysisStatus = params.analysis;
     if (analysisStatus != null && !analysisStatus.isAnalyzing) {
-      if (!analysisCompleter.isCompleted) {
-        analysisCompleter.complete();
+      if (!_analysisStreamController.isClosed) {
+        _analysisStreamController.add('Analysis completed');
       }
-      // // Whenever the server stops analyzing,
-      // // print a brief summary of what issues have been found.
-      // if (errorCount == 0) {
-      //   ConsoleWriter.write('No issues found.');
-      // } else {
-      //   ConsoleWriter.write('Found $errorCount errors/warnings/hints');
-      // }
-      // errorCount = 0;
-      // ConsoleWriter.write('--------- ctrl-c to exit ---------');
     }
   }
 }
-
-// /// A simple application that uses the analysis server to analyze a package.
-// void main(List<String> args) async {
-//   var target = await parseArgs(args);
-//   ConsoleWriter.write('Analyzing $target');
-//
-//   // Launch the server
-//   var server = Server();
-//   await server.start();
-//
-//   // Connect to the server
-//   var handler = ElementaryHandler(server);
-//   server.listenToOutput(notificationProcessor: handler.handleEvent);
-//   if (!await handler.serverConnected(timeLimit: const Duration(seconds: 15))) {
-//     exit(1);
-//   }
-//
-//   // Request analysis
-//   await server.send(SERVER_REQUEST_SET_SUBSCRIPTIONS,
-//       ServerSetSubscriptionsParams([ServerService.STATUS]).toJson());
-//   await server.send(ANALYSIS_REQUEST_SET_ANALYSIS_ROOTS,
-//       AnalysisSetAnalysisRootsParams([target], const []).toJson());
-//
-//   // Continue to watch for analysis until the user presses Ctrl-C
-//   late StreamSubscription<ProcessSignal> subscription;
-//   subscription = ProcessSignal.sigint.watch().listen((_) async {
-//     ConsoleWriter.write('Exiting...');
-//     // ignore: unawaited_futures
-//     subscription.cancel();
-//     await server.stop();
-//   });
-// }
-//
-// Future<String> parseArgs(List<String> args) async {
-//   if (args.length != 1) {
-//     printUsageAndExit('Expected exactly one directory');
-//   }
-//   final dir = Directory(path.normalize(path.absolute(args[0])));
-//   if (!dir.existsSync()) {
-//     printUsageAndExit('Could not find directory ${dir.path}');
-//   }
-//   return dir.path;
-// }
-//
-// void printUsageAndExit(String errorMessage) {
-//   ConsoleWriter.write(errorMessage);
-//   ConsoleWriter.write('');
-//   final appName = path.basename(Platform.script.toFilePath());
-//   ConsoleWriter.write('Usage: $appName <directory path>');
-//   ConsoleWriter.write('  Analyze the *.dart source files in <directory path>');
-//   exit(1);
-// }

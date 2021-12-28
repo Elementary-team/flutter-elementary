@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:args/args.dart';
+import 'package:elementary_cli/analysis_client/elementary_client.dart';
+import 'package:elementary_cli/commands/generate/generate.dart';
 import 'package:elementary_cli/console_writer.dart';
 import 'package:elementary_cli/exit_code_exception.dart';
-import 'package:elementary_cli/generate/generate.dart';
+import 'package:elementary_cli/logger.dart';
 import 'package:path/path.dart' as p;
 
 /// `elementary_tools generate test wm` command
@@ -63,6 +65,7 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
         help: 'Smart mode flag: --path is path to project root '
             'and --name is source file path/name.',
       )
+      ..addVerboseLoggingFlag()
       // path to templates directory (mostly for testing purposes)
       ..addTemplatePathOption();
   }
@@ -80,6 +83,8 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
     final smart = parsed[smartFlag] as bool;
     final pathRaw = parsed[pathOption] as String;
     final nameRaw = parsed[nameOption] as String;
+
+    applyLoggingSettings(parsed);
 
     if (smart) {
       // smartModeConfig just fills `targetDirectory` and `basename` fields.
@@ -120,7 +125,15 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
             file: files[templateName]!,
             content: contentCreator(templates[templateName]!),
           )),
-    ).then((files) => files.forEach(ConsoleWriter.write)).catchError(
+    ).then((files) async {
+      final client = ElementaryClient();
+
+      await client.start();
+      await Future.wait(files.map(client.applyImportFixes));
+      await client.stop();
+
+      return files;
+    }).then((files) => files.forEach(ConsoleWriter.write)).catchError(
       // If some FileSystemException occurred - delete all files
       // ignore: avoid_types_on_closure_parameters
       (Object error, StackTrace stackTrace) async {
@@ -147,15 +160,16 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
     final rootPath = path;
     final sourceFilePath = name;
 
-    const suffix = '_wm.dart';
-    if (!sourceFilePath.endsWith(suffix)) {
+    const suffixes = ['_wm.dart', '_widget_model.dart'];
+    // if filename does not end with one of suffixes
+    if (!suffixes.any(sourceFilePath.endsWith)) {
       throw CommandLineUsageException(
-        message: 'Widget model dart file name should end with "$suffix".',
+        message: 'Widget model dart file name should end with "$suffixes".',
       );
     }
 
     // export of basename
-    basename = p.basename(sourceFilePath).replaceAll(suffix, '');
+    basename = p.basename(sourceFilePath).replaceAll(suffixes[0], '').replaceAll(suffixes[1], '');
 
     final root = Directory(rootPath);
     final sourceFile = File(sourceFilePath);
