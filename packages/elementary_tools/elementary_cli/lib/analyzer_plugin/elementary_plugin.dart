@@ -17,6 +17,9 @@ import 'package:dart_code_metrics/src/analyzers/lint_analyzer/lint_analysis_conf
 
 // copypaste from 'https://github.com/dart-code-checker/dart-code-metrics/blob/master/lib/src/analyzer_plugin/analyzer_plugin.dart'
 class ElementaryAnalyzerPlugin extends ServerPlugin {
+
+  ElementaryAnalyzerPlugin(ResourceProvider provider) : super(provider);
+
   static const _analyzer = LintAnalyzer();
 
   final _configs = <AnalysisDriverGeneric, LintAnalysisConfig>{};
@@ -31,8 +34,6 @@ class ElementaryAnalyzerPlugin extends ServerPlugin {
   String get version => '1.0.0';
 
   var _filesFromSetPriorityFilesRequest = <String>[];
-
-  ElementaryAnalyzerPlugin(ResourceProvider provider) : super(provider);
 
   @override
   AnalysisDriverGeneric createAnalysisDriver(ContextRoot contextRoot) {
@@ -140,7 +141,7 @@ class ElementaryAnalyzerPlugin extends ServerPlugin {
   ) async {
     try {
       final driver = driverForPath(parameters.file) as AnalysisDriver;
-      final analysisResult = await driver.getResult2(parameters.file);
+      final analysisResult = await driver.getResult(parameters.file);
 
       if (analysisResult is! ResolvedUnitResult) {
         return EditGetFixesResult([]);
