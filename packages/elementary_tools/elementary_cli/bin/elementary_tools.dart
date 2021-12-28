@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:args/command_runner.dart';
 import 'package:elementary_cli/commands/fix/fix.dart';
 import 'package:elementary_cli/commands/generate/generate.dart';
-import 'package:elementary_cli/console_writer.dart';
 import 'package:elementary_cli/exit_code_exception.dart';
 import 'package:elementary_cli/logger.dart';
 

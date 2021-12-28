@@ -33,3 +33,10 @@ void applyLoggingSettings(ArgResults argResults) {
     enableVerboseLogging();
   }
 }
+
+// Writes messages to console, when results needed in stdout
+class ConsoleWriter {
+  static void write(Object? object) {
+    print(object);
+  }
+}

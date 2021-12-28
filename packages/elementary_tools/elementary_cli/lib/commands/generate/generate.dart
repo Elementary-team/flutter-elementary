@@ -61,7 +61,7 @@ abstract class TemplateGeneratorCommand extends Command<void> {
 
   /// Maps template names to target file name
   /// uses `replaceAll('filename')` method for getting real target file name
-  /// Example 'model.dart.tp': 'filename_model.dart'
+  /// Example 'generate_module_model.dart.tp': 'filename_model.dart'
   Map<String, String> get templateToFilenameMap;
 
   /// Fills `templates` map with <templateName, fileContent> pairs
@@ -106,10 +106,10 @@ abstract class TemplateGeneratorCommand extends Command<void> {
   Future<void> copyTemplatesToScriptPath(String defaultTemplateDirPath) async {
     // TODO(AlexeyBukin): make generator for this list
     const resources = [
-      'package:elementary_cli/templates/widget.dart.tp',
-      'package:elementary_cli/templates/model.dart.tp',
-      'package:elementary_cli/templates/test_wm.dart.tp',
-      'package:elementary_cli/templates/widget_model.dart.tp',
+      'package:elementary_cli/templates/generate_module_widget.dart.tp',
+      'package:elementary_cli/templates/generate_module_model.dart.tp',
+      'package:elementary_cli/templates/generate_test_wm.dart.tp',
+      'package:elementary_cli/templates/generate_module_wm.dart.tp',
     ];
 
     for (final resource in resources) {

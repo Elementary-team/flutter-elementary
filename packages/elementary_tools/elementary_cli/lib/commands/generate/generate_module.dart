@@ -20,10 +20,10 @@ class GenerateModuleCommand extends TemplateGeneratorCommand {
   /// Maps template names to target suffixes
   @override
   Map<String, String> get templateToFilenameMap => {
-    'model.dart.tp': 'filename_model.dart',
-    'widget.dart.tp': 'filename_widget.dart',
-    'widget_model.dart.tp': 'filename_wm.dart',
-  };
+        'generate_module_model.dart.tp': 'filename_model.dart',
+        'generate_module_widget.dart.tp': 'filename_widget.dart',
+        'generate_module_wm.dart.tp': 'filename_wm.dart',
+      };
 
   @override
   String get description => 'Generates template elementary mwwm files';
@@ -33,7 +33,6 @@ class GenerateModuleCommand extends TemplateGeneratorCommand {
 
   @override
   bool get takesArguments => false;
-
 
   @override
   ArgParser get argParser {
@@ -70,6 +69,19 @@ class GenerateModuleCommand extends TemplateGeneratorCommand {
     final isSubdirNeeded = parsed[isSubdirNeededFlag] as bool;
 
     applyLoggingSettings(parsed);
+
+    await pureRun(
+      pathRaw: pathRaw,
+      fileNameBase: fileNameBase,
+      isSubdirNeeded: isSubdirNeeded,
+    );
+  }
+
+  Future<void> pureRun({
+    required String pathRaw,
+    required String fileNameBase,
+    required bool isSubdirNeeded,
+  }) async {
 
     final baseDir = Directory(pathRaw);
     if (!baseDir.existsSync()) {

@@ -74,7 +74,7 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
   /// where we expect base name to be
   @override
   Map<String, String> get templateToFilenameMap => {
-        'test_wm.dart.tp': 'filename_wm_test.dart',
+        'generate_test_wm.dart.tp': 'filename_wm_test.dart',
       };
 
   @override
@@ -85,6 +85,15 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
     final nameRaw = parsed[nameOption] as String;
 
     applyLoggingSettings(parsed);
+
+    await pureRun(smart: smart, pathRaw: pathRaw, nameRaw: nameRaw);
+  }
+
+  Future<void> pureRun({
+    required bool smart,
+    required String pathRaw,
+    required String nameRaw,
+  }) async {
 
     if (smart) {
       // smartModeConfig just fills `targetDirectory` and `basename` fields.
@@ -125,24 +134,27 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
             file: files[templateName]!,
             content: contentCreator(templates[templateName]!),
           )),
-    ).then((files) async {
-      final client = ElementaryClient();
+    )
+        .then((files) async {
+          final client = ElementaryClient();
 
-      await client.start();
-      await Future.wait(files.map(client.applyImportFixes));
-      await client.stop();
+          await client.start();
+          await Future.wait(files.map(client.applyImportFixes));
+          await client.stop();
 
-      return files;
-    }).then((files) => files.forEach(ConsoleWriter.write)).catchError(
-      // If some FileSystemException occurred - delete all files
-      // ignore: avoid_types_on_closure_parameters
-      (Object error, StackTrace stackTrace) async {
-        await Future.wait(files.values.map((f) => f.delete()));
-        // Then throw exception to return right exit code
-        throw GenerationException();
-      },
-      test: (error) => error is FileSystemException,
-    );
+          return files;
+        })
+        .then((files) => files.forEach(ConsoleWriter.write))
+        .catchError(
+          // If some FileSystemException occurred - delete all files
+          // ignore: avoid_types_on_closure_parameters
+          (Object error, StackTrace stackTrace) async {
+            await Future.wait(files.values.map((f) => f.delete()));
+            // Then throw exception to return right exit code
+            throw GenerationException();
+          },
+          test: (error) => error is FileSystemException,
+        );
   }
 
   Future<void> runDummyMode(ArgResults parsedArguments) async {
@@ -169,7 +181,10 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
     }
 
     // export of basename
-    basename = p.basename(sourceFilePath).replaceAll(suffixes[0], '').replaceAll(suffixes[1], '');
+    basename = p
+        .basename(sourceFilePath)
+        .replaceAll(suffixes[0], '')
+        .replaceAll(suffixes[1], '');
 
     final root = Directory(rootPath);
     final sourceFile = File(sourceFilePath);

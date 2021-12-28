@@ -31,13 +31,17 @@ class FixImportsCommand extends Command<void> {
   @override
   Future<void> run() async {
     final parsed = argResults!;
-    final pathRaw = parsed['file'] as String;
-
     applyLoggingSettings(parsed);
 
+    final pathRaw = parsed['file'] as String;
+    await pureRun(pathRaw);
+  }
+
+  Future<void> pureRun(String pathRaw) async {
     final client = ElementaryClient();
     await client.start();
     await client.applyImportFixes(pathRaw);
     await client.stop();
   }
+
 }
