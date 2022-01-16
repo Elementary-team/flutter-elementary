@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0
+## 1.1.0-dev
 
 * Add support of all test function params in testWidgetModel.
 
