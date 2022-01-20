@@ -13,13 +13,40 @@ abstract class BaseProfileEvent extends Equatable {
 /// Profile load event.
 class ProfileLoadEvent extends BaseProfileEvent {}
 
-/// Save profile event.
+/// Save full name and birthday in profile event.
 class SaveFullNameEvent extends BaseProfileEvent {
   /// Profile.
   final Profile profile;
 
   /// Create an instance [SaveFullNameEvent].
   const SaveFullNameEvent(this.profile);
+}
+
+/// Save place of residence in profile event.
+class SavePlaceResidenceEvent extends BaseProfileEvent {
+  /// Profile.
+  final Profile profile;
+
+  /// Create an instance [SavePlaceResidenceEvent].
+  const SavePlaceResidenceEvent(this.profile);
+}
+
+/// Save user info in profile event.
+class SaveAboutMeInfoEvent extends BaseProfileEvent {
+  /// Profile.
+  final Profile profile;
+
+  /// Create an instance [SavePlaceResidenceEvent].
+  const SaveAboutMeInfoEvent(this.profile);
+}
+
+/// Save profile event.
+class SaveProfileEvent extends BaseProfileEvent {
+  /// Profile.
+  final Profile profile;
+
+  /// Create an instance [SavePlaceResidenceEvent].
+  const SaveProfileEvent(this.profile);
 }
 
 /// Undo editing.

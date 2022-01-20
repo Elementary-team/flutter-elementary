@@ -22,78 +22,18 @@ class PlaceResidenceScreen
         title: const Text(PlaceResidenceScreenStrings.placeResidence),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            const SizedBox(height: 16.0),
-            RawAutocomplete<String>(
-              textEditingController: wm.controller,
+            _SearchCityLine(
+              controller: wm.controller,
               focusNode: wm.focusNode,
-              optionsBuilder: (textEditingValue) {
-                if (textEditingValue.text == '') {
-                  return const Iterable<String>.empty();
-                }
-                return wm.getSuggestion(textEditingValue.text);
-              },
-              onSelected: (selection) {
-                wm.updatePlaceResidence(selection);
-              },
-              fieldViewBuilder: (
-                context,
-                textEditingController,
-                focusNode,
-                onFieldSubmitted,
-              ) {
-                return Form(
-                  key: wm.formKey,
-                  child: TextFormField(
-                    controller: textEditingController,
-                    focusNode: focusNode,
-                    decoration: const InputDecoration(
-                      hintText: PlaceResidenceScreenStrings.placeResidence,
-                      hintStyle: TextStyle(
-                        fontSize: 18.0,
-                        color: textFieldBorderColor,
-                      ),
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide(color: textFieldBorderColor),
-                      ),
-                    ),
-                    onFieldSubmitted: (_) {
-                      onFieldSubmitted();
-                      wm.onFieldSubmitted();
-                    },
-                    validator: wm.placeResidenceValidator,
-                  ),
-                );
-              },
-              optionsViewBuilder: (context, onSelected, options) {
-                return Align(
-                  alignment: Alignment.topLeft,
-                  child: Material(
-                    elevation: 4.0,
-                    child: SizedBox(
-                      height: 200.0,
-                      child: ListView.builder(
-                        padding: const EdgeInsets.all(8.0),
-                        itemCount: options.length,
-                        itemBuilder: (context, index) {
-                          final option = options.elementAt(index);
-                          return GestureDetector(
-                            onTap: () {
-                              onSelected(option);
-                            },
-                            child: ListTile(
-                              title: Text(option),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                );
-              },
+              getSuggestion: wm.getSuggestion,
+              onSelectedCallback: wm.updatePlaceResidence,
+              formKey: wm.formKey,
+              onFieldSubmittedCallback: wm.onFieldSubmitted,
+              validator: wm.placeResidenceValidator,
             ),
             const SizedBox(height: 16.0),
             SizedBox(
@@ -103,9 +43,11 @@ class PlaceResidenceScreen
                 child:
                     const Text(PlaceResidenceScreenStrings.selectCityOnTheMap),
                 onPressed: () {
+                  wm.focusNode.unfocus();
                   wm.showBottomSheet(
                     builder: (context) => _MapWidget(
-                      callback: wm.popMethod,
+                      onMapTap: wm.getMockCityByCoordinates,
+                      saveCity: wm.saveSelectedCityOnMap,
                     ),
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.only(
@@ -118,8 +60,7 @@ class PlaceResidenceScreen
               ),
             ),
             const SizedBox(height: 16.0),
-            NextButton(callback: () {}),
-            const SizedBox(height: 16.0),
+            NextButton(callback: wm.savePlaceInProfile),
           ],
         ),
       ),
@@ -127,67 +68,179 @@ class PlaceResidenceScreen
   }
 }
 
-class _MapWidget extends StatelessWidget {
-  final VoidCallback callback;
-  YandexMapController? controller;
+class _SearchCityLine extends StatelessWidget {
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final List<String> Function(String) getSuggestion;
+  final Function(String) onSelectedCallback;
+  final GlobalKey<FormState> formKey;
+  final VoidCallback onFieldSubmittedCallback;
+  final FormFieldValidator<String> validator;
 
-  _MapWidget({required this.callback, this.controller, Key? key}) : super(key: key);
+  const _SearchCityLine({
+    required this.controller,
+    required this.focusNode,
+    required this.getSuggestion,
+    required this.onSelectedCallback,
+    required this.formKey,
+    required this.onFieldSubmittedCallback,
+    required this.validator,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height * 0.8,
-      width: double.infinity,
-      child: Column(
-        children: [
-          const _TopBottomSheetLabel(),
-          const SizedBox(height: 16.0),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: YandexMap(
-                onMapCreated: (yandexMapController) async {
-                  controller = yandexMapController;
-                },
-                onMapTap: (_) {},
-                onUserLocationAdded: (view) async {
-                  return view.copyWith(
-                    pin: view.pin.copyWith(
-                      icon: PlacemarkIcon.single(
-                        PlacemarkIconStyle(
-                          image: BitmapDescriptor.fromAssetImage(
-                            'lib/assets/icons/user.png',
-                          ),
-                        ),
-                      ),
-                    ),
-                    arrow: view.arrow.copyWith(
-                      icon: PlacemarkIcon.single(
-                        PlacemarkIconStyle(
-                          image: BitmapDescriptor.fromAssetImage(
-                            'lib/assets/icons/arrow.png',
-                          ),
-                        ),
-                      ),
-                    ),
-                    accuracyCircle: view.accuracyCircle.copyWith(
-                      fillColor: Colors.green.withOpacity(0.5),
+    return RawAutocomplete<String>(
+      textEditingController: controller,
+      focusNode: focusNode,
+      optionsBuilder: (textEditingValue) {
+        if (textEditingValue.text == '') {
+          return const Iterable<String>.empty();
+        }
+        return getSuggestion(textEditingValue.text);
+      },
+      onSelected: onSelectedCallback,
+      fieldViewBuilder: (
+        context,
+        textEditingController,
+        focusNode,
+        onFieldSubmitted,
+      ) {
+        return Form(
+          key: formKey,
+          child: TextFormField(
+            controller: textEditingController,
+            focusNode: focusNode,
+            decoration: const InputDecoration(
+              hintText: PlaceResidenceScreenStrings.placeResidence,
+              hintStyle: TextStyle(
+                fontSize: 18.0,
+                color: textFieldBorderColor,
+              ),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: textFieldBorderColor),
+              ),
+            ),
+            onFieldSubmitted: (_) {
+              onFieldSubmitted();
+              onFieldSubmittedCallback();
+            },
+            validator: validator,
+          ),
+        );
+      },
+      optionsViewBuilder: (context, onSelected, options) {
+        return Align(
+          alignment: Alignment.topLeft,
+          child: Material(
+            elevation: 4.0,
+            child: SizedBox(
+              height: 200.0,
+              child: ListView.builder(
+                padding: const EdgeInsets.all(8.0),
+                itemCount: options.length,
+                itemBuilder: (context, index) {
+                  final option = options.elementAt(index);
+                  return GestureDetector(
+                    onTap: () {
+                      onSelected(option);
+                    },
+                    child: ListTile(
+                      title: Text(option),
                     ),
                   );
                 },
               ),
             ),
           ),
-          const SizedBox(height: 16.0),
-          Row(
-            children: [
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text(PlaceResidenceScreenStrings.cancel),
+        );
+      },
+    );
+  }
+}
+
+class _MapWidget extends StatefulWidget {
+  final Function(Point) onMapTap;
+  final VoidCallback saveCity;
+
+  const _MapWidget({
+    required this.onMapTap,
+    required this.saveCity,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<_MapWidget> createState() => _MapWidgetState();
+}
+
+class _MapWidgetState extends State<_MapWidget> {
+  List<MapObject> mapObject = [];
+  YandexMapController? controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height * 0.8,
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          children: [
+            const _TopBottomSheetLabel(),
+            const SizedBox(height: 16.0),
+            Expanded(
+              child: YandexMap(
+                mapObjects: mapObject,
+                onMapCreated: (yandexMapController) async {
+                  controller = yandexMapController;
+                },
+                onMapTap: (point) {
+                  widget.onMapTap(point);
+                  setState(() {
+                    mapObject.add(
+                      Placemark(
+                        mapId: const MapObjectId('place'),
+                        point: point,
+                        // icon: PlacemarkIcon.single(
+                        //  const PlacemarkIconStyle(
+                        //     isFlat: true,
+                        //   // image: BitmapDescriptor.fromAssetImage(
+                        //   //   'assets/icons/user.png',
+                        //   // ),
+                        //   ),
+                        // ),
+                      ),
+                    );
+                  });
+                },
               ),
-            ],
-          ),
-        ],
+            ),
+            const SizedBox(height: 16.0),
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () => Navigator.of(context).pop(),
+                    child: const Text(PlaceResidenceScreenStrings.cancel),
+                  ),
+                ),
+                const SizedBox(width: 16.0),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      widget.saveCity();
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text(PlaceResidenceScreenStrings.ready),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 16.0,
+            ),
+          ],
+        ),
       ),
     );
   }

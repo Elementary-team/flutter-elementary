@@ -19,6 +19,8 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
   ) : super(InitProfileState()) {
     on<ProfileLoadEvent>(_loadProfile);
     on<SaveFullNameEvent>(_saveFullName);
+    on<SavePlaceResidenceEvent>(_savePlaceResidence);
+    on<SaveAboutMeInfoEvent>(_saveAboutMeInfo);
     on<UndoEditingEvent>(_undoEditing);
   }
 
@@ -45,35 +47,62 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
     Emitter<BaseProfileState> emit,
   ) {
     if (state is! PendingProfileState) {
-      if (_initialProfile != event.profile) {
-        _currentProfile = event.profile;
-        emit(PendingProfileState(
-          profile: event.profile,
-        ));
-      } else {
-        final currentState = state as PendingProfileState;
-        final profile = currentState.profile;
-        final currentSurname = profile.surname;
-        final currentName = profile.name;
-        final currentPatronymic = profile.patronymic;
-        final currentBirthday = profile.birthday;
+      final currentState = state as ProfileState;
+      final profile = currentState.profile;
+      final currentSurname = profile.surname;
+      final currentName = profile.name;
+      final currentPatronymic = profile.patronymic;
+      final currentBirthday = profile.birthday;
 
-        if (currentSurname != _currentProfile!.surname ||
-            currentName != _currentProfile!.name ||
-            currentPatronymic != _currentProfile!.patronymic ||
-            currentBirthday != _currentProfile!.birthday) {
-          emit(PendingProfileState(profile: profile));
-        }
+      if (currentSurname != _currentProfile!.surname ||
+          currentName != _currentProfile!.name ||
+          currentPatronymic != _currentProfile!.patronymic ||
+          currentBirthday != _currentProfile!.birthday) {
+        emit(PendingProfileState(profile: profile));
+        _currentProfile = profile;
       }
     }
+  }
+
+  void _savePlaceResidence(
+    SavePlaceResidenceEvent event,
+    Emitter<BaseProfileState> emit,
+  ) {
+    final currentState = state as ProfileState;
+    final profile = currentState.profile;
+    final placeResidence = profile.placeOfResidence;
+    if (_currentProfile!.placeOfResidence != placeResidence) {
+      emit(PendingProfileState(profile: profile));
+      _currentProfile = profile;
+    }
+  }
+
+  void _saveAboutMeInfo(
+    SaveAboutMeInfoEvent event,
+    Emitter<BaseProfileState> emit,
+  ) {
+    final currentState = state as PendingProfileState;
+    final profile = currentState.profile;
+    final aboutMeInfo = profile.aboutMe;
+    if (_currentProfile!.aboutMe != aboutMeInfo) {
+      emit(PendingProfileState(profile: profile));
+      _currentProfile = profile;
+    }
+    _saveProfile(profile);
   }
 
   FutureOr<void> _undoEditing(
     UndoEditingEvent event,
     Emitter<BaseProfileState> emit,
   ) {
-    if(state is PendingProfileState){
+    if (state is PendingProfileState) {
       emit(InitProfileState());
+    }
+  }
+
+  void _saveProfile(Profile profile) {
+    if (profile != _initialProfile) {
+      _mockProfileRepository.saveProfile(profile);
     }
   }
 }

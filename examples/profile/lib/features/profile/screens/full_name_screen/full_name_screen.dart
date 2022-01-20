@@ -121,12 +121,14 @@ class _FullNameWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 16.0,
+        vertical: 16.0,
+      ),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            const SizedBox(height: 16.0),
             TextFormFieldWidget(
               controller: surnameEditingController,
               onChanged: updateSurname,
@@ -156,15 +158,9 @@ class _FullNameWidget extends StatelessWidget {
               birthdayFormKey: birthdayFormKey,
               onDateTap: onDateTap,
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 16.0,
-                bottom: 16.0,
-                top: 16.0,
-              ),
-              child: NextButton(
-                callback: nextButtonCallback,
-              ),
+            const SizedBox(height: 16.0),
+            NextButton(
+              callback: nextButtonCallback,
             ),
           ],
         ),

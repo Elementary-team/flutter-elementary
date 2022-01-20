@@ -28,10 +28,30 @@ class Profile {
   const Profile({
     this.surname,
     this.name,
+    this.patronymic,
     this.birthday,
     this.placeOfResidence,
     this.interests,
-    this.patronymic,
     this.aboutMe,
   });
+
+  /// Makes a copy with new margins.
+  Profile copyWith({
+    String? surname,
+    String? name,
+    String? patronymic,
+    DateTime? birthday,
+    String? placeOfResidence,
+    List<String>? interests,
+    String? aboutMe,
+  }) =>
+      Profile(
+        surname: surname ?? this.surname,
+        name: name ?? this.name,
+        patronymic: patronymic ?? this.patronymic,
+        birthday: birthday ?? this.birthday,
+        placeOfResidence: placeOfResidence ?? this.placeOfResidence,
+        interests: interests ?? this.interests,
+        aboutMe: aboutMe ?? this.aboutMe,
+      );
 }
