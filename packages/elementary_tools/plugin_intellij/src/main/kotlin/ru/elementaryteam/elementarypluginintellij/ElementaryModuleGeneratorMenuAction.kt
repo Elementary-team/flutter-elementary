@@ -11,6 +11,8 @@ import io.flutter.actions.FlutterSdkAction
 import io.flutter.pub.PubRoot
 import io.flutter.sdk.FlutterSdk
 import io.flutter.utils.ProgressHelper
+import kotlinx.coroutines.*
+import ru.elementaryteam.elementarypluginintellij.ElementaryCliChecker as ElementaryCliChecker
 
 /**
  * Action that lets to generate new elementary module
@@ -25,6 +27,10 @@ class ElementaryModuleGeneratorMenuAction : FlutterSdkAction() {
     ) {
         val view = LangDataKeys.IDE_VIEW.getData(context) ?: return
         val dir = view.orChooseDirectory ?: return
+
+        if (ElementaryCliChecker.checkIsCliInstalled(project, sdk, root, context)) {
+            return
+        }
 
         val dialog = ElementaryModuleGeneratorDialog(project, dir)
         if (dialog.showAndGet()) {
