@@ -39,6 +39,10 @@ with source files
 * [See full changelog][changelog]
 
 [changelog]: https://github.com/Elementary-team/flutter-elementary/blob/main/packages/elementary_tools/plugin_vscode/CHANGELOG.md
-### 0.0.1-dev
+### 0.0.2
+
+* Automatic activation elementary_cli
+
+### 0.0.1
 
 * Added Elementary module generation
