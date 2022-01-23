@@ -10,6 +10,7 @@ import kotlinx.coroutines.*
 
 /**
  * Coroutines test
+ * TODO(@AlexeyBukin) после тестирования описать нормальную доку
  */
 class ElementaryCliChecker {
     companion object {
