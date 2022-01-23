@@ -1,8 +1,9 @@
 # Flutter Elementary repository
 
-![Elementary Cover](https://i.ibb.co/jgkB4ZN/Elementary-Logo.png)
+<img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo" style="margin:50px 0px">
 
 [![Pub Version](https://img.shields.io/pub/v/elementary?logo=dart&logoColor=white)](https://pub.dev/packages/elementary)
+[![Coverage Status](https://img.shields.io/codecov/c/github/Elementary-team/flutter-elementary?flag=elementary&logo=codecov&logoColor=white)](https://app.codecov.io/gh/Elementary-team/flutter-elementary)
 [![Pub Likes](https://badgen.net/pub/likes/elementary)](https://pub.dev/packages/elementary)
 [![Pub popularity](https://badgen.net/pub/popularity/elementary)](https://pub.dev/packages/elementary)
 ![Flutter Platform](https://badgen.net/pub/flutter-platform/elementary)
@@ -15,6 +16,7 @@ This is a home to a family of Elementary library packages.
 | --------------|:-------------:|
 | [elementary](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary) | [![Pub Version](https://img.shields.io/pub/v/elementary?logo=dart&logoColor=white)](https://pub.dev/packages/elementary) |
 | [elementary_test](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_test)      | [![Pub Version](https://img.shields.io/pub/v/elementary_test?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_test)      |
+| [elementary_cli](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_tools/elementary_cli)      | [![Pub Version](https://img.shields.io/pub/v/elementary_cli?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_cli)      |
 
 ## Elementary overview
 

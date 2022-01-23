@@ -1,4 +1,3 @@
-import 'package:elementary/elementary.dart';
 import 'package:elementary/src/core.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_test/flutter_test.dart';

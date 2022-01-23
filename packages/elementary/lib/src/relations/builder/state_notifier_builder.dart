@@ -1,5 +1,4 @@
 import 'package:elementary/src/relations/notifier/state_notifier.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// Builder for presentation ui part by [StateNotifier] property.

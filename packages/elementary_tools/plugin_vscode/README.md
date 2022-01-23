@@ -13,7 +13,7 @@ Extension for better experience with Elementary
 
 ## Requirements
 
-* Install [Elementary CLI][cli] to global pub
+* Install and activate [Elementary CLI][cli] to global pub
 
 [cli]: https://github.com/Elementary-team/flutter-elementary/tree/elementary_tools/packages/elementary_tools/elementary_cli
 
@@ -38,7 +38,7 @@ with source files
 
 * [See full changelog][changelog]
 
-[changelog]: https://github.com/Elementary-team/flutter-elementary/tree/elementary_tools/packages/elementary_tools/plugin_vscode/CHANGELOG.md
+[changelog]: https://github.com/Elementary-team/flutter-elementary/blob/main/packages/elementary_tools/plugin_vscode/CHANGELOG.md
 ### 0.0.1-dev
 
 * Added Elementary module generation

@@ -1,6 +1,6 @@
 # Elementary-test
 
-![Elementary Cover](https://i.ibb.co/jgkB4ZN/Elementary-Logo.png)
+<img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo" style="margin:50px 0px">
 
 [![Pub Version](https://img.shields.io/pub/v/elementary_test?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_test)
 [![Pub Likes](https://badgen.net/pub/likes/elementary_test)](https://pub.dev/packages/elementary_test)

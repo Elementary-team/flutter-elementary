@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 ### Added
+- Automatic activation elementary_cli
 - Analyzer support
 - Live templates
 - More generating templates

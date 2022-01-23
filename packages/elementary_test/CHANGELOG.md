@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1
+
+* Support 1.0.0 elementary
+
+## 1.0.0
+
+* First stable release
+
 ## 0.1.2
 
 * Add skip parameter for test.
