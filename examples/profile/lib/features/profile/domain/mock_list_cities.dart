@@ -1,5 +1,6 @@
-/// Mock cities server list.
-const List<String> mockCitiesServerList = <String>['Tokyo',
+/// List of cities from the mock server.
+const List<String> mockCitiesServerList = <String>[
+  'Tokyo',
   'Delhi',
   'Shanghai',
   'Sao Paulo',

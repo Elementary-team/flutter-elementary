@@ -6,65 +6,54 @@ import 'package:profile/features/app/di/app_scope.dart';
 import 'package:profile/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:profile/features/navigation/service/coordinator.dart';
 import 'package:profile/features/profile/domain/profile.dart';
-import 'package:profile/features/profile/screens/full_name_screen/full_name_screen.dart'
-    show FullNameScreen;
-import 'package:profile/features/profile/screens/full_name_screen/full_name_screen_model.dart';
+import 'package:profile/features/profile/screens/personal_data_screen/personal_data_screen.dart';
+import 'package:profile/features/profile/screens/personal_data_screen/personal_data_screen_model.dart';
 import 'package:profile/features/profile/service/bloc/profile_state.dart';
 import 'package:provider/provider.dart';
 
-/// Factory for [FullNameScreenWidgetModel].
-FullNameScreenWidgetModel fullNameScreenWidgetModelFactory(
+/// Factory for [PersonalDataScreenWidgetModel].
+PersonalDataScreenWidgetModel fullNameScreenWidgetModelFactory(
   BuildContext context,
 ) {
   final appDependencies = context.read<IAppScope>();
-  final model = FullNameScreenModel(
+  final model = PersonalDataScreenModel(
     appDependencies.profileBloc,
     appDependencies.errorHandler,
   );
-  return FullNameScreenWidgetModel(model);
+  final coordinator = context.read<IAppScope>().coordinator;
+  return PersonalDataScreenWidgetModel(
+    model: model,
+    coordinator: coordinator,
+  );
 }
 
-/// Widget Model for [FullNameScreen].
-class FullNameScreenWidgetModel
-    extends WidgetModel<FullNameScreen, FullNameScreenModel>
-    implements IFullNameWidgetModel {
-  @override
-  late final GlobalKey<FormState> surnameFormKey;
+/// Widget Model for [PersonalDataScreen].
+class PersonalDataScreenWidgetModel
+    extends WidgetModel<PersonalDataScreen, PersonalDataScreenModel>
+    implements IPersonalDataWidgetModel {
+  /// Coordinator for navigation.
+  final Coordinator coordinator;
 
-  @override
-  late final GlobalKey<FormState> nameFormKey;
+  final _surnameFormKey = GlobalKey<FormState>();
+  final _nameFormKey = GlobalKey<FormState>();
+  final _birthdayFormKey = GlobalKey<FormState>();
 
-  @override
-  late final GlobalKey<FormState> birthdayFormKey;
-
-  late final Coordinator _coordinator;
-
-  final _surnameEditingController = TextEditingController();
-  final _nameEditingController = TextEditingController();
-  final _patronymicEditingController = TextEditingController();
   final _birthdayEditingController = TextEditingController();
   final _profileEntityState = EntityStateNotifier<Profile>();
-
   late final StreamSubscription<BaseProfileState> _stateStatusStream;
 
-  /// Current Birthday.
   @override
-  DateTime? currentBirthday;
+  GlobalKey<FormState> get surnameFormKey => _surnameFormKey;
+
+  @override
+  GlobalKey<FormState> get nameFormKey => _nameFormKey;
+
+  @override
+  GlobalKey<FormState> get birthdayFormKey => _birthdayFormKey;
 
   @override
   ListenableState<EntityState<Profile>> get profileEntityState =>
       _profileEntityState;
-
-  @override
-  TextEditingController get surnameEditingController =>
-      _surnameEditingController;
-
-  @override
-  TextEditingController get nameEditingController => _nameEditingController;
-
-  @override
-  TextEditingController get patronymicEditingController =>
-      _patronymicEditingController;
 
   @override
   TextEditingController get birthdayEditingController =>
@@ -73,33 +62,24 @@ class FullNameScreenWidgetModel
   String? _currentSurname;
   String? _currentName;
   String? _currentPatronymic;
+  DateTime? _currentBirthday;
 
-  /// Create an instance [FullNameScreenWidgetModel].
-  FullNameScreenWidgetModel(
-    FullNameScreenModel model,
-  ) : super(model);
+  /// Create an instance [PersonalDataScreenWidgetModel].
+  PersonalDataScreenWidgetModel({
+    required PersonalDataScreenModel model,
+    required this.coordinator,
+  }) : super(model);
 
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-
     _stateStatusStream = model.profileStateStream.listen(_updateState);
-
-    surnameFormKey = GlobalKey<FormState>();
-    nameFormKey = GlobalKey<FormState>();
-    birthdayFormKey = GlobalKey<FormState>();
-
-    _coordinator = context.read<IAppScope>().coordinator;
     _initProfile();
   }
 
   @override
   void dispose() {
     _birthdayEditingController.dispose();
-    _surnameEditingController.dispose();
-    _nameEditingController.dispose();
-    _patronymicEditingController.dispose();
-
     _stateStatusStream.cancel();
     super.dispose();
   }
@@ -122,21 +102,21 @@ class FullNameScreenWidgetModel
   }
 
   @override
-  void saveFullName() {
+  void savePersonalData() {
     if (surnameFormKey.currentState!.validate() &
         nameFormKey.currentState!.validate() &
         birthdayFormKey.currentState!.validate()) {
       if (_currentSurname != null &&
           _currentName != null &&
-          currentBirthday != null) {
+          _currentBirthday != null) {
         model.saveFullName(
           _currentSurname!,
           _currentName!,
           _currentPatronymic,
-          currentBirthday!,
+          _currentBirthday!,
         );
-        _coordinator.navigate(context, AppCoordinate.placeResidenceScreen);
       }
+      coordinator.navigate(context, AppCoordinate.placeResidenceScreen);
     }
   }
 
@@ -150,7 +130,7 @@ class FullNameScreenWidgetModel
       initialDatePickerMode: DatePickerMode.year,
     );
     if (date != null) {
-      currentBirthday = date;
+      _currentBirthday = date;
       _birthdayEditingController.text = _getDateToString(date);
       birthdayFormKey.currentState!.validate();
     }
@@ -159,26 +139,25 @@ class FullNameScreenWidgetModel
   @override
   void backButtonTap() {
     model.backButtonTap();
-    _coordinator.pop();
+    coordinator.pop();
   }
 
   void _initProfile() {
     final state = model.currentState;
-    if (state is ProfileState) {
+    if (state is InitProfileState) {
+      _profileEntityState.loading();
+    } else if (state is ProfileState) {
       final profile = state.profile;
-      if (profile.surname != null) {
-        _surnameEditingController.text = profile.surname!;
-      }
-      if (profile.name != null) {
-        _nameEditingController.text = profile.name!;
-      }
-      if (profile.patronymic != null) {
-        _patronymicEditingController.text = profile.patronymic!;
-      }
+      _profileEntityState.content(profile);
       if (profile.birthday != null) {
-        final date = profile.birthday!;
-        _birthdayEditingController.text = _getDateToString(date);
+        _birthdayEditingController.text = _getDateToString(profile.birthday!);
       }
+      _currentSurname = profile.surname;
+      _currentName = profile.name;
+      _currentPatronymic = profile.patronymic;
+      _currentBirthday = profile.birthday;
+    } else if (state is ErrorLoadingState) {
+      _profileEntityState.error();
     }
   }
 
@@ -198,28 +177,16 @@ class FullNameScreenWidgetModel
   }
 }
 
-/// Interface of [FullNameScreenWidgetModel].
-abstract class IFullNameWidgetModel extends IWidgetModel {
+/// Interface of [PersonalDataScreenWidgetModel].
+abstract class IPersonalDataWidgetModel extends IWidgetModel {
   /// Validation form key for surname.
-  late final GlobalKey<FormState> surnameFormKey;
+  GlobalKey<FormState> get surnameFormKey;
 
   /// Validation form key for name.
-  late final GlobalKey<FormState> nameFormKey;
+  GlobalKey<FormState> get nameFormKey;
 
   /// Validation form key for birthday.
-  late final GlobalKey<FormState> birthdayFormKey;
-
-  /// Birthday.
-  DateTime? currentBirthday;
-
-  /// Text Editing Controller for surname.
-  TextEditingController get surnameEditingController;
-
-  /// Text Editing Controller for name.
-  TextEditingController get nameEditingController;
-
-  /// Text Editing Controller for second name.
-  TextEditingController get patronymicEditingController;
+  GlobalKey<FormState> get birthdayFormKey;
 
   /// Text Editing Controller for birthday.
   TextEditingController get birthdayEditingController;
@@ -240,8 +207,8 @@ abstract class IFullNameWidgetModel extends IWidgetModel {
   Future<void> onDateTap(BuildContext context) async {}
 
   /// Function to save new [Profile].
-  void saveFullName() {}
+  void savePersonalData() {}
 
-  /// callback on BackButton tap.
+  /// Callback on BackButton tap.
   void backButtonTap() {}
 }

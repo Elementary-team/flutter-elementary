@@ -4,7 +4,7 @@ import 'package:profile/assets/colors/colors.dart';
 /// TextFormField widget.
 class TextFormFieldWidget extends StatelessWidget {
   /// Controller for text field.
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   /// Callback for when the field is filled.
   final Function(String?) onChanged;
@@ -18,11 +18,15 @@ class TextFormFieldWidget extends StatelessWidget {
   /// Key for Form.
   final GlobalKey? formKey;
 
+  /// Initial value.
+  final String? initialValue;
+
   /// Create an instance [TextFormFieldWidget].
   const TextFormFieldWidget({
-    required this.controller,
     required this.onChanged,
     required this.hintText,
+    required this.initialValue,
+    this.controller,
     this.formKey,
     this.validator,
     Key? key,
@@ -33,6 +37,7 @@ class TextFormFieldWidget extends StatelessWidget {
     return Form(
       key: formKey,
       child: TextFormField(
+        initialValue: initialValue,
         textCapitalization: TextCapitalization.words,
         controller: controller,
         decoration: InputDecoration(

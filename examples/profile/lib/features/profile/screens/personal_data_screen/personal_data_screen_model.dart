@@ -1,12 +1,11 @@
 import 'package:elementary/elementary.dart';
-import 'package:profile/features/profile/domain/profile.dart';
-import 'package:profile/features/profile/screens/full_name_screen/full_name_screen.dart';
+import 'package:profile/features/profile/screens/personal_data_screen/personal_data_screen.dart';
 import 'package:profile/features/profile/service/bloc/profile_bloc.dart';
 import 'package:profile/features/profile/service/bloc/profile_event.dart';
 import 'package:profile/features/profile/service/bloc/profile_state.dart';
 
-/// Model for [FullNameScreen].
-class FullNameScreenModel extends ElementaryModel {
+/// Model for [PersonalDataScreen].
+class PersonalDataScreenModel extends ElementaryModel {
   final ProfileBloc _profileBloc;
 
   /// Stream to track the state of the bloc.
@@ -15,8 +14,8 @@ class FullNameScreenModel extends ElementaryModel {
   /// Gives the current state.
   BaseProfileState get currentState => _profileBloc.state;
 
-  /// Create an instance [FullNameScreenModel].
-  FullNameScreenModel(
+  /// Create an instance [PersonalDataScreenModel].
+  PersonalDataScreenModel(
     this._profileBloc,
     ErrorHandler errorHandler,
   ) : super(errorHandler: errorHandler);
@@ -34,13 +33,14 @@ class FullNameScreenModel extends ElementaryModel {
     String? patronymic,
     DateTime birthday,
   ) {
-    final newProfile = Profile(
-      surname: surname,
-      name: name,
-      patronymic: patronymic,
-      birthday: birthday,
+    _profileBloc.add(
+      SavePersonalDataEvent(
+        surname: surname,
+        name: name,
+        patronymic: patronymic,
+        birthday: birthday,
+      ),
     );
-    _profileBloc.add(SaveFullNameEvent(newProfile));
   }
 
   /// Callback on BackButton tap.

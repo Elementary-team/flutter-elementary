@@ -10,19 +10,6 @@ const TextStyle _text = TextStyle(
   color: textColorPrimary,
 );
 
-//Light
-TextStyle textLight = _text.copyWith(fontWeight: FontWeight.w300);
-
 //Regular
 TextStyle textRegular = _text.copyWith(fontWeight: FontWeight.normal);
 TextStyle textRegular16 = textRegular.copyWith(fontSize: 16.0);
-TextStyle textRegular16Secondary =
-    textRegular16.copyWith(color: textColorSecondary);
-TextStyle textRegular16Grey = textRegular16.copyWith(color: textColorGrey);
-
-//Medium
-TextStyle textMedium = _text.copyWith(fontWeight: FontWeight.w500);
-TextStyle textMedium20 = textMedium.copyWith(fontSize: 20.0);
-
-//Bold
-TextStyle textBold = _text.copyWith(fontWeight: FontWeight.bold);

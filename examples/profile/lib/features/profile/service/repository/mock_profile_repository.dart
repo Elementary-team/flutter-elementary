@@ -9,12 +9,13 @@ class MockProfileRepository {
   const MockProfileRepository(this._mockServer);
 
   /// Return user profile or null.
-  Profile getProfile() {
-    return _mockServer.getProfile();
+  Future<Profile> getProfile() async {
+    final profile = await _mockServer.getProfile();
+    return profile;
   }
 
   /// Saves completed profile.
-  void saveProfile(Profile profile) {
-    _mockServer.saveProfile(profile);
+  Future<void> saveProfile(Profile profile) async {
+    await _mockServer.saveProfile(profile);
   }
 }

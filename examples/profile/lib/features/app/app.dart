@@ -22,7 +22,6 @@ class _AppState extends State<App> {
   void initState() {
     super.initState();
     _scope = AppScope();
-
     _setupRouting(_scope.coordinator);
   }
 
@@ -42,7 +41,7 @@ class _AppState extends State<App> {
 
   void _setupRouting(Coordinator coordinator) {
     coordinator
-      ..initialCoordinate = AppCoordinate.initial
+      ..initialCoordinate = AppCoordinate.initScreen
       ..registerCoordinates('/', appCoordinates);
   }
 }

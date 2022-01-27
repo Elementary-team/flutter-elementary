@@ -1,6 +1,7 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/features/app/di/app_scope.dart';
+import 'package:profile/features/common/dialog_controller.dart';
 import 'package:profile/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:profile/features/navigation/service/coordinator.dart';
 import 'package:profile/features/profile/domain/profile.dart';
@@ -17,21 +18,32 @@ PlaceResidenceScreenWidgetModel placeResidenceScreenWidgetModelFactory(
   final appDependencies = context.read<IAppScope>();
   final model = PlaceResidenceScreenModel(
     appDependencies.profileBloc,
-    appDependencies.repository,
+    appDependencies.mockCitiesRepository,
     appDependencies.errorHandler,
   );
-  return PlaceResidenceScreenWidgetModel(model);
+  final coordinator = context.read<IAppScope>().coordinator;
+  final dialogController = context.read<IAppScope>().dialogController;
+  return PlaceResidenceScreenWidgetModel(
+    model: model,
+    coordinator: coordinator,
+    dialogController: dialogController,
+  );
 }
 
 /// Widget Model for [PlaceResidenceScreen].
 class PlaceResidenceScreenWidgetModel
     extends WidgetModel<PlaceResidenceScreen, PlaceResidenceScreenModel>
     implements IPlaceResidenceScreenWidgetModel {
+  /// Coordinator for navigation.
+  final Coordinator coordinator;
+
+  /// Controller for show [BottomSheet].
+  final DialogController dialogController;
+
   final TextEditingController _controller = TextEditingController();
   final _listSuggestionsState = StateNotifier<List<String>>();
   final FocusNode _focusNode = FocusNode();
   final GlobalKey<FormState> _formKey = GlobalKey();
-  late final Coordinator _coordinator;
 
   @override
   TextEditingController get controller => _controller;
@@ -50,14 +62,15 @@ class PlaceResidenceScreenWidgetModel
   String? _selectedCityOnMap;
 
   /// Create an instance [PlaceResidenceScreenWidgetModel].
-  PlaceResidenceScreenWidgetModel(
-    PlaceResidenceScreenModel model,
-  ) : super(model);
+  PlaceResidenceScreenWidgetModel({
+    required PlaceResidenceScreenModel model,
+    required this.coordinator,
+    required this.dialogController,
+  }) : super(model);
 
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-    _coordinator = context.read<IAppScope>().coordinator;
     _initProfile();
   }
 
@@ -89,11 +102,10 @@ class PlaceResidenceScreenWidgetModel
     required WidgetBuilder builder,
     required ShapeBorder shape,
   }) {
-    showModalBottomSheet<Point>(
+    dialogController.showBottomSheet(
       context: context,
       builder: builder,
       shape: shape,
-      isScrollControlled: true,
     );
   }
 
@@ -111,11 +123,11 @@ class PlaceResidenceScreenWidgetModel
   }
 
   @override
-  void savePlaceInProfile() {
+  void savePlace() {
     if (_formKey.currentState!.validate()) {
       if (_currentPlaceResidence != null) {
         model.savePlaceResidence(_currentPlaceResidence);
-        _coordinator.navigate(context, AppCoordinate.interestsScreen);
+        coordinator.navigate(context, AppCoordinate.interestsScreen);
       }
     }
   }
@@ -173,5 +185,5 @@ abstract class IPlaceResidenceScreenWidgetModel extends IWidgetModel {
   }) {}
 
   /// Function to save place of residence in [Profile].
-  void savePlaceInProfile() {}
+  void savePlace() {}
 }

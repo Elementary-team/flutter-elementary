@@ -3,8 +3,6 @@ import 'package:profile/assets/strings/main_strings.dart';
 import 'package:profile/features/app/di/app_scope.dart';
 import 'package:profile/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:profile/features/navigation/service/coordinator.dart';
-import 'package:profile/features/profile/service/bloc/profile_bloc.dart';
-import 'package:profile/features/profile/service/bloc/profile_event.dart';
 import 'package:provider/provider.dart';
 
 /// Initialization screens.
@@ -34,7 +32,7 @@ class _InitScreenState extends State<InitScreen> {
           onPressed: () {
             _coordinator.navigate(
               context,
-              AppCoordinate.fullNameScreen,
+              AppCoordinate.personalDataScreen,
             );
           },
         ),

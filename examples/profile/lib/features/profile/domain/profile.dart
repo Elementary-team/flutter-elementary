@@ -1,5 +1,3 @@
-import 'package:equatable/equatable.dart';
-
 /// User profile.
 class Profile {
   /// User surname.

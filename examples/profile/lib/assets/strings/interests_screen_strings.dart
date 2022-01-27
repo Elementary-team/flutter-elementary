@@ -5,4 +5,5 @@ import 'package:profile/features/profile/screens/interests_screen/interests_scre
 /// Strings that are needed on the [InterestsScreen].
 class InterestsScreenStrings {
   static const String interests = 'Interests';
+  static const String warning = 'Select at least one item';
 }

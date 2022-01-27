@@ -1,5 +1,4 @@
 import 'package:elementary/elementary.dart';
-import 'package:profile/features/profile/domain/profile.dart';
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen.dart';
 import 'package:profile/features/profile/service/bloc/profile_bloc.dart';
 import 'package:profile/features/profile/service/bloc/profile_event.dart';
@@ -35,15 +34,8 @@ class PlaceResidenceScreenModel extends ElementaryModel {
     return _repository.getMockCityByCoordinates(coordinates);
   }
 
-  /// /// Method for save place of residence.
+  /// Method for save place of residence.
   void savePlaceResidence(String? place) {
-    if (_profileBloc.state is ProfileState) {
-      final state = _profileBloc.state as ProfileState;
-      var currentProfile = state.profile;
-      if(currentProfile.placeOfResidence != place) {
-        currentProfile = currentProfile.copyWith(placeOfResidence: place);
-        _profileBloc.add(SavePlaceResidenceEvent(currentProfile));
-      }
-    }
+    _profileBloc.add(SavePlaceResidenceEvent(placeResidence: place));
   }
 }

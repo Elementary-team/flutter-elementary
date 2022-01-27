@@ -1,8 +1,10 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/assets/colors/colors.dart';
+import 'package:profile/assets/res/icons.dart';
 import 'package:profile/assets/strings/place_residence_screen_strings.dart';
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen_widget_model.dart';
+import 'package:profile/features/profile/widgets/cancel_button/cancel_button.dart';
 import 'package:profile/features/profile/widgets/next_button.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -20,6 +22,9 @@ class PlaceResidenceScreen
     return Scaffold(
       appBar: AppBar(
         title: const Text(PlaceResidenceScreenStrings.placeResidence),
+        actions: const [
+          CancelButton(),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
@@ -60,7 +65,7 @@ class PlaceResidenceScreen
               ),
             ),
             const SizedBox(height: 16.0),
-            NextButton(callback: wm.savePlaceInProfile),
+            NextButton(callback: wm.savePlace),
           ],
         ),
       ),
@@ -111,6 +116,7 @@ class _SearchCityLine extends StatelessWidget {
           child: TextFormField(
             controller: textEditingController,
             focusNode: focusNode,
+            textCapitalization: TextCapitalization.words,
             decoration: const InputDecoration(
               hintText: PlaceResidenceScreenStrings.placeResidence,
               hintStyle: TextStyle(
@@ -201,14 +207,14 @@ class _MapWidgetState extends State<_MapWidget> {
                       Placemark(
                         mapId: const MapObjectId('place'),
                         point: point,
-                        // icon: PlacemarkIcon.single(
-                        //  const PlacemarkIconStyle(
-                        //     isFlat: true,
-                        //   // image: BitmapDescriptor.fromAssetImage(
-                        //   //   'assets/icons/user.png',
-                        //   // ),
-                        //   ),
-                        // ),
+                        icon: PlacemarkIcon.single(
+                          PlacemarkIconStyle(
+                            isFlat: true,
+                            image: BitmapDescriptor.fromAssetImage(
+                              IconsPath.userIcon,
+                            ),
+                          ),
+                        ),
                       ),
                     );
                   });
@@ -260,7 +266,7 @@ class _TopBottomSheetLabel extends StatelessWidget {
           width: 30,
           height: 5,
           decoration: const BoxDecoration(
-            color: hintColor,
+            color: secondaryColor,
             borderRadius: BorderRadius.all(Radius.circular(14.0)),
           ),
         ),

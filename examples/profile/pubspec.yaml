@@ -1,6 +1,6 @@
 name: profile
 version: "0.0.1-dev.0"
-description: a Flutter template project for development.
+description: Example of using Elementary with Bloc.
 publish_to: none
 
 dependencies:
@@ -29,3 +29,5 @@ environment:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/icons/

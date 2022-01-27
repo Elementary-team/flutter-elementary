@@ -1,53 +1,88 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/assets/colors/colors.dart';
-import 'package:profile/assets/strings/full_name_screen_strings.dart';
+import 'package:profile/assets/strings/personal_data_screen_strings.dart';
 import 'package:profile/features/profile/domain/profile.dart';
-import 'package:profile/features/profile/screens/full_name_screen/full_neme_screen_widget_model.dart';
+import 'package:profile/features/profile/screens/personal_data_screen/personal_data_screen_widget_model.dart';
+import 'package:profile/features/profile/screens/personal_data_screen/widgets/text_form_field_widget.dart';
+import 'package:profile/features/profile/widgets/cancel_button/cancel_button.dart';
 import 'package:profile/features/profile/widgets/next_button.dart';
-import 'package:profile/features/profile/widgets/text_form_field_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
+const _shimmerHeight = 60.0;
+const _shimmerWidth = double.infinity;
+
 /// Widget screen with base data about user(surname, name,
-/// second name(optional), birthday).
-class FullNameScreen extends ElementaryWidget<IFullNameWidgetModel> {
-  /// Create an instance [FullNameScreen].
-  const FullNameScreen({
+/// patronymic(optional), birthday).
+class PersonalDataScreen extends ElementaryWidget<IPersonalDataWidgetModel> {
+  /// Create an instance [PersonalDataScreen].
+  const PersonalDataScreen({
     Key? key,
     WidgetModelFactory wmFactory = fullNameScreenWidgetModelFactory,
   }) : super(wmFactory, key: key);
 
   @override
-  Widget build(IFullNameWidgetModel wm) {
+  Widget build(IPersonalDataWidgetModel wm) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: BackButton(onPressed: wm.backButtonTap),
-        title: const Text(FullNameScreenStrings.fullName),
+        title: const Text(FullNameScreenStrings.personalData),
+        actions: const [
+          CancelButton(),
+        ],
       ),
       body: EntityStateNotifierBuilder<Profile>(
         listenableEntityState: wm.profileEntityState,
         loadingBuilder: (context, _) {
-          return const _Shimmer();
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                const SizedBox(height: 16.0),
+                const _Shimmer(
+                  height: _shimmerHeight,
+                  width: _shimmerWidth,
+                ),
+                const SizedBox(height: 16.0),
+                const _Shimmer(
+                  height: _shimmerHeight,
+                  width: _shimmerWidth,
+                ),
+                const SizedBox(height: 16.0),
+                const _Shimmer(
+                  height: _shimmerHeight,
+                  width: _shimmerWidth,
+                ),
+                const SizedBox(height: 16.0),
+                const _Shimmer(
+                  height: _shimmerHeight,
+                  width: _shimmerWidth,
+                ),
+                const SizedBox(height: 16.0),
+                NextButton(callback: () {}),
+              ],
+            ),
+          );
         },
         errorBuilder: (context, _, __) {
           return const _ErrorWidget();
         },
-        builder: (context, _) {
+        builder: (context, profile) {
           return _FullNameWidget(
-            surnameEditingController: wm.surnameEditingController,
-            nameEditingController: wm.nameEditingController,
-            secondNameEditingController: wm.patronymicEditingController,
             birthdayEditingController: wm.birthdayEditingController,
             updateSurname: wm.updateSurname,
             updateName: wm.updateName,
             updateSecondName: wm.updatePatronymic,
-            birthday: wm.currentBirthday.toString(),
             surnameFormKey: wm.surnameFormKey,
             nameFormKey: wm.nameFormKey,
             birthdayFormKey: wm.birthdayFormKey,
             onDateTap: wm.onDateTap,
-            nextButtonCallback: wm.saveFullName,
+            nextButtonCallback: wm.savePersonalData,
+            initialValueSurname: profile?.surname,
+            initialValueName: profile?.name,
+            initialValuePatronymic: profile?.patronymic,
           );
         },
       ),
@@ -56,18 +91,25 @@ class FullNameScreen extends ElementaryWidget<IFullNameWidgetModel> {
 }
 
 class _Shimmer extends StatelessWidget {
-  const _Shimmer({Key? key}) : super(key: key);
+  final double height;
+  final double width;
+
+  const _Shimmer({
+    required this.height,
+    required this.width,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: hintColor,
+      baseColor: secondaryColor,
       highlightColor: white,
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(16.0)),
         child: Container(
-          height: 30.0,
-          width: double.infinity,
+          height: height,
+          width: width,
           color: white,
         ),
       ),
@@ -87,34 +129,32 @@ class _ErrorWidget extends StatelessWidget {
 }
 
 class _FullNameWidget extends StatelessWidget {
-  final TextEditingController surnameEditingController;
-  final TextEditingController nameEditingController;
-  final TextEditingController secondNameEditingController;
   final TextEditingController birthdayEditingController;
   final Function(String?) updateSurname;
   final Function(String?) updateName;
   final Function(String?) updateSecondName;
-  final String? birthday;
   final GlobalKey surnameFormKey;
   final GlobalKey nameFormKey;
   final GlobalKey birthdayFormKey;
   final Function(BuildContext) onDateTap;
   final VoidCallback nextButtonCallback;
+  final String? initialValueSurname;
+  final String? initialValueName;
+  final String? initialValuePatronymic;
 
   const _FullNameWidget({
-    required this.surnameEditingController,
-    required this.nameEditingController,
-    required this.secondNameEditingController,
     required this.birthdayEditingController,
     required this.updateSurname,
     required this.updateName,
     required this.updateSecondName,
-    required this.birthday,
     required this.surnameFormKey,
     required this.nameFormKey,
     required this.birthdayFormKey,
     required this.onDateTap,
     required this.nextButtonCallback,
+    required this.initialValueSurname,
+    required this.initialValueName,
+    required this.initialValuePatronymic,
     Key? key,
   }) : super(key: key);
 
@@ -130,30 +170,29 @@ class _FullNameWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             TextFormFieldWidget(
-              controller: surnameEditingController,
               onChanged: updateSurname,
               hintText: FullNameScreenStrings.surname,
               validator: _surnameValidator,
               formKey: surnameFormKey,
+              initialValue: initialValueSurname,
             ),
             const SizedBox(height: 16.0),
             TextFormFieldWidget(
-              controller: nameEditingController,
               onChanged: updateName,
               hintText: FullNameScreenStrings.name,
               validator: _nameValidator,
               formKey: nameFormKey,
+              initialValue: initialValueName,
             ),
             const SizedBox(height: 16.0),
             TextFormFieldWidget(
-              controller: secondNameEditingController,
               onChanged: updateSecondName,
               hintText: FullNameScreenStrings.patronymic,
+              initialValue: initialValuePatronymic,
             ),
             const SizedBox(height: 16.0),
             _DateWidget(
               controller: birthdayEditingController,
-              birthdayDate: birthday,
               validator: _birthdayValidator,
               birthdayFormKey: birthdayFormKey,
               onDateTap: onDateTap,
@@ -197,14 +236,12 @@ class _FullNameWidget extends StatelessWidget {
 
 class _DateWidget extends StatelessWidget {
   final TextEditingController controller;
-  final String? birthdayDate;
   final String? Function(String?) validator;
   final GlobalKey birthdayFormKey;
   final Function(BuildContext) onDateTap;
 
   const _DateWidget({
     required this.controller,
-    required this.birthdayDate,
     required this.validator,
     required this.birthdayFormKey,
     required this.onDateTap,
