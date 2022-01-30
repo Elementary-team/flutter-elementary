@@ -2,7 +2,7 @@
 	"name": "elementary",
 	"displayName": "Elementary",
 	"description": "Extension for better experience with Elementary",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "ElementaryTeam",
 	"repository": {
 		"type": "git",
@@ -66,7 +66,7 @@
 	},
 	"devDependencies": {
 		"@types/glob": "^7.1.4",
-		"@types/mocha": "^9.0.0",
+		"@types/mocha": "^9.1.0",
 		"@types/node": "^16.11.10",
 		"@types/vscode": "^1.61.0",
 		"@typescript-eslint/eslint-plugin": "^4.31.1",
@@ -74,7 +74,7 @@
 		"@vscode/test-electron": "^1.6.2",
 		"eslint": "^7.32.0",
 		"glob": "^7.1.7",
-		"mocha": "^9.1.1",
+		"mocha": "^9.2.0",
 		"typescript": "^4.4.3"
 	},
 	"dependencies": {
