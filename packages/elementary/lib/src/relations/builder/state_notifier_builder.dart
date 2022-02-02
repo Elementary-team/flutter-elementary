@@ -99,7 +99,7 @@ class EntityStateNotifierBuilder<T> extends StatelessWidget {
           return lBuilder(ctx, entity.data);
         }
 
-        return builder(ctx, entity.data);
+        return builder(ctx, entity.data!);
       },
     );
   }
@@ -116,7 +116,7 @@ typedef LoadingWidgetBuilder<T> = Widget Function(
 /// Builder function for content state.
 /// See also:
 ///   [EntityState] - State of some logical entity.
-typedef DataWidgetBuilder<T> = Widget Function(BuildContext context, T? data);
+typedef DataWidgetBuilder<T> = Widget Function(BuildContext context, T data);
 
 /// Builder function for error state.
 /// See also:
