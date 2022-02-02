@@ -1,16 +1,17 @@
 import 'package:elementary/elementary.dart';
 import 'package:profile/features/profile/screens/interests_screen/interests_screen.dart';
-import 'package:profile/features/profile/service/bloc/profile_bloc.dart';
-import 'package:profile/features/profile/service/bloc/profile_event.dart';
-import 'package:profile/features/profile/service/bloc/profile_state.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_bloc.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_event.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_state.dart';
 import 'package:profile/features/profile/service/repository/mock_interests_repository.dart';
+import 'package:profile/features/profile/service/repository/repository_interfaces.dart';
 
 /// Model for [InterestsScreen].
 class InterestsScreenModel extends ElementaryModel {
   /// Bloc for working with profile states.
   final ProfileBloc _profileBloc;
 
-  final MockInterestsRepository _repository;
+  final IInterestsRepository _repository;
 
   /// Gives the current state.
   BaseProfileState get currentState => _profileBloc.state;
@@ -23,12 +24,12 @@ class InterestsScreenModel extends ElementaryModel {
   ) : super(errorHandler: errorHandler);
 
   /// Return list with interests from [MockInterestsRepository].
-  List<String> getMockInterestsList() {
-    return _repository.getMockListInterests();
+  Future<List<String>> getInterestsList() async {
+    return _repository.getListInterests();
   }
 
   /// Method for save list interests.
-  void saveListInterests(List<String>? interests) {
-    _profileBloc.add(SaveInterestsEvent(interests: interests));
+  void updateInterests(List<String>? interests) {
+    _profileBloc.add(UpdateInterestsEvent(interests: interests));
   }
 }

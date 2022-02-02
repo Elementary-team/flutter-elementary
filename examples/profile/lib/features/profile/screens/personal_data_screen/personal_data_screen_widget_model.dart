@@ -8,7 +8,8 @@ import 'package:profile/features/navigation/service/coordinator.dart';
 import 'package:profile/features/profile/domain/profile.dart';
 import 'package:profile/features/profile/screens/personal_data_screen/personal_data_screen.dart';
 import 'package:profile/features/profile/screens/personal_data_screen/personal_data_screen_model.dart';
-import 'package:profile/features/profile/service/bloc/profile_state.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_state.dart';
+import 'package:profile/util/dialog_controller.dart';
 import 'package:provider/provider.dart';
 
 /// Factory for [PersonalDataScreenWidgetModel].
@@ -20,10 +21,12 @@ PersonalDataScreenWidgetModel fullNameScreenWidgetModelFactory(
     appDependencies.profileBloc,
     appDependencies.errorHandler,
   );
-  final coordinator = context.read<IAppScope>().coordinator;
+  final coordinator = appDependencies.coordinator;
+  final dialogController = appDependencies.dialogController;
   return PersonalDataScreenWidgetModel(
     model: model,
     coordinator: coordinator,
+    dialogController: dialogController,
   );
 }
 
@@ -34,105 +37,82 @@ class PersonalDataScreenWidgetModel
   /// Coordinator for navigation.
   final Coordinator coordinator;
 
-  final _surnameFormKey = GlobalKey<FormState>();
-  final _nameFormKey = GlobalKey<FormState>();
-  final _birthdayFormKey = GlobalKey<FormState>();
+  /// Controller to show [DatePickerDialog].
+  final DialogController dialogController;
 
+  final _formKey = GlobalKey<FormState>();
+
+  final _surnameEditingController = TextEditingController();
+  final _nameEditingController = TextEditingController();
+  final _patronymicEditingController = TextEditingController();
   final _birthdayEditingController = TextEditingController();
   final _profileEntityState = EntityStateNotifier<Profile>();
-  late final StreamSubscription<BaseProfileState> _stateStatusStream;
+  late final StreamSubscription<BaseProfileState> _stateStatusSubscription;
 
   @override
-  GlobalKey<FormState> get surnameFormKey => _surnameFormKey;
-
-  @override
-  GlobalKey<FormState> get nameFormKey => _nameFormKey;
-
-  @override
-  GlobalKey<FormState> get birthdayFormKey => _birthdayFormKey;
+  GlobalKey<FormState> get formKey => _formKey;
 
   @override
   ListenableState<EntityState<Profile>> get profileEntityState =>
       _profileEntityState;
 
   @override
+  TextEditingController get surnameEditingController =>
+      _surnameEditingController;
+
+  @override
+  TextEditingController get nameEditingController => _nameEditingController;
+
+  @override
+  TextEditingController get patronymicEditingController =>
+      _patronymicEditingController;
+
+  @override
   TextEditingController get birthdayEditingController =>
       _birthdayEditingController;
-
-  String? _currentSurname;
-  String? _currentName;
-  String? _currentPatronymic;
-  DateTime? _currentBirthday;
 
   /// Create an instance [PersonalDataScreenWidgetModel].
   PersonalDataScreenWidgetModel({
     required PersonalDataScreenModel model,
     required this.coordinator,
+    required this.dialogController,
   }) : super(model);
 
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-    _stateStatusStream = model.profileStateStream.listen(_updateState);
-    _initProfile();
+    _stateStatusSubscription = model.profileStateStream.listen(_updateState);
+    _updateState(model.currentState);
   }
 
   @override
   void dispose() {
+    _surnameEditingController.dispose();
+    _nameEditingController.dispose();
+    _patronymicEditingController.dispose();
     _birthdayEditingController.dispose();
-    _stateStatusStream.cancel();
+    _stateStatusSubscription.cancel();
     super.dispose();
   }
 
   @override
-  void updateSurname(String? newValue) {
-    surnameFormKey.currentState!.validate();
-    _currentSurname = newValue;
-  }
-
-  @override
-  void updateName(String? newValue) {
-    nameFormKey.currentState!.validate();
-    _currentName = newValue;
-  }
-
-  @override
-  void updatePatronymic(String? newValue) {
-    _currentPatronymic = newValue;
-  }
-
-  @override
-  void savePersonalData() {
-    if (surnameFormKey.currentState!.validate() &
-        nameFormKey.currentState!.validate() &
-        birthdayFormKey.currentState!.validate()) {
-      if (_currentSurname != null &&
-          _currentName != null &&
-          _currentBirthday != null) {
-        model.saveFullName(
-          _currentSurname!,
-          _currentName!,
-          _currentPatronymic,
-          _currentBirthday!,
-        );
-      }
-      coordinator.navigate(context, AppCoordinate.placeResidenceScreen);
+  void updatePersonalData() {
+    if (formKey.currentState!.validate()) {
+      model.updatePersonalData(
+        _surnameEditingController.text,
+        _nameEditingController.text,
+        _patronymicEditingController.text,
+        DateTime.parse(_birthdayEditingController.text),
+      );
     }
+    coordinator.navigate(context, AppCoordinates.placeResidenceScreen);
   }
 
   @override
   Future<void> onDateTap(BuildContext context) async {
-    final date = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1940),
-      lastDate: DateTime.now(),
-      initialDatePickerMode: DatePickerMode.year,
-    );
+    final date = await dialogController.showPicker(context);
     if (date != null) {
-      _currentBirthday = date;
       _birthdayEditingController.text = _getDateToString(date);
-      birthdayFormKey.currentState!.validate();
     }
   }
 
@@ -142,51 +122,87 @@ class PersonalDataScreenWidgetModel
     coordinator.pop();
   }
 
-  void _initProfile() {
-    final state = model.currentState;
-    if (state is InitProfileState) {
-      _profileEntityState.loading();
-    } else if (state is ProfileState) {
-      final profile = state.profile;
-      _profileEntityState.content(profile);
-      if (profile.birthday != null) {
-        _birthdayEditingController.text = _getDateToString(profile.birthday!);
-      }
-      _currentSurname = profile.surname;
-      _currentName = profile.name;
-      _currentPatronymic = profile.patronymic;
-      _currentBirthday = profile.birthday;
-    } else if (state is ErrorLoadingState) {
-      _profileEntityState.error();
+  @override
+  String? surnameValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field must be filled';
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  String? nameValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field must be filled';
+    } else if (value.length < 2) {
+      return 'The name cannot contain less than two characters';
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  String? birthdayValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field must be filled';
+    } else {
+      return null;
     }
   }
 
   void _updateState(BaseProfileState state) {
     if (state is InitProfileState) {
       _profileEntityState.loading();
-    } else if (state is ProfileState || state is PendingProfileState) {
-      final profile = (state as ProfileState).profile;
+    } else if (state is ProfileState) {
+      final profile = state.profile;
       _profileEntityState.content(profile);
-    } else if (state is ErrorLoadingState) {
+      _initField(profile);
+    } else if (state is ErrorProfileLoadingState) {
       _profileEntityState.error();
     }
   }
 
+  void _initField(Profile profile) {
+    if (profile.birthday != null) {
+      _birthdayEditingController.text = _getDateToString(profile.birthday!);
+    }
+    if (profile.surname != null) {
+      _surnameEditingController.text = profile.surname!;
+    }
+    if (profile.name != null) {
+      _nameEditingController.text = profile.name!;
+    }
+    if (profile.patronymic != null) {
+      _patronymicEditingController.text = profile.patronymic!;
+    }
+  }
+
   String _getDateToString(DateTime date) {
-    return '${date.year}/${date.month}/${date.day}';
+    final month = _twoDigits(date.month);
+    final day = _twoDigits(date.day);
+    return '${date.year}-$month-$day';
+  }
+
+  String _twoDigits(int n) {
+    if (n >= 10) return '$n';
+    return '0$n';
   }
 }
 
 /// Interface of [PersonalDataScreenWidgetModel].
 abstract class IPersonalDataWidgetModel extends IWidgetModel {
   /// Validation form key for surname.
-  GlobalKey<FormState> get surnameFormKey;
+  GlobalKey<FormState> get formKey;
 
-  /// Validation form key for name.
-  GlobalKey<FormState> get nameFormKey;
+  /// Text Editing Controller for surname.
+  TextEditingController get surnameEditingController;
 
-  /// Validation form key for birthday.
-  GlobalKey<FormState> get birthdayFormKey;
+  /// Text Editing Controller for name.
+  TextEditingController get nameEditingController;
+
+  /// Text Editing Controller for patronymic.
+  TextEditingController get patronymicEditingController;
 
   /// Text Editing Controller for birthday.
   TextEditingController get birthdayEditingController;
@@ -194,21 +210,21 @@ abstract class IPersonalDataWidgetModel extends IWidgetModel {
   /// State of state.
   ListenableState<EntityState<Profile>> get profileEntityState;
 
-  /// Function to change surname.
-  void updateSurname(String? newValue) {}
-
-  /// Function to change name.
-  void updateName(String? newValue) {}
-
-  /// Function to change second name.
-  void updatePatronymic(String? newValue) {}
-
   /// Function to open DatePicker.
   Future<void> onDateTap(BuildContext context) async {}
 
   /// Function to save new [Profile].
-  void savePersonalData() {}
+  void updatePersonalData() {}
 
   /// Callback on BackButton tap.
   void backButtonTap() {}
+
+  /// Validator for surname field.
+  String? surnameValidator(String? value);
+
+  /// Validator for name field.
+  String? nameValidator(String? value);
+
+  /// Validator for birthday field.
+  String? birthdayValidator(String? value);
 }

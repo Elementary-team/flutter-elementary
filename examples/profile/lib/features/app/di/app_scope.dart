@@ -1,21 +1,21 @@
 import 'package:elementary/elementary.dart';
-import 'package:flutter/material.dart';
-import 'package:profile/features/common/dialog_controller.dart';
 import 'package:profile/features/navigation/service/coordinator.dart';
-import 'package:profile/features/profile/service/bloc/profile_bloc.dart';
-import 'package:profile/features/profile/service/mock_server/mock_server.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_bloc.dart';
 import 'package:profile/features/profile/service/repository/mock_cities_repository.dart';
 import 'package:profile/features/profile/service/repository/mock_interests_repository.dart';
 import 'package:profile/features/profile/service/repository/mock_profile_repository.dart';
+import 'package:profile/features/profile/service/repository/repository_interfaces.dart';
+import 'package:profile/features/server/mock_server/mock_server.dart';
 import 'package:profile/util/default_error_handler.dart';
+import 'package:profile/util/dialog_controller.dart';
 
 /// Scope of dependencies which need through all app's life.
 class AppScope implements IAppScope {
   late final ErrorHandler _errorHandler;
   late final Coordinator _coordinator;
   late final ProfileBloc _profileBloc;
-  late final MockCitiesRepository _mockCitiesRepository;
-  late final MockInterestsRepository _mockInterestsRepository;
+  late final ICitiesRepository _mockCitiesRepository;
+  late final IInterestsRepository _mockInterestsRepository;
   late final DialogController _dialogController;
 
   @override
@@ -28,10 +28,10 @@ class AppScope implements IAppScope {
   ProfileBloc get profileBloc => _profileBloc;
 
   @override
-  MockCitiesRepository get mockCitiesRepository => _mockCitiesRepository;
+  ICitiesRepository get mockCitiesRepository => _mockCitiesRepository;
 
   @override
-  MockInterestsRepository get mockInterestsRepository =>
+  IInterestsRepository get mockInterestsRepository =>
       _mockInterestsRepository;
 
   @override
@@ -61,11 +61,11 @@ abstract class IAppScope {
   ProfileBloc get profileBloc;
 
   /// Mock repository to work with cities.
-  MockCitiesRepository get mockCitiesRepository;
+  ICitiesRepository get mockCitiesRepository;
 
   /// Mock repository to work with interests.
-  MockInterestsRepository get mockInterestsRepository;
+  IInterestsRepository get mockInterestsRepository;
 
-  /// Message controller for show [SnackBar].
+  /// Controller for show dialogs.
   DialogController get dialogController;
 }

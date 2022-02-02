@@ -8,5 +8,5 @@ import 'package:profile/features/navigation/domain/entity/coordinate.dart';
 class AppRouteInformationParser extends RouteInformationParser<Coordinate> {
   @override
   Future<Coordinate> parseRouteInformation(RouteInformation routeInformation) =>
-      SynchronousFuture(AppCoordinate.initScreen);
+      SynchronousFuture(AppCoordinates.initScreen);
 }

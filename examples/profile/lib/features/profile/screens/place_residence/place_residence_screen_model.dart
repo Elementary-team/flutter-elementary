@@ -1,9 +1,9 @@
 import 'package:elementary/elementary.dart';
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen.dart';
-import 'package:profile/features/profile/service/bloc/profile_bloc.dart';
-import 'package:profile/features/profile/service/bloc/profile_event.dart';
-import 'package:profile/features/profile/service/bloc/profile_state.dart';
-import 'package:profile/features/profile/service/repository/mock_cities_repository.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_bloc.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_event.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_state.dart';
+import 'package:profile/features/profile/service/repository/repository_interfaces.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 /// Model for [PlaceResidenceScreen].
@@ -12,7 +12,7 @@ class PlaceResidenceScreenModel extends ElementaryModel {
   final ProfileBloc _profileBloc;
 
   /// Mock repository for get list suggestions.
-  final MockCitiesRepository _repository;
+  final ICitiesRepository _repository;
 
   /// Gives the current state.
   BaseProfileState get currentState => _profileBloc.state;
@@ -25,17 +25,17 @@ class PlaceResidenceScreenModel extends ElementaryModel {
   ) : super(errorHandler: errorHandler);
 
   /// Function to get suggestion for entering a city from a mock server.
-  List<String> getMockListCities(String enteredValue) {
-    return _repository.getMockListCities(enteredValue);
+  Future<List<String>> getListCities(String enteredValue) {
+    return _repository.getListCities(enteredValue);
   }
 
   /// Returns the mock value of the city at the coordinates selected on the map.
-  String getMockCityByCoordinates(Point coordinates) {
-    return _repository.getMockCityByCoordinates(coordinates);
+  Future<String> getCityByCoordinates(Point coordinates) {
+    return _repository.getCityByCoordinates(coordinates);
   }
 
   /// Method for save place of residence.
   void savePlaceResidence(String? place) {
-    _profileBloc.add(SavePlaceResidenceEvent(placeResidence: place));
+    _profileBloc.add(UpdatePlaceResidenceEvent(placeResidence: place));
   }
 }

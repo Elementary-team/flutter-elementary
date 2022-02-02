@@ -1,13 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:profile/features/profile/screens/about_me_screen/about_me_screen.dart';
-
-//ignore_for_file:public_member_api_docs
 
 /// Strings that are needed on the [AboutMeScreen].
 class AboutMeScreenStrings {
-  static const String aboutMe = 'About me';
-  static const String fewWordsAboutYourself =
+  /// Title text in appbar in [AboutMeScreen].
+  static const String aboutMeTitle = 'About me';
+
+  /// Text field hint.
+  static const String fewWordsAboutYourselfHint =
       'Write a few words about yourself';
-  static const String save = 'Save';
-  static const String ok = 'Ok';
-  static const String error = 'An error occurred, please try again';
+
+  /// Text for save button.
+  static const String saveButtonTitle = 'Save';
+
+  /// Text for ok button.
+  static const String okButtonTitle = 'Ok';
+
+  /// Text to display the error in [SnackBar].
+  static const String errorSnackBar = 'An error occurred, please try again';
 }

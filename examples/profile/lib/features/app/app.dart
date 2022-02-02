@@ -3,7 +3,7 @@ import 'package:profile/features/app/di/app_scope.dart';
 import 'package:profile/features/common/widgets/di_scope/di_scope.dart';
 import 'package:profile/features/navigation/domain/delegate/app_router_delegate.dart';
 import 'package:profile/features/navigation/domain/entity/app_coordinate.dart';
-import 'package:profile/features/navigation/domain/parser/app_route_information_parses.dart';
+import 'package:profile/features/navigation/domain/parser/app_route_information_parser.dart';
 import 'package:profile/features/navigation/service/coordinator.dart';
 
 /// App widget.
@@ -28,7 +28,6 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return DiScope<IAppScope>(
-      key: ObjectKey(_scope),
       factory: () {
         return _scope;
       },
@@ -41,7 +40,7 @@ class _AppState extends State<App> {
 
   void _setupRouting(Coordinator coordinator) {
     coordinator
-      ..initialCoordinate = AppCoordinate.initScreen
+      ..initialCoordinate = AppCoordinates.initScreen
       ..registerCoordinates('/', appCoordinates);
   }
 }

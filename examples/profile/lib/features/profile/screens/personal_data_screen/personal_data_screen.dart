@@ -6,6 +6,7 @@ import 'package:profile/features/profile/domain/profile.dart';
 import 'package:profile/features/profile/screens/personal_data_screen/personal_data_screen_widget_model.dart';
 import 'package:profile/features/profile/screens/personal_data_screen/widgets/text_form_field_widget.dart';
 import 'package:profile/features/profile/widgets/cancel_button/cancel_button.dart';
+import 'package:profile/features/profile/widgets/error_widget.dart';
 import 'package:profile/features/profile/widgets/next_button.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -27,7 +28,7 @@ class PersonalDataScreen extends ElementaryWidget<IPersonalDataWidgetModel> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: BackButton(onPressed: wm.backButtonTap),
-        title: const Text(FullNameScreenStrings.personalData),
+        title: const Text(PersonalDataScreenStrings.personalDataTitle),
         actions: const [
           CancelButton(),
         ],
@@ -35,56 +36,65 @@ class PersonalDataScreen extends ElementaryWidget<IPersonalDataWidgetModel> {
       body: EntityStateNotifierBuilder<Profile>(
         listenableEntityState: wm.profileEntityState,
         loadingBuilder: (context, _) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                const SizedBox(height: 16.0),
-                const _Shimmer(
-                  height: _shimmerHeight,
-                  width: _shimmerWidth,
-                ),
-                const SizedBox(height: 16.0),
-                const _Shimmer(
-                  height: _shimmerHeight,
-                  width: _shimmerWidth,
-                ),
-                const SizedBox(height: 16.0),
-                const _Shimmer(
-                  height: _shimmerHeight,
-                  width: _shimmerWidth,
-                ),
-                const SizedBox(height: 16.0),
-                const _Shimmer(
-                  height: _shimmerHeight,
-                  width: _shimmerWidth,
-                ),
-                const SizedBox(height: 16.0),
-                NextButton(callback: () {}),
-              ],
-            ),
-          );
+          return const _LoadingWidget();
         },
         errorBuilder: (context, _, __) {
-          return const _ErrorWidget();
+          return const CustomErrorWidget(
+            error: PersonalDataScreenStrings.errorLoading,
+          );
         },
         builder: (context, profile) {
           return _FullNameWidget(
+            surnameEditingController: wm.surnameEditingController,
+            nameEditingController: wm.nameEditingController,
+            patronymicEditingController: wm.patronymicEditingController,
             birthdayEditingController: wm.birthdayEditingController,
-            updateSurname: wm.updateSurname,
-            updateName: wm.updateName,
-            updateSecondName: wm.updatePatronymic,
-            surnameFormKey: wm.surnameFormKey,
-            nameFormKey: wm.nameFormKey,
-            birthdayFormKey: wm.birthdayFormKey,
+            formKey: wm.formKey,
             onDateTap: wm.onDateTap,
-            nextButtonCallback: wm.savePersonalData,
-            initialValueSurname: profile?.surname,
-            initialValueName: profile?.name,
-            initialValuePatronymic: profile?.patronymic,
+            nextButtonCallback: wm.updatePersonalData,
+            surnameValidator: wm.surnameValidator,
+            nameValidator: wm.nameValidator,
+            birthdayValidator: wm.birthdayValidator,
           );
         },
+      ),
+    );
+  }
+}
+
+class _LoadingWidget extends StatelessWidget {
+  const _LoadingWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          const SizedBox(height: 16.0),
+          const _Shimmer(
+            height: _shimmerHeight,
+            width: _shimmerWidth,
+          ),
+          const SizedBox(height: 16.0),
+          const _Shimmer(
+            height: _shimmerHeight,
+            width: _shimmerWidth,
+          ),
+          const SizedBox(height: 16.0),
+          const _Shimmer(
+            height: _shimmerHeight,
+            width: _shimmerWidth,
+          ),
+          const SizedBox(height: 16.0),
+          const _Shimmer(
+            height: _shimmerHeight,
+            width: _shimmerWidth,
+          ),
+          const SizedBox(height: 16.0),
+          NextButton(callback: () {}),
+        ],
       ),
     );
   }
@@ -117,44 +127,29 @@ class _Shimmer extends StatelessWidget {
   }
 }
 
-class _ErrorWidget extends StatelessWidget {
-  const _ErrorWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(FullNameScreenStrings.error),
-    );
-  }
-}
-
 class _FullNameWidget extends StatelessWidget {
+  final TextEditingController surnameEditingController;
+  final TextEditingController nameEditingController;
+  final TextEditingController patronymicEditingController;
   final TextEditingController birthdayEditingController;
-  final Function(String?) updateSurname;
-  final Function(String?) updateName;
-  final Function(String?) updateSecondName;
-  final GlobalKey surnameFormKey;
-  final GlobalKey nameFormKey;
-  final GlobalKey birthdayFormKey;
+  final GlobalKey formKey;
   final Function(BuildContext) onDateTap;
   final VoidCallback nextButtonCallback;
-  final String? initialValueSurname;
-  final String? initialValueName;
-  final String? initialValuePatronymic;
+  final String? Function(String?) surnameValidator;
+  final String? Function(String?) nameValidator;
+  final String? Function(String?) birthdayValidator;
 
   const _FullNameWidget({
+    required this.surnameEditingController,
+    required this.nameEditingController,
+    required this.patronymicEditingController,
     required this.birthdayEditingController,
-    required this.updateSurname,
-    required this.updateName,
-    required this.updateSecondName,
-    required this.surnameFormKey,
-    required this.nameFormKey,
-    required this.birthdayFormKey,
+    required this.formKey,
     required this.onDateTap,
     required this.nextButtonCallback,
-    required this.initialValueSurname,
-    required this.initialValueName,
-    required this.initialValuePatronymic,
+    required this.surnameValidator,
+    required this.nameValidator,
+    required this.birthdayValidator,
     Key? key,
   }) : super(key: key);
 
@@ -166,108 +161,74 @@ class _FullNameWidget extends StatelessWidget {
         vertical: 16.0,
       ),
       child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            TextFormFieldWidget(
-              onChanged: updateSurname,
-              hintText: FullNameScreenStrings.surname,
-              validator: _surnameValidator,
-              formKey: surnameFormKey,
-              initialValue: initialValueSurname,
-            ),
-            const SizedBox(height: 16.0),
-            TextFormFieldWidget(
-              onChanged: updateName,
-              hintText: FullNameScreenStrings.name,
-              validator: _nameValidator,
-              formKey: nameFormKey,
-              initialValue: initialValueName,
-            ),
-            const SizedBox(height: 16.0),
-            TextFormFieldWidget(
-              onChanged: updateSecondName,
-              hintText: FullNameScreenStrings.patronymic,
-              initialValue: initialValuePatronymic,
-            ),
-            const SizedBox(height: 16.0),
-            _DateWidget(
-              controller: birthdayEditingController,
-              validator: _birthdayValidator,
-              birthdayFormKey: birthdayFormKey,
-              onDateTap: onDateTap,
-            ),
-            const SizedBox(height: 16.0),
-            NextButton(
-              callback: nextButtonCallback,
-            ),
-          ],
+        child: Form(
+          key: formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              TextFormFieldWidget(
+                controller: surnameEditingController,
+                hintText: PersonalDataScreenStrings.surnameHint,
+                validator: surnameValidator,
+              ),
+              const SizedBox(height: 16.0),
+              TextFormFieldWidget(
+                controller: nameEditingController,
+                hintText: PersonalDataScreenStrings.nameTitle,
+                validator: nameValidator,
+              ),
+              const SizedBox(height: 16.0),
+              TextFormFieldWidget(
+                controller: patronymicEditingController,
+                hintText: PersonalDataScreenStrings.patronymicHint,
+              ),
+              const SizedBox(height: 16.0),
+              _DateWidget(
+                controller: birthdayEditingController,
+                validator: birthdayValidator,
+                onDateTap: onDateTap,
+              ),
+              const SizedBox(height: 16.0),
+              NextButton(
+                callback: nextButtonCallback,
+              ),
+            ],
+          ),
         ),
       ),
     );
-  }
-
-  String? _surnameValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'This field must be filled';
-    } else {
-      return null;
-    }
-  }
-
-  String? _nameValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'This field must be filled';
-    } else if (value.length < 2) {
-      return 'The name cannot contain less than two characters';
-    } else {
-      return null;
-    }
-  }
-
-  String? _birthdayValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'This field must be filled';
-    } else {
-      return null;
-    }
   }
 }
 
 class _DateWidget extends StatelessWidget {
   final TextEditingController controller;
   final String? Function(String?) validator;
-  final GlobalKey birthdayFormKey;
   final Function(BuildContext) onDateTap;
 
   const _DateWidget({
     required this.controller,
     required this.validator,
-    required this.birthdayFormKey,
     required this.onDateTap,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: birthdayFormKey,
-      child: TextFormField(
-        readOnly: true,
-        controller: controller,
-        onTap: () {
-          onDateTap(context);
-        },
-        validator: validator,
-        decoration: const InputDecoration(
-          hintText: FullNameScreenStrings.birthday,
-          hintStyle: TextStyle(
-            fontSize: 18.0,
-            color: textFieldBorderColor,
-          ),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: textFieldBorderColor),
-          ),
+    return TextFormField(
+      readOnly: true,
+      controller: controller,
+      onTap: () {
+        onDateTap(context);
+      },
+      validator: validator,
+      decoration: const InputDecoration(
+        hintText: PersonalDataScreenStrings.birthdayHint,
+        hintStyle: TextStyle(
+          fontSize: 18.0,
+          color: textFieldBorderColor,
+        ),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: textFieldBorderColor),
         ),
       ),
     );

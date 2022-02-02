@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 
-//ignore_for_file: public_member_api_docs
-
 /// Semantic aliases.
+
+/// Secondary color.
 const Color secondaryColor = _darkGrey;
+
+/// Basic white color.
 const Color white = _white;
+
+/// Divider color.
 const Color dividerColor = _grey;
+
+/// Primary text color.
 const Color textColorPrimary = _oxfordBlue;
+
+/// Text field border color.
 const Color textFieldBorderColor = _darkGrey;
 
 // Main palette (http://www.color-blindness.com/color-name-hue/).

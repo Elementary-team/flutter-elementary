@@ -12,5 +12,4 @@ Future<void> run() async {
 
 void _initLogger() {
   Logger.addStrategy(DebugLogStrategy());
-  Logger.addStrategy(RemoteLogStrategy());
 }

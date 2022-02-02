@@ -1,20 +1,22 @@
-import 'package:profile/features/profile/service/mock_server/mock_server.dart';
+import 'package:profile/features/profile/service/repository/repository_interfaces.dart';
+import 'package:profile/features/server/mock_server/mock_server.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 /// Repository for working with a users place of residence by using [MockServer].
-class MockCitiesRepository {
+class MockCitiesRepository implements ICitiesRepository{
   final MockServer _mockServer;
 
   /// Create an instance [MockCitiesRepository].
   const MockCitiesRepository(this._mockServer);
 
   /// Return list with cities for suggestions from [MockServer].
-  List<String> getMockListCities(String enteredValue) {
+  @override
+  Future<List<String>> getListCities(String enteredValue) async {
     return _mockServer.getMockListCities(enteredValue);
   }
 
-  /// Returns the mock value of the city at the coordinates selected on the map.
-  String getMockCityByCoordinates(Point coordinates) {
+  @override
+  Future<String> getCityByCoordinates(Point coordinates) {
     return _mockServer.getMockCityByCoordinates(coordinates);
   }
 }

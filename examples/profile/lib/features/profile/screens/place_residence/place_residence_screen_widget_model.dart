@@ -1,13 +1,15 @@
+import 'dart:async';
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/features/app/di/app_scope.dart';
-import 'package:profile/features/common/dialog_controller.dart';
 import 'package:profile/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:profile/features/navigation/service/coordinator.dart';
 import 'package:profile/features/profile/domain/profile.dart';
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen.dart';
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen_model.dart';
-import 'package:profile/features/profile/service/bloc/profile_state.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_state.dart';
+import 'package:profile/util/dialog_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -21,8 +23,8 @@ PlaceResidenceScreenWidgetModel placeResidenceScreenWidgetModelFactory(
     appDependencies.mockCitiesRepository,
     appDependencies.errorHandler,
   );
-  final coordinator = context.read<IAppScope>().coordinator;
-  final dialogController = context.read<IAppScope>().dialogController;
+  final coordinator = appDependencies.coordinator;
+  final dialogController = appDependencies.dialogController;
   return PlaceResidenceScreenWidgetModel(
     model: model,
     coordinator: coordinator,
@@ -41,7 +43,7 @@ class PlaceResidenceScreenWidgetModel
   final DialogController dialogController;
 
   final TextEditingController _controller = TextEditingController();
-  final _listSuggestionsState = StateNotifier<List<String>>();
+  final _listSuggestionsState = EntityStateNotifier<List<String>>();
   final FocusNode _focusNode = FocusNode();
   final GlobalKey<FormState> _formKey = GlobalKey();
 
@@ -49,7 +51,7 @@ class PlaceResidenceScreenWidgetModel
   TextEditingController get controller => _controller;
 
   @override
-  ListenableState<List<String>> get listSuggestionsState =>
+  ListenableState<EntityState<List<String>>> get listSuggestionsState =>
       _listSuggestionsState;
 
   @override
@@ -61,6 +63,9 @@ class PlaceResidenceScreenWidgetModel
   String? _currentPlaceResidence;
   String? _selectedCityOnMap;
 
+  Timer? _debounceTimer;
+  var _listCities = <String>[];
+
   /// Create an instance [PlaceResidenceScreenWidgetModel].
   PlaceResidenceScreenWidgetModel({
     required PlaceResidenceScreenModel model,
@@ -71,7 +76,19 @@ class PlaceResidenceScreenWidgetModel
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-    _initProfile();
+    _initPlaceResidence();
+    _controller.addListener(() {
+      _debouncing(_controller.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    _debounceTimer?.cancel();
+    _controller.removeListener(() {
+      _debouncing(_controller.text);
+    });
+    super.dispose();
   }
 
   @override
@@ -86,8 +103,13 @@ class PlaceResidenceScreenWidgetModel
   }
 
   @override
-  List<String> getSuggestion(String enteredValue) {
-    return model.getMockListCities(enteredValue);
+  FutureOr<List<String>> optionsBuilder(
+    TextEditingValue textEditingValue,
+  ) async {
+    if (textEditingValue.text == '') {
+      return List<String>.empty();
+    }
+    return _listCities;
   }
 
   @override
@@ -110,7 +132,7 @@ class PlaceResidenceScreenWidgetModel
   }
 
   @override
-  void saveSelectedCityOnMap() {
+  void updateSelectedCityOnMap() {
     if (_selectedCityOnMap != null) {
       _currentPlaceResidence = _selectedCityOnMap;
       _controller.text = _selectedCityOnMap!;
@@ -118,21 +140,34 @@ class PlaceResidenceScreenWidgetModel
   }
 
   @override
-  void getMockCityByCoordinates(Point coordinates) {
-    _selectedCityOnMap = model.getMockCityByCoordinates(coordinates);
+  Future<void> getCityByCoordinates(Point coordinates) async {
+    _selectedCityOnMap = await model.getCityByCoordinates(coordinates);
   }
 
   @override
-  void savePlace() {
+  void updatePlace() {
     if (_formKey.currentState!.validate()) {
       if (_currentPlaceResidence != null) {
         model.savePlaceResidence(_currentPlaceResidence);
-        coordinator.navigate(context, AppCoordinate.interestsScreen);
+        coordinator.navigate(context, AppCoordinates.interestsScreen);
       }
     }
   }
 
-  void _initProfile() {
+  void _debouncing(String city) {
+    _debounceTimer?.cancel();
+    _listSuggestionsState.loading();
+    try {
+      _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+        _listCities = await model.getListCities(city);
+        _listSuggestionsState.content(_listCities);
+      });
+    } on Exception catch (_) {
+      _listSuggestionsState.error();
+    }
+  }
+
+  void _initPlaceResidence() {
     final state = model.currentState;
     if (state is ProfileState) {
       final profile = state.profile;
@@ -153,37 +188,35 @@ abstract class IPlaceResidenceScreenWidgetModel extends IWidgetModel {
   FocusNode get focusNode;
 
   /// Suggestions status.
-  ListenableState<List<String>> get listSuggestionsState;
+  ListenableState<EntityState<List<String>>> get listSuggestionsState;
 
   /// Key to [Form].
   GlobalKey<FormState> get formKey;
 
   /// Function to change place residence.
-  void updatePlaceResidence(String? newValue) {}
+  void updatePlaceResidence(String? newValue);
 
   /// Callback on field submitted.
-  void onFieldSubmitted() {}
+  void onFieldSubmitted();
 
   /// Function to get suggestion for entering a city.
-  List<String> getSuggestion(String enteredValue) {
-    return <String>[];
-  }
+  FutureOr<List<String>> optionsBuilder(TextEditingValue enteredValue);
 
   /// Validator for checking the correctness of the entered city.
-  String? placeResidenceValidator(String? value) {}
+  String? placeResidenceValidator(String? value);
 
   /// Returns the mock value of the city at the coordinates selected on the map.
-  void getMockCityByCoordinates(Point coordinates) {}
+  void getCityByCoordinates(Point coordinates);
 
   /// Save the value of the selected city on the map.
-  void saveSelectedCityOnMap() {}
+  void updateSelectedCityOnMap();
 
   /// Function to open bottom sheet.
   void showBottomSheet({
     required WidgetBuilder builder,
     required ShapeBorder shape,
-  }) {}
+  });
 
   /// Function to save place of residence in [Profile].
-  void savePlace() {}
+  void updatePlace();
 }

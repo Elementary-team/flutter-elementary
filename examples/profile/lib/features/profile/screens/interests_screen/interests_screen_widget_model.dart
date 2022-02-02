@@ -2,13 +2,13 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/assets/strings/interests_screen_strings.dart';
 import 'package:profile/features/app/di/app_scope.dart';
-import 'package:profile/features/common/dialog_controller.dart';
 import 'package:profile/features/navigation/domain/entity/app_coordinate.dart';
 import 'package:profile/features/navigation/service/coordinator.dart';
 import 'package:profile/features/profile/domain/profile.dart';
 import 'package:profile/features/profile/screens/interests_screen/interests_screen.dart';
 import 'package:profile/features/profile/screens/interests_screen/interests_screen_model.dart';
-import 'package:profile/features/profile/service/bloc/profile_state.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_state.dart';
+import 'package:profile/util/dialog_controller.dart';
 import 'package:provider/provider.dart';
 
 /// Factory for [InterestsScreenWidgetModel].
@@ -21,8 +21,8 @@ InterestsScreenWidgetModel interestsScreenWidgetModelFactory(
     appDependencies.mockInterestsRepository,
     appDependencies.errorHandler,
   );
-  final coordinator = context.read<IAppScope>().coordinator;
-  final dialogController = context.read<IAppScope>().dialogController;
+  final coordinator = appDependencies.coordinator;
+  final dialogController = appDependencies.dialogController;
   return InterestsScreenWidgetModel(
     model: model,
     coordinator: coordinator,
@@ -40,15 +40,16 @@ class InterestsScreenWidgetModel
   /// Controller for show [SnackBar].
   final DialogController dialogController;
 
-  late final List<String> _listAllInterests;
   final _listUserInterestsState = StateNotifier<List<String>>();
-
-  @override
-  List<String> get listAllInterests => _listAllInterests;
+  final _listAllInterestsEntityState = EntityStateNotifier<List<String>>();
 
   @override
   ListenableState<List<String>> get listUserInterestsState =>
       _listUserInterestsState;
+
+  @override
+  ListenableState<EntityState<List<String>>> get listAllInterestsEntityState =>
+      _listAllInterestsEntityState;
 
   /// Create an instance [InterestsScreenWidgetModel].
   InterestsScreenWidgetModel({
@@ -59,20 +60,20 @@ class InterestsScreenWidgetModel
 
   @override
   void initWidgetModel() {
-    _initInterests();
-    _listAllInterests = model.getMockInterestsList();
     super.initWidgetModel();
+    _initInterests();
+    _initListAllInterests();
   }
 
   @override
-  void saveInterestsInProfile() {
+  void updateInterests() {
     if (_listUserInterestsState.value!.isNotEmpty) {
-      model.saveListInterests(_listUserInterestsState.value);
-      coordinator.navigate(context, AppCoordinate.aboutMeScreen);
+      model.updateInterests(_listUserInterestsState.value);
+      coordinator.navigate(context, AppCoordinates.aboutMeScreen);
     } else {
       dialogController.showSnackBar(
         context,
-        InterestsScreenStrings.warning,
+        InterestsScreenStrings.warningValidation,
       );
     }
   }
@@ -103,6 +104,16 @@ class InterestsScreenWidgetModel
     _listUserInterestsState.accept(currentListUserInterest);
   }
 
+  Future<void> _initListAllInterests() async {
+    _listAllInterestsEntityState.loading();
+    try {
+      final listAllInterests = await model.getInterestsList();
+      _listAllInterestsEntityState.content(listAllInterests);
+    } on Exception catch (_) {
+      _listAllInterestsEntityState.error();
+    }
+  }
+
   void _initInterests() {
     final state = model.currentState;
     if (state is ProfileState) {
@@ -119,14 +130,14 @@ class InterestsScreenWidgetModel
 
 /// Interface of [IInterestsScreenWidgetModel].
 abstract class IInterestsScreenWidgetModel extends IWidgetModel {
-  /// List interests.
-  List<String> get listAllInterests;
+  /// All interest list state.
+  ListenableState<EntityState<List<String>>> get listAllInterestsEntityState;
 
   /// Status of selected checkboxes.
   ListenableState<List<String>> get listUserInterestsState;
 
   /// Function to save list interests in [Profile].
-  void saveInterestsInProfile() {}
+  void updateInterests() {}
 
   /// Function that determines if a checkbox is checked.
   bool isChecked(String interest) {

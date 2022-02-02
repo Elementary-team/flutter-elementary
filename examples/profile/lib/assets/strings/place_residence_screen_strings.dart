@@ -1,11 +1,20 @@
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen.dart';
 
-//ignore_for_file:public_member_api_docs
-
 /// Strings that are needed on the [PlaceResidenceScreen].
 class PlaceResidenceScreenStrings {
-  static const placeResidence = 'Place of residence';
-  static const selectCityOnTheMap = 'Select a city on the map';
-  static const cancel = 'Cancel';
-  static const ready = 'Ready';
+  /// Title text in appbar in [PlaceResidenceScreen].
+  static const placeResidenceTitle = 'Place of residence';
+
+  /// Button text to open the map.
+  static const selectCityOnTheMapButton = 'Select a city on the map';
+
+  /// Button text to close the map and not save the result.
+  static const cancelButton = 'Cancel';
+
+  /// Button text to close the map and save the result.
+  static const readyButton = 'Ready';
+
+  /// Text to display an error when loading a suggestions.
+  static const String errorLoading =
+      'An error occurred, please try again later';
 }

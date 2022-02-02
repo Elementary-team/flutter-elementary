@@ -1,20 +1,21 @@
 import 'package:profile/features/profile/domain/profile.dart';
-import 'package:profile/features/profile/service/mock_server/mock_server.dart';
+import 'package:profile/features/profile/service/repository/repository_interfaces.dart';
+import 'package:profile/features/server/mock_server/mock_server.dart';
 
 /// Repository for working with a user profile by using [MockServer].
-class MockProfileRepository {
+class MockProfileRepository implements IProfileRepository{
   final MockServer _mockServer;
 
   /// Create an instance [MockProfileRepository].
   const MockProfileRepository(this._mockServer);
 
-  /// Return user profile or null.
+  @override
   Future<Profile> getProfile() async {
     final profile = await _mockServer.getProfile();
     return profile;
   }
 
-  /// Saves completed profile.
+  @override
   Future<void> saveProfile(Profile profile) async {
     await _mockServer.saveProfile(profile);
   }

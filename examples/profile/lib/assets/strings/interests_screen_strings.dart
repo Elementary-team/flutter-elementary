@@ -1,9 +1,13 @@
 import 'package:profile/features/profile/screens/interests_screen/interests_screen.dart';
 
-//ignore_for_file:public_member_api_docs
-
 /// Strings that are needed on the [InterestsScreen].
 class InterestsScreenStrings {
-  static const String interests = 'Interests';
-  static const String warning = 'Select at least one item';
+  /// Title text in appbar in [InterestsScreen].
+  static const String interestsTitle = 'Interests';
+
+  /// Validation error text.
+  static const String warningValidation = 'Select at least one item';
+
+  /// Text to display an error when loading a list interests.
+  static const String errorLoading = 'An error occurred, please try again later';
 }

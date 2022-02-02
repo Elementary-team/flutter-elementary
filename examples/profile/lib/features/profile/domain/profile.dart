@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 /// User profile.
 class Profile {
   /// User surname.
@@ -52,4 +54,20 @@ class Profile {
         interests: interests ?? this.interests,
         aboutMe: aboutMe ?? this.aboutMe,
       );
+
+  /// The method that checks the fields of two different instances of the
+  /// profile, if the fields are equal, it will return true.
+  bool isSame(Profile profile, Profile otherProfile) {
+    if (profile.surname == otherProfile.surname &&
+        profile.name == otherProfile.name &&
+        profile.patronymic == otherProfile.patronymic &&
+        profile.birthday == otherProfile.birthday &&
+        profile.placeOfResidence == otherProfile.placeOfResidence &&
+        listEquals(profile.interests, otherProfile.interests) &&
+        profile.aboutMe == otherProfile.aboutMe) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

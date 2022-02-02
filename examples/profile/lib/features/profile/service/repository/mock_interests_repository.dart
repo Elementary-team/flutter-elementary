@@ -1,14 +1,16 @@
-import 'package:profile/features/profile/service/mock_server/mock_server.dart';
+import 'package:profile/features/profile/service/repository/repository_interfaces.dart';
+import 'package:profile/features/server/mock_server/mock_server.dart';
 
 /// Repository for working with a users place of residence by using [MockServer].
-class MockInterestsRepository {
+class MockInterestsRepository implements IInterestsRepository {
   final MockServer _mockServer;
 
   /// Create an instance [MockInterestsRepository].
   const MockInterestsRepository(this._mockServer);
 
-  /// Return list with cities for suggestions from [MockServer].
-  List<String> getMockListInterests() {
+  /// Return list with interests from [MockServer].
+  @override
+  Future<List<String>> getListInterests() {
     return _mockServer.getMockListInterests();
   }
 }

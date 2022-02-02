@@ -4,13 +4,13 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/assets/strings/about_me_screen_strings.dart';
 import 'package:profile/features/app/di/app_scope.dart';
-import 'package:profile/features/common/dialog_controller.dart';
 import 'package:profile/features/navigation/service/coordinator.dart';
 import 'package:profile/features/profile/domain/profile.dart';
 import 'package:profile/features/profile/screens/about_me_screen/about_me_screen.dart';
 import 'package:profile/features/profile/screens/about_me_screen/about_me_screen_model.dart';
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen.dart';
-import 'package:profile/features/profile/service/bloc/profile_state.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_state.dart';
+import 'package:profile/util/dialog_controller.dart';
 import 'package:provider/provider.dart';
 
 /// Factory for [AboutMeScreenWidgetModel].
@@ -84,9 +84,9 @@ class AboutMeScreenWidgetModel
   }
 
   @override
-  void saveAboutMe() {
+  void updateAboutMe() {
     focusNode.unfocus();
-    model.saveAboutMeInfo(_currentInfo);
+    model.updateAboutMe(_currentInfo);
     final currentState = model.currentState;
     if (currentState is! PendingProfileState) {
       coordinator.popUntilRoot();
@@ -97,7 +97,7 @@ class AboutMeScreenWidgetModel
   void onChanged(String newText) {
     if (_currentInfo != newText) {
       _currentInfo = newText;
-      _buttonState.accept(AboutMeScreenStrings.save);
+      _buttonState.accept(AboutMeScreenStrings.saveButtonTitle);
     }
   }
 
@@ -118,10 +118,10 @@ class AboutMeScreenWidgetModel
       final initialProfile = currentState.initialProfile;
       final currentProfile = currentState.profile;
       if (currentProfile != initialProfile) {
-        _buttonState.accept(AboutMeScreenStrings.save);
+        _buttonState.accept(AboutMeScreenStrings.saveButtonTitle);
       }
     } else {
-      _buttonState.accept(AboutMeScreenStrings.ok);
+      _buttonState.accept(AboutMeScreenStrings.okButtonTitle);
     }
   }
 
@@ -132,8 +132,8 @@ class AboutMeScreenWidgetModel
       coordinator.popUntilRoot();
     } else if (state is SavingProfileState) {
       _saveEntityState.loading();
-    } else if (state is ErrorSaveState) {
-      dialogController.showSnackBar(context, AboutMeScreenStrings.error);
+    } else if (state is ProfileSaveFailedState) {
+      dialogController.showSnackBar(context, AboutMeScreenStrings.errorSnackBar);
     }
   }
 }
@@ -156,5 +156,5 @@ abstract class IAboutMeScreenWidgetModel extends IWidgetModel {
   void onChanged(String newValue) {}
 
   /// Function to save user info in [Profile].
-  void saveAboutMe() {}
+  void updateAboutMe() {}
 }

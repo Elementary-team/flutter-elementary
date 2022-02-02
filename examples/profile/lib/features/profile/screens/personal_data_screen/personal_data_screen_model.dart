@@ -1,14 +1,14 @@
 import 'package:elementary/elementary.dart';
 import 'package:profile/features/profile/screens/personal_data_screen/personal_data_screen.dart';
-import 'package:profile/features/profile/service/bloc/profile_bloc.dart';
-import 'package:profile/features/profile/service/bloc/profile_event.dart';
-import 'package:profile/features/profile/service/bloc/profile_state.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_bloc.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_event.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_state.dart';
 
 /// Model for [PersonalDataScreen].
 class PersonalDataScreenModel extends ElementaryModel {
   final ProfileBloc _profileBloc;
 
-  /// Stream to track the state of the bloc.
+  /// Stream to track the state of the profile_bloc.
   Stream<BaseProfileState> get profileStateStream => _profileBloc.stream;
 
   /// Gives the current state.
@@ -27,14 +27,14 @@ class PersonalDataScreenModel extends ElementaryModel {
   }
 
   /// Method for passing new data to the [ProfileBloc].
-  void saveFullName(
+  void updatePersonalData(
     String surname,
     String name,
     String? patronymic,
     DateTime birthday,
   ) {
     _profileBloc.add(
-      SavePersonalDataEvent(
+      UpdatePersonalDataEvent(
         surname: surname,
         name: name,
         patronymic: patronymic,
@@ -45,6 +45,6 @@ class PersonalDataScreenModel extends ElementaryModel {
 
   /// Callback on BackButton tap.
   void backButtonTap() {
-    _profileBloc.add(UndoEditingEvent());
+    _profileBloc.add(CancelEditingEvent());
   }
 }

@@ -1,7 +1,5 @@
-// ignore_for_file: public_member_api_docs
-
 /// Strings that are needed throughout the app.
 class MainStrings {
-  static const editProfile = 'Edit profile';
-  static const cancel = 'Cancel';
+  /// Text for edit profile button.
+  static const editProfileButton = 'Edit profile';
 }

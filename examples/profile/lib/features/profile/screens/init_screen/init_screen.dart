@@ -28,11 +28,11 @@ class _InitScreenState extends State<InitScreen> {
     return Scaffold(
       body: Center(
         child: ElevatedButton(
-          child: const Text(MainStrings.editProfile),
+          child: const Text(MainStrings.editProfileButton),
           onPressed: () {
             _coordinator.navigate(
               context,
-              AppCoordinate.personalDataScreen,
+              AppCoordinates.personalDataScreen,
             );
           },
         ),

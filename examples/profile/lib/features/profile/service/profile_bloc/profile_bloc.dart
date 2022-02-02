@@ -2,27 +2,25 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:profile/features/profile/domain/profile.dart';
-import 'package:profile/features/profile/service/bloc/profile_event.dart';
-import 'package:profile/features/profile/service/bloc/profile_state.dart';
-import 'package:profile/features/profile/service/repository/mock_profile_repository.dart';
-
-// ignore_for_file: avoid_catches_without_on_clauses
+import 'package:profile/features/profile/service/profile_bloc/profile_event.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_state.dart';
+import 'package:profile/features/profile/service/repository/repository_interfaces.dart';
 
 /// Bloc for working with profile states.
 class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
-  final MockProfileRepository _mockProfileRepository;
+  final IProfileRepository _profileRepository;
 
   /// Create an instance [ProfileBloc].
   ProfileBloc(
-    this._mockProfileRepository,
+    this._profileRepository,
   ) : super(InitProfileState()) {
     on<ProfileLoadEvent>(_loadProfile);
-    on<SavePersonalDataEvent>(_savePersonalData);
-    on<SavePlaceResidenceEvent>(_savePlaceResidence);
-    on<SaveInterestsEvent>(_saveListInterests);
-    on<SaveAboutMeInfoEvent>(_saveAboutMeInfo);
+    on<UpdatePersonalDataEvent>(_updateData);
+    on<UpdatePlaceResidenceEvent>(_updateData);
+    on<UpdateInterestsEvent>(_updateData);
+    on<UpdateAboutMeInfoEvent>(_updateData);
     on<SaveProfileEvent>(_saveProfile);
-    on<UndoEditingEvent>(_undoEditing);
+    on<CancelEditingEvent>(_cancelEditing);
   }
 
   FutureOr<void> _loadProfile(
@@ -30,19 +28,38 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
     Emitter<BaseProfileState> emit,
   ) async {
     final state = this.state;
-    if (state is InitProfileState || state is ProfileState) {
+    if (state is ILoadAvailable) {
       Profile? profile;
       try {
-        profile = await _mockProfileRepository.getProfile();
-        emit(ProfileState(profile));
-      } catch (_) {
-        emit(ErrorLoadingState());
+        profile = await _profileRepository.getProfile();
+        emit(ProfileState(profile: profile));
+      } on Exception catch (_) {
+        emit(ErrorProfileLoadingState());
       }
     }
   }
 
-  void _savePersonalData(
-    SavePersonalDataEvent event,
+  void _updateData(
+    ProfileUpdateEvent event,
+    Emitter<BaseProfileState> emit,
+  ) {
+    if (state is IEditingAvailable) {
+      if (state is PendingProfileState) {
+        if(event is UpdatePersonalDataEvent) {
+          _updatePersonalData(event, emit);
+        } else if(event is UpdatePlaceResidenceEvent) {
+          _savePlaceResidence(event, emit);
+        } else if(event is UpdateInterestsEvent) {
+          _saveListInterests(event, emit);
+        } else if(event is UpdateAboutMeInfoEvent) {
+          _updateAboutMe(event, emit);
+        }
+      }
+    }
+  }
+
+  void _updatePersonalData(
+    UpdatePersonalDataEvent event,
     Emitter<BaseProfileState> emit,
   ) {
     if (state is PendingProfileState) {
@@ -89,7 +106,7 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
   }
 
   void _savePlaceResidence(
-    SavePlaceResidenceEvent event,
+    UpdatePlaceResidenceEvent event,
     Emitter<BaseProfileState> emit,
   ) {
     if (state is PendingProfileState) {
@@ -122,7 +139,7 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
   }
 
   void _saveListInterests(
-    SaveInterestsEvent event,
+    UpdateInterestsEvent event,
     Emitter<BaseProfileState> emit,
   ) {
     if (state is PendingProfileState) {
@@ -154,8 +171,8 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
     }
   }
 
-  void _saveAboutMeInfo(
-    SaveAboutMeInfoEvent event,
+  void _updateAboutMe(
+    UpdateAboutMeInfoEvent event,
     Emitter<BaseProfileState> emit,
   ) {
     if (state is PendingProfileState) {
@@ -198,13 +215,13 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
     }
   }
 
-  void _undoEditing(
-    UndoEditingEvent event,
+  void _cancelEditing(
+    CancelEditingEvent event,
     Emitter<BaseProfileState> emit,
   ) {
     if (state is PendingProfileState) {
       final currentState = state as PendingProfileState;
-      emit(ProfileState(currentState.initialProfile));
+      emit(ProfileState(profile: currentState.initialProfile));
     }
   }
 
@@ -218,13 +235,21 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
       final currentProfile = currentState.profile;
       if (currentProfile != initialProfile) {
         try {
-          emit(SavingProfileState());
-          await _mockProfileRepository.saveProfile(currentProfile);
-          emit(ProfileSavedSuccessfullyState(currentProfile));
-          emit(ProfileState(currentProfile));
-        } catch (_) {
           emit(
-            ErrorSaveState(),
+            SavingProfileState(
+              profile: currentProfile,
+              initialProfile: initialProfile,
+            ),
+          );
+          await _profileRepository.saveProfile(currentProfile);
+          emit(ProfileSavedSuccessfullyState(profile: currentProfile));
+          emit(ProfileState(profile: currentProfile));
+        } on Exception catch (_) {
+          emit(
+            ProfileSaveFailedState(
+              profile: currentProfile,
+              initialProfile: initialProfile,
+            ),
           );
           emit(
             PendingProfileState(

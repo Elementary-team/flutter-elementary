@@ -1,13 +1,22 @@
 import 'package:profile/features/profile/screens/personal_data_screen/personal_data_screen.dart';
 
-//ignore_for_file:public_member_api_docs
-
 /// Strings that are needed on the [PersonalDataScreen].
-class FullNameScreenStrings {
-  static const personalData = 'Personal data';
-  static const surname = 'Surname';
-  static const name = 'Name';
-  static const patronymic = 'Patronymic';
-  static const birthday = 'Birthday';
-  static const error = 'Error, please try again later';
+class PersonalDataScreenStrings {
+  /// Title text in appbar in [PersonalDataScreen].
+  static const personalDataTitle = 'Personal data';
+
+  /// Surname text field hint.
+  static const surnameHint = 'Surname';
+
+  /// Name text field hint.
+  static const nameTitle = 'Name';
+
+  /// Patronymic text field hint.
+  static const patronymicHint = 'Patronymic';
+
+  /// Birthday text field hint.
+  static const birthdayHint = 'Birthday';
+
+  /// Text to display an error when loading a profile.
+  static const errorLoading = 'Error, please try again later';
 }
