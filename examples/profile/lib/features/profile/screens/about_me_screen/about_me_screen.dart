@@ -2,6 +2,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/assets/colors/colors.dart';
 import 'package:profile/assets/strings/about_me_screen_strings.dart';
+import 'package:profile/features/profile/domain/profile.dart';
 import 'package:profile/features/profile/screens/about_me_screen/about_me_screen_widget_model.dart';
 import 'package:profile/features/profile/widgets/cancel_button/cancel_button.dart';
 
@@ -17,7 +18,7 @@ class AboutMeScreen extends ElementaryWidget<AboutMeScreenWidgetModel> {
   Widget build(IAboutMeScreenWidgetModel wm) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(AboutMeScreenStrings.aboutMe),
+        title: const Text(AboutMeScreenStrings.aboutMeTitle),
         actions: const [
           CancelButton(),
         ],
@@ -27,7 +28,7 @@ class AboutMeScreen extends ElementaryWidget<AboutMeScreenWidgetModel> {
           horizontal: 16.0,
           vertical: 16.0,
         ),
-        child: EntityStateNotifierBuilder(
+        child: EntityStateNotifierBuilder<Profile>(
           listenableEntityState: wm.saveEntityState,
           builder: (_, __) {
             return _AboutMeWidget(
@@ -35,7 +36,7 @@ class AboutMeScreen extends ElementaryWidget<AboutMeScreenWidgetModel> {
               controller: wm.controller,
               onChangedTextFormField: wm.onChanged,
               buttonState: wm.buttonState,
-              onPressedElevatedButton: wm.saveAboutMe,
+              onPressedElevatedButton: wm.updateAboutMe,
             );
           },
           loadingBuilder: (_, __) {
@@ -90,7 +91,7 @@ class _AboutMeWidget extends StatelessWidget {
           minLines: 6,
           maxLines: 12,
           decoration: const InputDecoration(
-            hintText: AboutMeScreenStrings.fewWordsAboutYourself,
+            hintText: AboutMeScreenStrings.fewWordsAboutYourselfHint,
             hintStyle: TextStyle(
               fontSize: 18.0,
               color: textFieldBorderColor,
@@ -108,7 +109,7 @@ class _AboutMeWidget extends StatelessWidget {
               onPressed: onPressedElevatedButton,
               child: SizedBox(
                 width: 100.0,
-                child: Center(child: Text(text ?? AboutMeScreenStrings.ok)),
+                child: Center(child: Text(text ?? AboutMeScreenStrings.okButtonTitle)),
               ),
             );
           },
