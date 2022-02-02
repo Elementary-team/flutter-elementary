@@ -39,13 +39,14 @@ abstract class ListenableState<T> extends Listenable {
 /// Empty initial value create empty EntityState for initial value.
 class EntityStateNotifier<T> extends StateNotifier<EntityState<T>> {
   /// Create an instance of EntityStateNotifier.
-  EntityStateNotifier([EntityState<T>? initialData])
-      : super(initValue: initialData ?? EntityState<T>());
+  // TODO: there is a problem with "empty" state of entity
+  // EntityStateNotifier([EntityState<T>? initialData])
+  //     : super(initValue: initialData ?? EntityState<T>());
 
   /// Constructor for easy set initial value.
   EntityStateNotifier.value(T initialData)
       : super(
-          initValue: EntityState<T>(data: initialData),
+          initValue: EntityState<T>.content(initialData),
         );
 
   /// Accept state with content.
@@ -60,43 +61,42 @@ class EntityStateNotifier<T> extends StateNotifier<EntityState<T>> {
       super.accept(EntityState<T>.loading(previousData));
 }
 
-/// State of some logical entity.
 class EntityState<T> {
-  /// Data of entity.
+  bool get hasError => this is EntityStateError<T>;
+
+  bool get isLoading => this is EntityStateLoading<T>;
+
+  T? get data => null;
+
+  const EntityState._();
+
+  const factory EntityState.content(T data) = EntityStateContent<T>;
+
+  const factory EntityState.loading([T? data]) = EntityStateLoading<T>;
+
+  const factory EntityState.error([Exception? error, T? data]) =
+      EntityStateError<T>;
+}
+
+class EntityStateContent<T> extends EntityState<T> {
+  @override
+  final T data;
+
+  const EntityStateContent(this.data) : super._();
+}
+
+class EntityStateLoading<T> extends EntityState<T> {
+  @override
   final T? data;
 
-  /// State is loading.
-  final bool isLoading;
+  const EntityStateLoading([this.data]) : super._();
+}
 
-  /// State has error.
-  final bool hasError;
-
-  /// Exception from state.
+class EntityStateError<T> extends EntityState<T> {
   final Exception? error;
 
-  /// Create an instance of EntityState.
-  const EntityState({
-    this.data,
-    this.isLoading = false,
-    this.hasError = false,
-    this.error,
-  })  : assert(error == null || hasError),
-        assert(!hasError && !isLoading || hasError != isLoading);
+  @override
+  final T? data;
 
-  /// Loading constructor
-  const EntityState.loading([this.data])
-      : isLoading = true,
-        hasError = false,
-        error = null;
-
-  /// Error constructor
-  const EntityState.error([this.error, this.data])
-      : isLoading = false,
-        hasError = true;
-
-  /// Content constructor
-  const EntityState.content(this.data)
-      : isLoading = false,
-        hasError = false,
-        error = null;
+  const EntityStateError([this.error, this.data]) : super._();
 }

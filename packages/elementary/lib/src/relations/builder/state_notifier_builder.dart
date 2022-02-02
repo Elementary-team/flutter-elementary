@@ -90,16 +90,20 @@ class EntityStateNotifierBuilder<T> extends StatelessWidget {
         final entity = state!;
 
         final eBuilder = errorBuilder;
-        if (entity.hasError && eBuilder != null) {
+        if (entity is EntityStateError<T> && eBuilder != null) {
           return eBuilder(ctx, entity.error, entity.data);
         }
 
         final lBuilder = loadingBuilder;
-        if (entity.isLoading && lBuilder != null) {
+        if (entity is EntityStateLoading<T> && lBuilder != null) {
           return lBuilder(ctx, entity.data);
         }
 
-        return builder(ctx, entity.data);
+        if (entity is EntityStateContent<T>) {
+          return builder(ctx, entity.data);
+        }
+
+        throw StateError('Wrong entity implementation used');
       },
     );
   }
@@ -116,7 +120,7 @@ typedef LoadingWidgetBuilder<T> = Widget Function(
 /// Builder function for content state.
 /// See also:
 ///   [EntityState] - State of some logical entity.
-typedef DataWidgetBuilder<T> = Widget Function(BuildContext context, T? data);
+typedef DataWidgetBuilder<T> = Widget Function(BuildContext context, T data);
 
 /// Builder function for error state.
 /// See also:
