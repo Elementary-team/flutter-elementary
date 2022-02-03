@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:profile/features/profile/domain/profile.dart';
 import 'package:profile/features/profile/service/profile_bloc/profile_event.dart';
 import 'package:profile/features/profile/service/profile_bloc/profile_state.dart';
-import 'package:profile/features/profile/service/repository/repository_interfaces.dart';
+import 'package:profile/features/profile/service/repository/mock_profile_repository.dart';
 
 /// Bloc for working with profile states.
 class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
@@ -32,7 +32,7 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
       Profile? profile;
       try {
         profile = await _profileRepository.getProfile();
-        emit(ProfileState(profile: profile));
+        emit(ProfileState(profile));
       } on Exception catch (_) {
         emit(ErrorProfileLoadingState());
       }
@@ -44,175 +44,89 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
     Emitter<BaseProfileState> emit,
   ) {
     if (state is IEditingAvailable) {
-      if (state is PendingProfileState) {
-        if(event is UpdatePersonalDataEvent) {
-          _updatePersonalData(event, emit);
-        } else if(event is UpdatePlaceResidenceEvent) {
-          _savePlaceResidence(event, emit);
-        } else if(event is UpdateInterestsEvent) {
-          _saveListInterests(event, emit);
-        } else if(event is UpdateAboutMeInfoEvent) {
-          _updateAboutMe(event, emit);
+      final currentState = state as IEditingAvailable;
+      final currentProfile = currentState.profile;
+      final updatedProfile = _getUpdatedProfile(event, currentProfile);
+      if (state is ProfileState) {
+        if (!currentProfile.isSame(updatedProfile)) {
+          emit(
+            PendingProfileState(
+              initialProfile: currentProfile,
+              profile: updatedProfile,
+            ),
+          );
         }
-      }
-    }
-  }
-
-  void _updatePersonalData(
-    UpdatePersonalDataEvent event,
-    Emitter<BaseProfileState> emit,
-  ) {
-    if (state is PendingProfileState) {
-      final currentState = state as PendingProfileState;
-      final currentProfile = currentState.profile;
-      if (event.surname != currentProfile.surname ||
-          event.name != currentProfile.name ||
-          event.patronymic != currentProfile.patronymic ||
-          event.birthday != currentProfile.birthday) {
-        final updatedProfile = currentProfile.copyWith(
-          surname: event.surname ?? currentProfile.surname,
-          name: event.name ?? currentProfile.name,
-          patronymic: event.patronymic ?? currentProfile.patronymic,
-          birthday: event.birthday ?? currentProfile.birthday,
-        );
-        emit(
-          PendingProfileState(
-            initialProfile: currentState.initialProfile,
-            profile: updatedProfile,
-          ),
-        );
-      }
-    } else if (state is ProfileState) {
-      final currentState = state as ProfileState;
-      final currentProfile = currentState.profile;
-      if (event.surname != currentProfile.surname ||
-          event.name != currentProfile.name ||
-          event.patronymic != currentProfile.patronymic ||
-          event.birthday != currentProfile.birthday) {
-        final updateProfile = currentProfile.copyWith(
-          surname: event.surname ?? currentProfile.surname,
-          name: event.name ?? currentProfile.name,
-          patronymic: event.patronymic ?? currentProfile.patronymic,
-          birthday: event.birthday ?? currentProfile.birthday,
-        );
-        emit(
-          PendingProfileState(
-            initialProfile: currentProfile,
-            profile: updateProfile,
-          ),
-        );
-      }
-    }
-  }
-
-  void _savePlaceResidence(
-    UpdatePlaceResidenceEvent event,
-    Emitter<BaseProfileState> emit,
-  ) {
-    if (state is PendingProfileState) {
-      final currentState = state as PendingProfileState;
-      final currentProfile = currentState.profile;
-      if (event.placeResidence != currentProfile.placeOfResidence) {
-        final updatedProfile =
-            currentProfile.copyWith(placeOfResidence: event.placeResidence);
-        emit(
-          PendingProfileState(
-            initialProfile: currentState.initialProfile,
-            profile: updatedProfile,
-          ),
-        );
-      }
-    } else if (state is ProfileState) {
-      final currentState = state as ProfileState;
-      final currentProfile = currentState.profile;
-      if (event.placeResidence != currentProfile.placeOfResidence) {
-        final updateProfile =
-            currentProfile.copyWith(placeOfResidence: event.placeResidence);
-        emit(
-          PendingProfileState(
-            initialProfile: currentProfile,
-            profile: updateProfile,
-          ),
-        );
-      }
-    }
-  }
-
-  void _saveListInterests(
-    UpdateInterestsEvent event,
-    Emitter<BaseProfileState> emit,
-  ) {
-    if (state is PendingProfileState) {
-      final currentState = state as PendingProfileState;
-      final currentProfile = currentState.profile;
-      if (event.interests != currentProfile.interests) {
-        final updatedProfile =
-            currentProfile.copyWith(interests: event.interests);
-        emit(
-          PendingProfileState(
-            initialProfile: currentState.initialProfile,
-            profile: updatedProfile,
-          ),
-        );
-      }
-    } else if (state is ProfileState) {
-      final currentState = state as ProfileState;
-      final currentProfile = currentState.profile;
-      if (event.interests != currentProfile.interests) {
-        final updateProfile =
-            currentProfile.copyWith(interests: event.interests);
-        emit(
-          PendingProfileState(
-            initialProfile: currentProfile,
-            profile: updateProfile,
-          ),
-        );
-      }
-    }
-  }
-
-  void _updateAboutMe(
-    UpdateAboutMeInfoEvent event,
-    Emitter<BaseProfileState> emit,
-  ) {
-    if (state is PendingProfileState) {
-      var currentState = state as PendingProfileState;
-      var currentProfile = currentState.profile;
-      if (event.aboutMe != currentProfile.aboutMe) {
-        final updatedProfile = currentProfile.copyWith(aboutMe: event.aboutMe);
-        emit(
-          PendingProfileState(
-            initialProfile: currentState.initialProfile,
-            profile: updatedProfile,
-          ),
-        );
-      }
-      currentState = state as PendingProfileState;
-      currentProfile = currentState.profile;
-      add(SaveProfileEvent(currentProfile));
-    } else if (state is ProfileState) {
-      var currentState = state as ProfileState;
-      var currentProfile = currentState.profile;
-      if (event.aboutMe != currentProfile.aboutMe) {
-        final updateProfile = currentProfile.copyWith(aboutMe: event.aboutMe);
-        emit(
-          PendingProfileState(
-            initialProfile: currentProfile,
-            profile: updateProfile,
-          ),
-        );
+      } else if (state is PendingProfileState) {
+        final initialProfile = (state as PendingProfileState).initialProfile;
+        if (initialProfile.isSame(updatedProfile)) {
+          emit(
+            ProfileState(initialProfile),
+          );
+        } else {
+          emit(
+            PendingProfileState(
+              initialProfile: initialProfile,
+              profile: updatedProfile,
+            ),
+          );
+        }
       } else {
-        emit(
-          PendingProfileState(
-            initialProfile: currentProfile,
-            profile: currentProfile,
-          ),
-        );
+        throw UnimplementedError();
       }
-      currentState = state as PendingProfileState;
-      currentProfile = currentState.profile;
-      add(SaveProfileEvent(currentProfile));
     }
+  }
+
+  Profile _getUpdatedProfile(
+    ProfileUpdateEvent event,
+    Profile profile,
+  ) {
+    switch (event.runtimeType) {
+      case UpdatePersonalDataEvent:
+        return _updatePersonalData(event, profile);
+      case UpdatePlaceResidenceEvent:
+        return _updatePlaceResidence(event, profile);
+      case UpdateInterestsEvent:
+        return _saveListInterests(event, profile);
+      case UpdateAboutMeInfoEvent:
+        return _updateAboutMe(event, profile);
+      default:
+        throw UnimplementedError();
+    }
+  }
+
+  Profile _updatePersonalData(
+    ProfileUpdateEvent event,
+    Profile profile,
+  ) {
+    return profile.copyWith(
+      surname: event.surname ?? profile.surname,
+      name: event.name ?? profile.name,
+      patronymic: event.patronymic ?? profile.patronymic,
+      birthday: event.birthday ?? profile.birthday,
+    );
+  }
+
+  Profile _updatePlaceResidence(
+    ProfileUpdateEvent event,
+    Profile profile,
+  ) {
+    return profile.copyWith(
+      placeOfResidence: event.placeResidence ?? profile.placeOfResidence,
+    );
+  }
+
+  Profile _saveListInterests(
+    ProfileUpdateEvent event,
+    Profile profile,
+  ) {
+    return profile.copyWith(interests: event.interests ?? profile.interests);
+  }
+
+  Profile _updateAboutMe(
+    ProfileUpdateEvent event,
+    Profile profile,
+  ) {
+    return profile.copyWith(aboutMe: event.aboutMe ?? profile.aboutMe);
   }
 
   void _cancelEditing(
@@ -221,7 +135,7 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
   ) {
     if (state is PendingProfileState) {
       final currentState = state as PendingProfileState;
-      emit(ProfileState(profile: currentState.initialProfile));
+      emit(ProfileState(currentState.initialProfile));
     }
   }
 
@@ -229,35 +143,25 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
     SaveProfileEvent event,
     Emitter<BaseProfileState> emit,
   ) async {
-    if (state is PendingProfileState) {
-      final currentState = state as PendingProfileState;
-      final initialProfile = currentState.initialProfile;
-      final currentProfile = currentState.profile;
-      if (currentProfile != initialProfile) {
-        try {
-          emit(
-            SavingProfileState(
-              profile: currentProfile,
-              initialProfile: initialProfile,
-            ),
-          );
-          await _profileRepository.saveProfile(currentProfile);
-          emit(ProfileSavedSuccessfullyState(profile: currentProfile));
-          emit(ProfileState(profile: currentProfile));
-        } on Exception catch (_) {
-          emit(
-            ProfileSaveFailedState(
-              profile: currentProfile,
-              initialProfile: initialProfile,
-            ),
-          );
-          emit(
-            PendingProfileState(
-              initialProfile: initialProfile,
-              profile: currentProfile,
-            ),
-          );
-        }
+    if (state is ISaveAvailable) {
+      final currentState = state as ISaveAvailable;
+      try {
+        emit(
+          SavingProfileState(
+            profile: currentState.profile,
+            initialProfile: currentState.initialProfile,
+          ),
+        );
+        await _profileRepository.saveProfile(currentState.profile);
+        emit(ProfileSavedSuccessfullyState(profile: currentState.profile));
+        emit(ProfileState(currentState.profile));
+      } on Exception catch (_) {
+        emit(
+          ProfileSaveFailedState(
+            profile: currentState.profile,
+            initialProfile: currentState.initialProfile,
+          ),
+        );
       }
     }
   }

@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:profile/features/profile/domain/profile.dart';
 
 /// Basic profile event.
 abstract class BaseProfileEvent extends Equatable {
@@ -89,12 +88,10 @@ class UpdateAboutMeInfoEvent extends ProfileUpdateEvent {
 
 /// Save profile event.
 class SaveProfileEvent extends BaseProfileEvent {
-  /// Profile.
-  final Profile profile;
 
   /// Create an instance [UpdatePlaceResidenceEvent].
-  const SaveProfileEvent(this.profile);
+  const SaveProfileEvent();
 }
 
-/// Undo editing.
+/// Cancel editing.
 class CancelEditingEvent extends BaseProfileEvent {}

@@ -77,17 +77,13 @@ class PlaceResidenceScreenWidgetModel
   void initWidgetModel() {
     super.initWidgetModel();
     _initPlaceResidence();
-    _controller.addListener(() {
-      _debouncing(_controller.text);
-    });
+    _controller.addListener(_controllerListener);
   }
 
   @override
   void dispose() {
     _debounceTimer?.cancel();
-    _controller.removeListener(() {
-      _debouncing(_controller.text);
-    });
+    _controller.removeListener(_controllerListener);
     super.dispose();
   }
 
@@ -154,6 +150,10 @@ class PlaceResidenceScreenWidgetModel
     }
   }
 
+  void _controllerListener() {
+    _debouncing(_controller.text);
+  }
+
   void _debouncing(String city) {
     _debounceTimer?.cancel();
     _listSuggestionsState.loading();
@@ -169,8 +169,9 @@ class PlaceResidenceScreenWidgetModel
 
   void _initPlaceResidence() {
     final state = model.currentState;
-    if (state is ProfileState) {
-      final profile = state.profile;
+    if (state is IEditingAvailable) {
+      final currentState = state as IEditingAvailable;
+      final profile = currentState.profile;
       if (profile.placeOfResidence != null) {
         _controller.text = profile.placeOfResidence!;
         _currentPlaceResidence = profile.placeOfResidence;

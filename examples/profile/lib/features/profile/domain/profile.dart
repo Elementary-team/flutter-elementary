@@ -57,17 +57,13 @@ class Profile {
 
   /// The method that checks the fields of two different instances of the
   /// profile, if the fields are equal, it will return true.
-  bool isSame(Profile profile, Profile otherProfile) {
-    if (profile.surname == otherProfile.surname &&
-        profile.name == otherProfile.name &&
-        profile.patronymic == otherProfile.patronymic &&
-        profile.birthday == otherProfile.birthday &&
-        profile.placeOfResidence == otherProfile.placeOfResidence &&
-        listEquals(profile.interests, otherProfile.interests) &&
-        profile.aboutMe == otherProfile.aboutMe) {
-      return true;
-    } else {
-      return false;
-    }
+  bool isSame(Profile otherProfile) {
+    return surname == otherProfile.surname &&
+        name == otherProfile.name &&
+        patronymic == otherProfile.patronymic &&
+        birthday == otherProfile.birthday &&
+        placeOfResidence == otherProfile.placeOfResidence &&
+        listEquals(interests, otherProfile.interests) &&
+        aboutMe == otherProfile.aboutMe;
   }
 }

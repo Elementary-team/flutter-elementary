@@ -72,39 +72,49 @@ class AboutMeScreenWidgetModel
   void initWidgetModel() {
     super.initWidgetModel();
     _stateStatusStream = model.profileStateStream.listen(_updateState);
-    _initProfile();
+    _controller.addListener(_controllerListener);
+    _initAboutMeInfo();
     _initButtonState();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller
+      ..removeListener(_controllerListener)
+      ..dispose();
     _stateStatusStream.cancel();
     super.dispose();
   }
 
   @override
   void updateAboutMe() {
-    focusNode.unfocus();
-    model.updateAboutMe(_currentInfo);
     final currentState = model.currentState;
-    if (currentState is! PendingProfileState) {
+    if (currentState is ISaveAvailable) {
+      focusNode.unfocus();
+      model
+        ..updateAboutMe(_currentInfo)
+        ..saveProfile();
+    } else {
       coordinator.popUntilRoot();
     }
   }
 
-  @override
-  void onChanged(String newText) {
+  void _controllerListener() {
+    _onChanged(_controller.text);
+  }
+
+  void _onChanged(String newText) {
     if (_currentInfo != newText) {
       _currentInfo = newText;
       _buttonState.accept(AboutMeScreenStrings.saveButtonTitle);
     }
   }
 
-  void _initProfile() {
+  void _initAboutMeInfo() {
     final state = model.currentState;
-    if (state is ProfileState) {
-      final profile = state.profile;
+    if (state is IEditingAvailable) {
+      final currentState = state as IEditingAvailable;
+      final profile = currentState.profile;
       if (profile.aboutMe != null) {
         _controller.text = profile.aboutMe!;
         _currentInfo = profile.aboutMe;
@@ -133,7 +143,11 @@ class AboutMeScreenWidgetModel
     } else if (state is SavingProfileState) {
       _saveEntityState.loading();
     } else if (state is ProfileSaveFailedState) {
-      dialogController.showSnackBar(context, AboutMeScreenStrings.errorSnackBar);
+      dialogController.showSnackBar(
+        context,
+        AboutMeScreenStrings.errorSnackBar,
+      );
+      _saveEntityState.content(state.profile);
     }
   }
 }
@@ -151,9 +165,6 @@ abstract class IAboutMeScreenWidgetModel extends IWidgetModel {
 
   /// Save state.
   ListenableState<EntityState<Profile>> get saveEntityState;
-
-  /// Callback on field submitted.
-  void onChanged(String newValue) {}
 
   /// Function to save user info in [Profile].
   void updateAboutMe() {}

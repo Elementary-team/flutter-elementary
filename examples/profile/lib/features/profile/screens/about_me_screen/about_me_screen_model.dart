@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:elementary/elementary.dart';
-import 'package:profile/features/profile/domain/profile.dart';
 import 'package:profile/features/profile/screens/about_me_screen/about_me_screen.dart';
 import 'package:profile/features/profile/service/profile_bloc/profile_bloc.dart';
 import 'package:profile/features/profile/service/profile_bloc/profile_event.dart';
@@ -30,7 +29,7 @@ class AboutMeScreenModel extends ElementaryModel {
   }
 
   /// Method for save profile.
-  void saveProfile(Profile profile) {
-    _profileBloc.add(SaveProfileEvent(profile));
+  void saveProfile() {
+    _profileBloc.add(const SaveProfileEvent());
   }
 }

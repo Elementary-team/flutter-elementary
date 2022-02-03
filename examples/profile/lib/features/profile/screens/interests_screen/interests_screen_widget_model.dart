@@ -116,8 +116,9 @@ class InterestsScreenWidgetModel
 
   void _initInterests() {
     final state = model.currentState;
-    if (state is ProfileState) {
-      final profile = state.profile;
+    if (state is IEditingAvailable) {
+      final currentState = state as IEditingAvailable;
+      final profile = currentState.profile;
       final initListInterests = profile.interests;
       if (initListInterests != null && initListInterests.isNotEmpty) {
         _listUserInterestsState.accept(initListInterests);

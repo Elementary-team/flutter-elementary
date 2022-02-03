@@ -14,7 +14,7 @@ class CancelButtonModel extends ElementaryModel {
     ErrorHandler errorHandler,
   ) : super(errorHandler: errorHandler);
 
-  /// Undo editing.
+  /// Cancel editing.
   void cancel() {
     _profileBloc.add(CancelEditingEvent());
   }

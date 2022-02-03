@@ -34,7 +34,6 @@ class AboutMeScreen extends ElementaryWidget<AboutMeScreenWidgetModel> {
             return _AboutMeWidget(
               focusNode: wm.focusNode,
               controller: wm.controller,
-              onChangedTextFormField: wm.onChanged,
               buttonState: wm.buttonState,
               onPressedElevatedButton: wm.updateAboutMe,
             );
@@ -62,7 +61,6 @@ class AboutMeScreen extends ElementaryWidget<AboutMeScreenWidgetModel> {
 class _AboutMeWidget extends StatelessWidget {
   final FocusNode? focusNode;
   final TextEditingController? controller;
-  final Function(String)? onChangedTextFormField;
   final ListenableState<String> buttonState;
   final VoidCallback? onPressedElevatedButton;
   final bool? readOnly;
@@ -71,7 +69,6 @@ class _AboutMeWidget extends StatelessWidget {
     required this.buttonState,
     this.focusNode,
     this.controller,
-    this.onChangedTextFormField,
     this.onPressedElevatedButton,
     this.readOnly,
     Key? key,
@@ -86,7 +83,6 @@ class _AboutMeWidget extends StatelessWidget {
           readOnly: readOnly ?? false,
           focusNode: focusNode,
           controller: controller,
-          onChanged: onChangedTextFormField,
           textCapitalization: TextCapitalization.sentences,
           minLines: 6,
           maxLines: 12,

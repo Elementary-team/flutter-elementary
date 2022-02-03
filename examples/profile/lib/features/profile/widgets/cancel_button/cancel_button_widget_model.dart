@@ -43,6 +43,6 @@ class CancelButtonWidgetModel
 
 /// Interface of [CancelButtonWidgetModel].
 abstract class ICancelButtonWidgetModel extends IWidgetModel {
-  /// Undo editing.
+  /// Cancel editing.
   void cancel() {}
 }
