@@ -42,10 +42,10 @@ class PlaceResidenceScreenWidgetModel
   /// Controller for show [BottomSheet].
   final DialogController dialogController;
 
-  final TextEditingController _controller = TextEditingController();
+  final _controller = TextEditingController();
   final _listSuggestionsState = EntityStateNotifier<List<String>>();
-  final FocusNode _focusNode = FocusNode();
-  final GlobalKey<FormState> _formKey = GlobalKey();
+  final _focusNode = FocusNode();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   TextEditingController get controller => _controller;
