@@ -4,7 +4,6 @@ description: Example of using Elementary with Bloc.
 publish_to: none
 
 dependencies:
-  async: ^2.8.2
   bloc: ^8.0.2
   elementary: ^1.0.0
   equatable: ^2.0.3
