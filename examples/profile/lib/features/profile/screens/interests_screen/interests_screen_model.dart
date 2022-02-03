@@ -1,5 +1,5 @@
 import 'package:elementary/elementary.dart';
-import 'package:profile/features/interests_repository/mock_interests_repository.dart';
+import 'package:profile/features/interests/service/repository/mock_interests_repository.dart';
 import 'package:profile/features/profile/screens/interests_screen/interests_screen.dart';
 import 'package:profile/features/profile/service/profile_bloc/profile_bloc.dart';
 import 'package:profile/features/profile/service/profile_bloc/profile_event.dart';

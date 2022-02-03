@@ -1,6 +1,6 @@
 import 'package:elementary/elementary.dart';
-import 'package:profile/features/cities_repository/mock_cities_repository.dart';
-import 'package:profile/features/interests_repository/mock_interests_repository.dart';
+import 'package:profile/features/cities/service/repository/mock_cities_repository.dart';
+import 'package:profile/features/interests/service/repository/mock_interests_repository.dart';
 import 'package:profile/features/navigation/service/coordinator.dart';
 import 'package:profile/features/profile/service/profile_bloc/profile_bloc.dart';
 import 'package:profile/features/profile/service/repository/mock_profile_repository.dart';
