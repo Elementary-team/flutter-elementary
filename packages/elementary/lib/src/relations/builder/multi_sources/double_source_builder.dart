@@ -27,16 +27,16 @@ class DoubleSourceBuilder<F, S> extends StatefulWidget {
 }
 
 class _DoubleSourceBuilderState<F, S> extends State<DoubleSourceBuilder<F, S>> {
-  F? firstValue;
-  S? secondValue;
+  F? _firstValue;
+  S? _secondValue;
 
   @override
   void initState() {
     super.initState();
-    firstValue = widget.firstSource.value;
+    _firstValue = widget.firstSource.value;
     widget.firstSource.addListener(_firstValueChanged);
 
-    secondValue = widget.secondSource.value;
+    _secondValue = widget.secondSource.value;
     widget.secondSource.addListener(_secondValueChanged);
   }
 
@@ -44,13 +44,13 @@ class _DoubleSourceBuilderState<F, S> extends State<DoubleSourceBuilder<F, S>> {
   void didUpdateWidget(DoubleSourceBuilder<F, S> oldWidget) {
     if (oldWidget.firstSource != widget.firstSource) {
       oldWidget.firstSource.removeListener(_firstValueChanged);
-      firstValue = widget.firstSource.value;
+      _firstValue = widget.firstSource.value;
       widget.firstSource.addListener(_firstValueChanged);
     }
 
     if (oldWidget.secondSource != widget.secondSource) {
       oldWidget.secondSource.removeListener(_secondValueChanged);
-      secondValue = widget.secondSource.value;
+      _secondValue = widget.secondSource.value;
       widget.secondSource.addListener(_secondValueChanged);
     }
 
@@ -67,18 +67,18 @@ class _DoubleSourceBuilderState<F, S> extends State<DoubleSourceBuilder<F, S>> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.builder(context, firstValue, secondValue);
+    return widget.builder(context, _firstValue, _secondValue);
   }
 
   void _firstValueChanged() {
     setState(() {
-      firstValue = widget.firstSource.value;
+      _firstValue = widget.firstSource.value;
     });
   }
 
   void _secondValueChanged() {
     setState(() {
-      secondValue = widget.secondSource.value;
+      _secondValue = widget.secondSource.value;
     });
   }
 }
