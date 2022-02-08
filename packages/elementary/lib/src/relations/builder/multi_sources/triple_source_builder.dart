@@ -26,8 +26,8 @@ class TripleSourceBuilder<F, S, T> extends StatefulWidget {
     Key? key,
     required this.firstSource,
     required this.secondSource,
-    required this.builder,
     required this.thirdSource,
+    required this.builder,
   }) : super(key: key);
 
   @override
@@ -37,41 +37,41 @@ class TripleSourceBuilder<F, S, T> extends StatefulWidget {
 
 class _TripleSourceBuilderState<F, S, T>
     extends State<TripleSourceBuilder<F, S, T>> {
-  F? firstValue;
-  S? secondValue;
-  T? thirdValue;
+  F? _firstValue;
+  S? _secondValue;
+  T? _thirdValue;
 
   @override
   void initState() {
     super.initState();
-    firstValue = widget.firstSource.value;
+    _firstValue = widget.firstSource.value;
     widget.firstSource.addListener(_firstValueChanged);
 
-    secondValue = widget.secondSource.value;
+    _secondValue = widget.secondSource.value;
     widget.secondSource.addListener(_secondValueChanged);
 
-    thirdValue = widget.thirdSource.value;
-    widget.secondSource.addListener(_thirdValueChanged);
+    _thirdValue = widget.thirdSource.value;
+    widget.thirdSource.addListener(_thirdValueChanged);
   }
 
   @override
   void didUpdateWidget(TripleSourceBuilder<F, S, T> oldWidget) {
     if (oldWidget.firstSource != widget.firstSource) {
       oldWidget.firstSource.removeListener(_firstValueChanged);
-      firstValue = widget.firstSource.value;
+      _firstValue = widget.firstSource.value;
       widget.firstSource.addListener(_firstValueChanged);
     }
 
     if (oldWidget.secondSource != widget.secondSource) {
       oldWidget.secondSource.removeListener(_secondValueChanged);
-      secondValue = widget.secondSource.value;
+      _secondValue = widget.secondSource.value;
       widget.secondSource.addListener(_secondValueChanged);
     }
 
     if (oldWidget.thirdSource != widget.thirdSource) {
-      oldWidget.thirdSource.removeListener(_secondValueChanged);
-      thirdValue = widget.thirdSource.value;
-      widget.thirdSource.addListener(_secondValueChanged);
+      oldWidget.thirdSource.removeListener(_thirdValueChanged);
+      _thirdValue = widget.thirdSource.value;
+      widget.thirdSource.addListener(_thirdValueChanged);
     }
 
     super.didUpdateWidget(oldWidget);
@@ -81,7 +81,7 @@ class _TripleSourceBuilderState<F, S, T>
   void dispose() {
     widget.firstSource.removeListener(_firstValueChanged);
     widget.secondSource.removeListener(_secondValueChanged);
-    widget.secondSource.removeListener(_thirdValueChanged);
+    widget.thirdSource.removeListener(_thirdValueChanged);
 
     super.dispose();
   }
@@ -90,27 +90,27 @@ class _TripleSourceBuilderState<F, S, T>
   Widget build(BuildContext context) {
     return widget.builder(
       context,
-      firstValue,
-      secondValue,
-      thirdValue,
+      _firstValue,
+      _secondValue,
+      _thirdValue,
     );
   }
 
   void _firstValueChanged() {
     setState(() {
-      firstValue = widget.firstSource.value;
+      _firstValue = widget.firstSource.value;
     });
   }
 
   void _secondValueChanged() {
     setState(() {
-      secondValue = widget.secondSource.value;
+      _secondValue = widget.secondSource.value;
     });
   }
 
   void _thirdValueChanged() {
     setState(() {
-      thirdValue = widget.thirdSource.value;
+      _thirdValue = widget.thirdSource.value;
     });
   }
 }
