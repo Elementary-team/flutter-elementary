@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0
+
+* Added multi-sources builders.
+
 ## 1.0.0
 
 * First stable release
