@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 /// Widget which rebuild when anyone of the listeners
-/// in the [listenerList] changed.
+/// in the [listenableList] changed.
 class MultiListenerRebuilder extends StatefulWidget {
   /// A collection of Listenable elements whose changes are to be listened for.
-  final Iterable<Listenable> listenerList;
+  final Iterable<Listenable> listenableList;
 
   /// Builder which build a widget when any listened get update.
   final Widget Function(BuildContext context) builder;
@@ -12,7 +12,7 @@ class MultiListenerRebuilder extends StatefulWidget {
   /// Create an instance of [MultiListenerRebuilder]
   const MultiListenerRebuilder({
     Key? key,
-    required this.listenerList,
+    required this.listenableList,
     required this.builder,
   }) : super(key: key);
 
@@ -25,7 +25,7 @@ class _MultiListenerRebuilderState extends State<MultiListenerRebuilder> {
   void initState() {
     super.initState();
 
-    for (final listener in widget.listenerList) {
+    for (final listener in widget.listenableList) {
       listener.addListener(_markRebuild);
     }
   }
@@ -34,8 +34,8 @@ class _MultiListenerRebuilderState extends State<MultiListenerRebuilder> {
   void didUpdateWidget(covariant MultiListenerRebuilder oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    final newList = widget.listenerList;
-    final oldList = oldWidget.listenerList;
+    final newList = widget.listenableList;
+    final oldList = oldWidget.listenableList;
     if (!identical(newList, oldList)) {
       for (final listener in oldList) {
         if (!newList.contains(listener)) {
@@ -53,7 +53,7 @@ class _MultiListenerRebuilderState extends State<MultiListenerRebuilder> {
 
   @override
   void dispose() {
-    for (final listener in widget.listenerList) {
+    for (final listener in widget.listenableList) {
       listener.removeListener(_markRebuild);
     }
 
