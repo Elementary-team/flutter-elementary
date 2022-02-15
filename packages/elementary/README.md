@@ -11,8 +11,8 @@
 ## Description
 
 The primary goal of this library is to split code into different responsibility layers, thus making it clearer, simpler
-as well as more readable and testable. This approach is based on an architectural pattern called MVVM and
-the fundamentals of Clean Architecture.
+as well as more readable and testable. This approach is based on an architectural pattern called MVVM and the
+fundamentals of Clean Architecture.
 
 ## Overview
 
@@ -34,33 +34,31 @@ And all of that put together works pretty similar to Flutter itself.
 ### WidgetModel
 
 The key part in this chain of responsibility is the WidgetModel layer that connects the rest of the layers together and
-describes state to Widget via a set of parameters. Moreover, it is the only source of truth when you build an image.
-By the time build is called on the widget, the WidgetModel should provide it with all the data needed for a build.
-The class representing this layer in the library has the same name – WidgetModel. You can describe a state
-to be rendered as a set of various properties. In order to determine the properties required, you should specify them
-in the IWidgetModel interface, the subclasses of which, in turn, determine what properties are used in this
-or that situation. In order to establish a quicker response to any changes in properties of a state object,
-you can use StateNotifier. Subscribers are then notified whenever a change occurs in a state.
+describes state to Widget via a set of parameters. Moreover, it is the only source of truth when you build an image. By
+the time build is called on the widget, the WidgetModel should provide it with all the data needed for a build. The
+class representing this layer in the library has the same name – WidgetModel. You can describe a state to be rendered as
+a set of various properties. You can use changeNotifiers (like a valueNotifier or stateNotifier, etc.), streams, getters
+or something else as properties. In order to determine the properties required, you should specify them in the
+IWidgetModel interface, the subclasses of which, in turn, determine what properties are used in this or that situation.
 
-Due to this, the WidgetModel is the only place where presentation logic is described: what interaction took place
-and what occurred as a result.
+Due to this, the WidgetModel is the only place where presentation logic is described: what interaction took place and
+what occurred as a result.
 
 For example, when data is loaded from the network, the WidgetModel looks like this:
 
 ```dart
 /// Widget Model for [CountryListScreen]
-class CountryListScreenWidgetModel
-    extends WidgetModel<CountryListScreen, CountryListScreenModel>
+class CountryListScreenWidgetModel extends WidgetModel<CountryListScreen, CountryListScreenModel>
     implements ICountryListWidgetModel {
   final _countryListState = EntityStateNotifier<Iterable<Country>>();
-  
+
   @override
   ListenableState<EntityState<Iterable<Country>>> get countryListState =>
       _countryListState;
-  
+
   /// Some special wm working code this
   /// ...............................................................
-  
+
   Future<void> _loadCountryList() async {
     final previousData = _countryListState.value?.data;
     _countryListState.loading(previousData);
@@ -88,17 +86,17 @@ _The only place where we have access to BuildContext and need to interact with i
 
 ### Model
 
-The only WidgetModel dependency related to business logic is Model. The class representing this layer in the library
-is called ElementaryModel. There is no declared way to define this one, meaning you can choose whichever way works best
-for your project. One of the reasons behind that is to provide an easy way to combine _elementary_ with other approaches
+The only WidgetModel dependency related to business logic is Model. The class representing this layer in the library is
+called ElementaryModel. There is no declared way to define this one, meaning you can choose whichever way works best for
+your project. One of the reasons behind that is to provide an easy way to combine _elementary_ with other approaches
 related specifically to business logic.
 
 ### Widget
 
 Since all logic is already described in the WidgetModel and Model, Widget only needs to declare what a certain part of
-the interface should look like at a particular moment based on the WidgetModel properties. The class representing
-the Widget layer in the library is called ElementaryWidget. The build method called to display a widget only
-has one argument – the IWidgetModel interface.
+the interface should look like at a particular moment based on the WidgetModel properties. The class representing the
+Widget layer in the library is called ElementaryWidget. The build method called to display a widget only has one
+argument – the IWidgetModel interface.
 
 It looks like this:
 
@@ -113,10 +111,11 @@ Widget build(ICountryListWidgetModel wm) {
       listenableEntityState: wm.countryListState,
       loadingBuilder: (_, __) => const _LoadingWidget(),
       errorBuilder: (_, __, ___) => const _ErrorWidget(),
-      builder: (_, countries) => _CountryList(
-        countries: countries,
-        nameStyle: wm.countryNameStyle,
-      ),
+      builder: (_, countries) =>
+          _CountryList(
+            countries: countries,
+            nameStyle: wm.countryNameStyle,
+          ),
     ),
   );
 }
@@ -129,6 +128,98 @@ Since the layers are well-separated from each other, they are easy to test with 
 * Use unit tests for Model layer;
 * Use widget and golden tests for Widget layer;
 * Use widget model test from elementary_test library for WidgetModel.
+
+## Tooling
+
+To make Elementary easier to use, some tools have been added.
+
+### StateNotifier
+
+In order to establish a quicker response to any changes in properties of a state object, you can use a StateNotifier. It
+is a subclass of ChangeNotifier. StateNotifier's subscribers are notified whenever a state change occurs. Also, the
+subscriber will be called for the first time at the moment of subscription. The initialization of the StateNotifier does
+not require an initial value to be specified, for this reason the value returned by it may be null.
+
+```dart
+
+final _somePropertyWithIntegerValue = StateNotifier<int>();
+
+void someFunctionChangeValue() {
+  // do something, get new value
+  // ...............................................................
+  final newValue = 10;
+  // and then change value of property
+  _somePropertyWithIntegerValue.accept(10);
+}
+```
+
+### EntityStateNotifier
+
+Variant of StateNotifier that uses a special EntityState object as the state value. EntityState has three states:
+content, loading, error.
+
+```dart
+
+final _countryListState = EntityStateNotifier<Iterable<Country>>();
+
+Future<void> _loadCountryList() async {
+  final previousData = _countryListState.value?.data;
+
+  // set property to loading state and use previous data for this state
+  _countryListState.loading(previousData);
+
+  try {
+    // await the result
+    final res = await model.loadCountries();
+    // set property to content state, use new data
+    _countryListState.content(res);
+  } on Exception catch (e) {
+    // set property to error state
+    _countryListState.error(e, previousData);
+  }
+}
+```
+
+### StateNotifierBuilder
+
+The StateNotifierBuilder is a widget that uses a StateNotifier as its data source. A builder function of the
+StateNotifierBuilder must return the widget based on the current value passed.
+
+```dart
+final widgetThatWillRebuildWhenSomeListenableStateChanged = StateNotifierBuilder<String>(
+  listenableState: someListenableState,
+  builder: (ctx, value) {
+    return Text(value);
+  },
+);
+```
+
+### EntityStateNotifierBuilder
+
+The EntityStateNotifierBuilder is a widget that uses a EntityStateNotifier as its data source.
+Depending on the state, different builders will be called. It will be errorBuilder for error, loadingBuilder for error,
+builder for content.
+
+```dart
+@override
+Widget build(ICountryListWidgetModel wm) {
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text('Country List'),
+    ),
+    body: EntityStateNotifierBuilder<Iterable<Country>>(
+      listenableEntityState: wm.countryListState,
+      loadingBuilder: (_, __) => const _LoadingWidget(),
+      errorBuilder: (_, __, ___) => const _ErrorWidget(),
+      builder: (_, countries) =>
+          _CountryList(
+            countries: countries,
+            nameStyle: wm.countryNameStyle,
+          ),
+    ),
+  );
+}
+```
 
 ## Sponsor
 
