@@ -29,9 +29,9 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
   ) async {
     final state = this.state;
     if (state is ILoadAvailable) {
-      Profile? profile;
+      emit(ProfileLoadingState());
       try {
-        profile = await _profileRepository.getProfile();
+        final profile = await _profileRepository.getProfile();
         emit(ProfileState(profile));
       } on Exception catch (_) {
         emit(ErrorProfileLoadingState());

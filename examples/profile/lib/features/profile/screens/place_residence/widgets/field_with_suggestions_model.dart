@@ -1,6 +1,6 @@
 import 'package:elementary/elementary.dart';
 import 'package:profile/features/cities/service/repository/mock_cities_repository.dart';
-import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions.dart';
+import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions_widget.dart';
 
 /// Model for [FieldWithSuggestionsWidget].
 class FieldWithSuggestionsModel extends ElementaryModel {
