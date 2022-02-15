@@ -8,7 +8,7 @@ import 'package:profile/features/navigation/service/coordinator.dart';
 
 /// App widget.
 class App extends StatefulWidget {
-  /// Create an instance App.
+  /// Create an instance [App].
   const App({Key? key}) : super(key: key);
 
   @override

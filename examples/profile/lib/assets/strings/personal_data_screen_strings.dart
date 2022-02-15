@@ -11,8 +11,8 @@ class PersonalDataScreenStrings {
   /// Name text field hint.
   static const nameTitle = 'Name';
 
-  /// Patronymic text field hint.
-  static const patronymicHint = 'Patronymic';
+  /// secondName text field hint.
+  static const secondNameHint = 'SecondName';
 
   /// Birthday text field hint.
   static const birthdayHint = 'Birthday';

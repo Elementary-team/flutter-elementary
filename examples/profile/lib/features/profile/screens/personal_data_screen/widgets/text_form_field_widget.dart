@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:profile/assets/colors/colors.dart';
 
-/// TextFormField widget.
+/// TextFormField widgets.
 class TextFormFieldWidget extends StatelessWidget {
   /// Controller for text field.
   final TextEditingController? controller;

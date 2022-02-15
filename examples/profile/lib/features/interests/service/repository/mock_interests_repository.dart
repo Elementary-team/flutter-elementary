@@ -1,6 +1,5 @@
 import 'package:profile/features/server/mock_server/mock_server.dart';
 
-
 /// Repository interface for working with interests.
 // ignore: one_member_abstracts
 abstract class IInterestsRepository {
@@ -15,7 +14,6 @@ class MockInterestsRepository implements IInterestsRepository {
   /// Create an instance [MockInterestsRepository].
   const MockInterestsRepository(this._mockServer);
 
-  /// Return list with interests from [MockServer].
   @override
   Future<List<String>> getListInterests() {
     return _mockServer.getMockListInterests();

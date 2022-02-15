@@ -9,7 +9,7 @@ class Profile {
   final String? name;
 
   /// User second name(optional).
-  final String? patronymic;
+  final String? secondName;
 
   /// User birthday.
   final DateTime? birthday;
@@ -28,7 +28,7 @@ class Profile {
   const Profile({
     this.surname,
     this.name,
-    this.patronymic,
+    this.secondName,
     this.birthday,
     this.placeOfResidence,
     this.interests,
@@ -39,7 +39,7 @@ class Profile {
   Profile copyWith({
     String? surname,
     String? name,
-    String? patronymic,
+    String? secondName,
     DateTime? birthday,
     String? placeOfResidence,
     List<String>? interests,
@@ -48,7 +48,7 @@ class Profile {
       Profile(
         surname: surname ?? this.surname,
         name: name ?? this.name,
-        patronymic: patronymic ?? this.patronymic,
+        secondName: secondName ?? this.secondName,
         birthday: birthday ?? this.birthday,
         placeOfResidence: placeOfResidence ?? this.placeOfResidence,
         interests: interests ?? this.interests,
@@ -60,7 +60,7 @@ class Profile {
   bool isSame(Profile otherProfile) {
     return surname == otherProfile.surname &&
         name == otherProfile.name &&
-        patronymic == otherProfile.patronymic &&
+        secondName == otherProfile.secondName &&
         birthday == otherProfile.birthday &&
         placeOfResidence == otherProfile.placeOfResidence &&
         listEquals(interests, otherProfile.interests) &&

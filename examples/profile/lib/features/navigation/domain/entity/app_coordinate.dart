@@ -11,7 +11,7 @@ class AppCoordinates implements Coordinate {
   static const initScreen = AppCoordinates._('profile');
 
   /// Widget screen with personal data about user(surname, name,
-  /// patronymic(optional), birthday).
+  /// second name(optional), birthday).
   static const personalDataScreen = AppCoordinates._('personal_data');
 
   /// Widget screen with users place of residence.

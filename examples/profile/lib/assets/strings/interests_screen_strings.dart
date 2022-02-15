@@ -9,5 +9,6 @@ class InterestsScreenStrings {
   static const String warningValidation = 'Select at least one item';
 
   /// Text to display an error when loading a list interests.
-  static const String errorLoading = 'An error occurred, please try again later';
+  static const String errorLoading =
+      'An error occurred, please try again later';
 }

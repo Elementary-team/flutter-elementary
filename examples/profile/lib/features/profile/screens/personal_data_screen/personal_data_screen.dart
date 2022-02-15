@@ -14,7 +14,7 @@ const _shimmerHeight = 60.0;
 const _shimmerWidth = double.infinity;
 
 /// Widget screen with base data about user(surname, name,
-/// patronymic(optional), birthday).
+/// secondName(optional), birthday).
 class PersonalDataScreen extends ElementaryWidget<IPersonalDataWidgetModel> {
   /// Create an instance [PersonalDataScreen].
   const PersonalDataScreen({
@@ -47,7 +47,7 @@ class PersonalDataScreen extends ElementaryWidget<IPersonalDataWidgetModel> {
           return _FullNameWidget(
             surnameEditingController: wm.surnameEditingController,
             nameEditingController: wm.nameEditingController,
-            patronymicEditingController: wm.patronymicEditingController,
+            secondNameEditingController: wm.secondNameEditingController,
             birthdayEditingController: wm.birthdayEditingController,
             formKey: wm.formKey,
             onDateTap: wm.onDateTap,
@@ -113,7 +113,7 @@ class _Shimmer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
-      baseColor: secondaryColor,
+      baseColor: secondaryColor.withOpacity(0.5),
       highlightColor: white,
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(16.0)),
@@ -130,7 +130,7 @@ class _Shimmer extends StatelessWidget {
 class _FullNameWidget extends StatelessWidget {
   final TextEditingController surnameEditingController;
   final TextEditingController nameEditingController;
-  final TextEditingController patronymicEditingController;
+  final TextEditingController secondNameEditingController;
   final TextEditingController birthdayEditingController;
   final GlobalKey formKey;
   final Function(BuildContext) onDateTap;
@@ -142,7 +142,7 @@ class _FullNameWidget extends StatelessWidget {
   const _FullNameWidget({
     required this.surnameEditingController,
     required this.nameEditingController,
-    required this.patronymicEditingController,
+    required this.secondNameEditingController,
     required this.birthdayEditingController,
     required this.formKey,
     required this.onDateTap,
@@ -179,8 +179,8 @@ class _FullNameWidget extends StatelessWidget {
               ),
               const SizedBox(height: 16.0),
               TextFormFieldWidget(
-                controller: patronymicEditingController,
-                hintText: PersonalDataScreenStrings.patronymicHint,
+                controller: secondNameEditingController,
+                hintText: PersonalDataScreenStrings.secondNameHint,
               ),
               const SizedBox(height: 16.0),
               _DateWidget(

@@ -30,8 +30,7 @@ class AppScope implements IAppScope {
   ICitiesRepository get mockCitiesRepository => _mockCitiesRepository;
 
   @override
-  IInterestsRepository get mockInterestsRepository =>
-      _mockInterestsRepository;
+  IInterestsRepository get mockInterestsRepository => _mockInterestsRepository;
 
   @override
   DialogController get dialogController => _dialogController;

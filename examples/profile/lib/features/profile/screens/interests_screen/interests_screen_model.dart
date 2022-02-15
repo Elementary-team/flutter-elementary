@@ -22,12 +22,12 @@ class InterestsScreenModel extends ElementaryModel {
     ErrorHandler errorHandler,
   ) : super(errorHandler: errorHandler);
 
-  /// Return list with interests from [MockInterestsRepository].
+  /// Return list with interests from [IInterestsRepository].
   Future<List<String>> getInterestsList() async {
     return _repository.getListInterests();
   }
 
-  /// Method for save list interests.
+  /// Method for update list interests.
   void updateInterests(List<String>? interests) {
     _profileBloc.add(UpdateInterestsEvent(interests: interests));
   }

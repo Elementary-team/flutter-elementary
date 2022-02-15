@@ -11,7 +11,7 @@ class PlaceResidenceScreenModel extends ElementaryModel {
   /// Bloc for working with profile states.
   final ProfileBloc _profileBloc;
 
-  /// Mock repository for get list suggestions.
+  /// Repository for working with cities.
   final ICitiesRepository _repository;
 
   /// Gives the current state.
@@ -23,11 +23,6 @@ class PlaceResidenceScreenModel extends ElementaryModel {
     this._repository,
     ErrorHandler errorHandler,
   ) : super(errorHandler: errorHandler);
-
-  /// Function to get suggestion for entering a city from a mock server.
-  Future<List<String>> getListCities(String enteredValue) {
-    return _repository.getListCities(enteredValue);
-  }
 
   /// Returns the mock value of the city at the coordinates selected on the map.
   Future<String> getCityByCoordinates(Point coordinates) {

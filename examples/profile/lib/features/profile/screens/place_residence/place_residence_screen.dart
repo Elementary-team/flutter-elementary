@@ -1,13 +1,11 @@
-import 'dart:async';
-
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/assets/colors/colors.dart';
 import 'package:profile/assets/res/icons.dart';
 import 'package:profile/assets/strings/place_residence_screen_strings.dart';
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen_widget_model.dart';
+import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions.dart';
 import 'package:profile/features/profile/widgets/cancel_button/cancel_button.dart';
-import 'package:profile/features/profile/widgets/error_widget.dart';
 import 'package:profile/features/profile/widgets/next_button.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
@@ -31,188 +29,30 @@ class PlaceResidenceScreen
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            _SearchCityField(
-              controller: wm.controller,
-              focusNode: wm.focusNode,
-              optionsBuilder: wm.optionsBuilder,
-              onSelectedCallback: wm.updatePlaceResidence,
-              formKey: wm.formKey,
-              onFieldSubmittedCallback: wm.onFieldSubmitted,
-              validator: wm.placeResidenceValidator,
-              listSuggestionsState: wm.listSuggestionsState,
-            ),
-            const SizedBox(height: 16.0),
-            _MapOpenButton(
-              focusNode: wm.focusNode,
-              showBottomSheet: wm.showBottomSheet,
-              getMockCityByCoordinates: wm.getCityByCoordinates,
-              updateSelectedCityOnMap: wm.updateSelectedCityOnMap,
-            ),
-            const SizedBox(height: 16.0),
-            NextButton(callback: wm.updatePlace),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _SearchCityField extends StatelessWidget {
-  final TextEditingController controller;
-  final FocusNode focusNode;
-  final FutureOr<List<String>> Function(TextEditingValue) optionsBuilder;
-  final Function(String) onSelectedCallback;
-  final GlobalKey<FormState> formKey;
-  final VoidCallback onFieldSubmittedCallback;
-  final FormFieldValidator<String> validator;
-  final ListenableState<EntityState<List<String>>> listSuggestionsState;
-
-  const _SearchCityField({
-    required this.controller,
-    required this.focusNode,
-    required this.optionsBuilder,
-    required this.onSelectedCallback,
-    required this.formKey,
-    required this.onFieldSubmittedCallback,
-    required this.validator,
-    required this.listSuggestionsState,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return RawAutocomplete<String>(
-      textEditingController: controller,
-      focusNode: focusNode,
-      optionsBuilder: optionsBuilder,
-      onSelected: onSelectedCallback,
-      fieldViewBuilder: (
-        context,
-        textEditingController,
-        focusNode,
-        onFieldSubmitted,
-      ) {
-        return _TextFormFieldWidget(
-          formKey: formKey,
-          focusNode: focusNode,
-          onFieldSubmitted: onFieldSubmitted,
-          onFieldSubmittedCallback: onFieldSubmittedCallback,
-          textEditingController: textEditingController,
-          validator: validator,
-        );
-      },
-      optionsViewBuilder: (_, onSelected, __) {
-        return _SuggestionWidget(
-          listSuggestionsState: listSuggestionsState,
-          onSelected: onSelected,
-        );
-      },
-    );
-  }
-}
-
-class _TextFormFieldWidget extends StatelessWidget {
-  final GlobalKey formKey;
-  final TextEditingController textEditingController;
-  final FocusNode focusNode;
-  final VoidCallback onFieldSubmitted;
-  final VoidCallback onFieldSubmittedCallback;
-  final FormFieldValidator<String> validator;
-
-  const _TextFormFieldWidget({
-    required this.formKey,
-    required this.textEditingController,
-    required this.focusNode,
-    required this.onFieldSubmitted,
-    required this.onFieldSubmittedCallback,
-    required this.validator,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: TextFormField(
-        controller: textEditingController,
-        focusNode: focusNode,
-        textCapitalization: TextCapitalization.words,
-        decoration: const InputDecoration(
-          hintText: PlaceResidenceScreenStrings.placeResidenceTitle,
-          hintStyle: TextStyle(
-            fontSize: 18.0,
-            color: textFieldBorderColor,
-          ),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(color: textFieldBorderColor),
-          ),
-        ),
-        onFieldSubmitted: (_) {
-          onFieldSubmitted();
-          onFieldSubmittedCallback();
-        },
-        validator: validator,
-      ),
-    );
-  }
-}
-
-class _SuggestionWidget extends StatelessWidget {
-  final ListenableState<EntityState<List<String>>> listSuggestionsState;
-  final Function(String) onSelected;
-
-  const _SuggestionWidget({
-    required this.listSuggestionsState,
-    required this.onSelected,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Material(
-        elevation: 4.0,
-        child: SizedBox(
-          height: 200.0,
-          child: EntityStateNotifierBuilder<List<String>>(
-            listenableEntityState: listSuggestionsState,
-            builder: (_, listCities) {
-              if (listCities != null) {
-                return ListView.builder(
-                  padding: const EdgeInsets.all(8.0),
-                  itemCount: listCities.length,
-                  itemBuilder: (context, index) {
-                    final option = listCities.elementAt(index);
-                    return GestureDetector(
-                      onTap: () {
-                        onSelected(option);
-                      },
-                      child: ListTile(
-                        title: Text(option),
-                      ),
-                    );
-                  },
-                );
-              } else {
-                return const CustomErrorWidget(
-                  error: PlaceResidenceScreenStrings.errorLoading,
-                );
-              }
-            },
-            loadingBuilder: (_, __) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            },
-            errorBuilder: (_, __, ___) {
-              return const CustomErrorWidget(
-                error: PlaceResidenceScreenStrings.errorLoading,
-              );
-            },
+        child: GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTap: wm.onTapAnEmptySpace,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Form(
+                key: wm.formKey,
+                child: FieldWithSuggestionsWidget(
+                  controller: wm.controller,
+                  validator: wm.placeResidenceValidator,
+                  focusNode: wm.focusNode,
+                ),
+              ),
+              const SizedBox(height: 16.0),
+              _MapOpenButton(
+                focusNode: wm.focusNode,
+                showBottomSheet: wm.showBottomSheet,
+                getMockCityByCoordinates: wm.getCityByCoordinates,
+                updateSelectedCityOnMap: wm.updateSelectedCityOnMap,
+              ),
+              const SizedBox(height: 16.0),
+              NextButton(callback: wm.updatePlace),
+            ],
           ),
         ),
       ),
@@ -335,7 +175,7 @@ class _MapWidgetState extends State<_MapWidget> {
               PlacemarkIconStyle(
                 isFlat: true,
                 image: BitmapDescriptor.fromAssetImage(
-                  IconsPath.userIcon,
+                  IconsPath.userIconForMAp,
                 ),
               ),
             ),

@@ -8,7 +8,6 @@ import 'package:profile/features/navigation/service/coordinator.dart';
 import 'package:profile/features/profile/domain/profile.dart';
 import 'package:profile/features/profile/screens/about_me_screen/about_me_screen.dart';
 import 'package:profile/features/profile/screens/about_me_screen/about_me_screen_model.dart';
-import 'package:profile/features/profile/screens/place_residence/place_residence_screen.dart';
 import 'package:profile/features/profile/service/profile_bloc/profile_state.dart';
 import 'package:profile/util/dialog_controller.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +30,7 @@ AboutMeScreenWidgetModel aboutMeScreenWidgetModelFactory(
   );
 }
 
-/// Widget Model for [PlaceResidenceScreen].
+/// Widget Model for [AboutMeScreen].
 class AboutMeScreenWidgetModel
     extends WidgetModel<AboutMeScreen, AboutMeScreenModel>
     implements IAboutMeScreenWidgetModel {
@@ -44,7 +43,7 @@ class AboutMeScreenWidgetModel
   final _controller = TextEditingController();
   final _buttonState = StateNotifier<String>();
   final _saveEntityState = EntityStateNotifier<Profile>();
-  final FocusNode _focusNode = FocusNode();
+  final _focusNode = FocusNode();
   late final StreamSubscription<BaseProfileState> _stateStatusStream;
 
   @override
@@ -83,6 +82,8 @@ class AboutMeScreenWidgetModel
       ..removeListener(_controllerListener)
       ..dispose();
     _stateStatusStream.cancel();
+    _buttonState.dispose();
+    _saveEntityState.dispose();
     super.dispose();
   }
 
@@ -167,5 +168,5 @@ abstract class IAboutMeScreenWidgetModel extends IWidgetModel {
   ListenableState<EntityState<Profile>> get saveEntityState;
 
   /// Function to save user info in [Profile].
-  void updateAboutMe() {}
+  void updateAboutMe();
 }

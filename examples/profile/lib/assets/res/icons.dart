@@ -1,6 +1,7 @@
-//ignore_for_file:public_member_api_docs
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 /// Class with paths to icons.
 class IconsPath {
-  static const String userIcon = 'assets/icons/user.png';
+  /// User icon for [YandexMap].
+  static const String userIconForMAp = 'assets/icons/user.png';
 }

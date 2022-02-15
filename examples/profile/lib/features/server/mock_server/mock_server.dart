@@ -3,7 +3,7 @@ import 'package:profile/features/server/domain/mock_list_cities.dart';
 import 'package:profile/features/server/domain/mock_list_interests.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';
 
-const _duration = Duration(milliseconds: 1000);
+const _duration = Duration(milliseconds: 300);
 
 /// Class that emulates the work of a real server.
 /// Admit the convention that the server returns not DTO but a business model.

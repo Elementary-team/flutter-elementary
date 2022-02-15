@@ -10,7 +10,7 @@ class DiScope<T> extends StatefulWidget {
   /// Factory that returns the dependency scope.
   final ScopeFactory<T> factory;
 
-  /// The widget below this widget in the tree.
+  /// The widgets below this widgets in the tree.
   final Widget child;
 
   /// Create an instance [DiScope].

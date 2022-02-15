@@ -11,7 +11,7 @@ class AboutMeScreenModel extends ElementaryModel {
   /// Bloc for working with profile states.
   final ProfileBloc _profileBloc;
 
-  /// Stream to track the state of the profile_bloc.
+  /// Stream to track the state of the [ProfileBloc].
   Stream<BaseProfileState> get profileStateStream => _profileBloc.stream;
 
   /// Gives the current state.
@@ -23,7 +23,7 @@ class AboutMeScreenModel extends ElementaryModel {
     ErrorHandler errorHandler,
   ) : super(errorHandler: errorHandler);
 
-  /// Method for save info about user.
+  /// Method for update info about user.
   void updateAboutMe(String? aboutMe) {
     _profileBloc.add(UpdateAboutMeInfoEvent(aboutMe: aboutMe));
   }

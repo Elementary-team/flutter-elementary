@@ -11,13 +11,12 @@ abstract class ICitiesRepository {
 }
 
 /// Repository for working with a users place of residence by using [MockServer].
-class MockCitiesRepository implements ICitiesRepository{
+class MockCitiesRepository implements ICitiesRepository {
   final MockServer _mockServer;
 
   /// Create an instance [MockCitiesRepository].
   const MockCitiesRepository(this._mockServer);
 
-  /// Return list with cities for suggestions from [MockServer].
   @override
   Future<List<String>> getListCities(String enteredValue) async {
     return _mockServer.getMockListCities(enteredValue);

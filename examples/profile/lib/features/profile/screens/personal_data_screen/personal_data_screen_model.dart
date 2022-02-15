@@ -6,6 +6,7 @@ import 'package:profile/features/profile/service/profile_bloc/profile_state.dart
 
 /// Model for [PersonalDataScreen].
 class PersonalDataScreenModel extends ElementaryModel {
+  /// Bloc for working with profile states.
   final ProfileBloc _profileBloc;
 
   /// Stream to track the state of the profile_bloc.
@@ -26,18 +27,18 @@ class PersonalDataScreenModel extends ElementaryModel {
     _profileBloc.add(ProfileLoadEvent());
   }
 
-  /// Method for passing new data to the [ProfileBloc].
+  /// Method for update personal data to the [ProfileBloc].
   void updatePersonalData(
     String surname,
     String name,
-    String? patronymic,
+    String? secondName,
     DateTime birthday,
   ) {
     _profileBloc.add(
       UpdatePersonalDataEvent(
         surname: surname,
         name: name,
-        patronymic: patronymic,
+        secondName: secondName,
         birthday: birthday,
       ),
     );

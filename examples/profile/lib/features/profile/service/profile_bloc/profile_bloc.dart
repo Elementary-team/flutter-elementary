@@ -101,7 +101,7 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
     return profile.copyWith(
       surname: event.surname ?? profile.surname,
       name: event.name ?? profile.name,
-      patronymic: event.patronymic ?? profile.patronymic,
+      secondName: event.secondName ?? profile.secondName,
       birthday: event.birthday ?? profile.birthday,
     );
   }

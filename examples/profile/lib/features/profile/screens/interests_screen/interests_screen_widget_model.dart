@@ -66,6 +66,13 @@ class InterestsScreenWidgetModel
   }
 
   @override
+  void dispose() {
+    _listAllInterestsEntityState.dispose();
+    _listUserInterestsState.dispose();
+    super.dispose();
+  }
+
+  @override
   void updateInterests() {
     if (_listUserInterestsState.value!.isNotEmpty) {
       model.updateInterests(_listUserInterestsState.value);
@@ -138,16 +145,14 @@ abstract class IInterestsScreenWidgetModel extends IWidgetModel {
   ListenableState<List<String>> get listUserInterestsState;
 
   /// Function to save list interests in [Profile].
-  void updateInterests() {}
+  void updateInterests();
 
   /// Function that determines if a checkbox is checked.
-  bool isChecked(String interest) {
-    return false;
-  }
+  bool isChecked(String interest);
 
   /// Callback on click on [Checkbox].
   void onChanged({
     required String interest,
     bool? isChecked,
-  }) {}
+  });
 }

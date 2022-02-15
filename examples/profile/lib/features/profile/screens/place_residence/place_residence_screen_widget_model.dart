@@ -8,6 +8,7 @@ import 'package:profile/features/navigation/service/coordinator.dart';
 import 'package:profile/features/profile/domain/profile.dart';
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen.dart';
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen_model.dart';
+import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions.dart';
 import 'package:profile/features/profile/service/profile_bloc/profile_state.dart';
 import 'package:profile/util/dialog_controller.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,6 @@ class PlaceResidenceScreenWidgetModel
   final DialogController dialogController;
 
   final _controller = TextEditingController();
-  final _listSuggestionsState = EntityStateNotifier<List<String>>();
   final _focusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
 
@@ -51,20 +51,12 @@ class PlaceResidenceScreenWidgetModel
   TextEditingController get controller => _controller;
 
   @override
-  ListenableState<EntityState<List<String>>> get listSuggestionsState =>
-      _listSuggestionsState;
-
-  @override
   FocusNode get focusNode => _focusNode;
 
   @override
   GlobalKey<FormState> get formKey => _formKey;
 
-  String? _currentPlaceResidence;
   String? _selectedCityOnMap;
-
-  Timer? _debounceTimer;
-  var _listCities = <String>[];
 
   /// Create an instance [PlaceResidenceScreenWidgetModel].
   PlaceResidenceScreenWidgetModel({
@@ -77,40 +69,17 @@ class PlaceResidenceScreenWidgetModel
   void initWidgetModel() {
     super.initWidgetModel();
     _initPlaceResidence();
-    _controller.addListener(_controllerListener);
   }
 
   @override
   void dispose() {
-    _debounceTimer?.cancel();
-    _controller.removeListener(_controllerListener);
+    _controller.dispose();
     super.dispose();
   }
 
   @override
-  void updatePlaceResidence(String? newValue) {
-    _focusNode.unfocus();
-    _currentPlaceResidence = newValue;
-  }
-
-  @override
-  void onFieldSubmitted() {
-    _formKey.currentState!.validate();
-  }
-
-  @override
-  FutureOr<List<String>> optionsBuilder(
-    TextEditingValue textEditingValue,
-  ) async {
-    if (textEditingValue.text == '') {
-      return List<String>.empty();
-    }
-    return _listCities;
-  }
-
-  @override
   String? placeResidenceValidator(String? value) {
-    if (value == null || value.isEmpty || _currentPlaceResidence != value) {
+    if (value == null || value.isEmpty) {
       return 'Select a city from the list or on the map';
     }
   }
@@ -130,7 +99,6 @@ class PlaceResidenceScreenWidgetModel
   @override
   void updateSelectedCityOnMap() {
     if (_selectedCityOnMap != null) {
-      _currentPlaceResidence = _selectedCityOnMap;
       _controller.text = _selectedCityOnMap!;
     }
   }
@@ -143,28 +111,14 @@ class PlaceResidenceScreenWidgetModel
   @override
   void updatePlace() {
     if (_formKey.currentState!.validate()) {
-      if (_currentPlaceResidence != null) {
-        model.savePlaceResidence(_currentPlaceResidence);
-        coordinator.navigate(context, AppCoordinates.interestsScreen);
-      }
+      model.savePlaceResidence(_controller.text);
+      coordinator.navigate(context, AppCoordinates.interestsScreen);
     }
   }
 
-  void _controllerListener() {
-    _debouncing(_controller.text);
-  }
-
-  void _debouncing(String city) {
-    _debounceTimer?.cancel();
-    _listSuggestionsState.loading();
-    try {
-      _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
-        _listCities = await model.getListCities(city);
-        _listSuggestionsState.content(_listCities);
-      });
-    } on Exception catch (_) {
-      _listSuggestionsState.error();
-    }
+  @override
+  void onTapAnEmptySpace() {
+    _focusNode.unfocus();
   }
 
   void _initPlaceResidence() {
@@ -174,7 +128,6 @@ class PlaceResidenceScreenWidgetModel
       final profile = currentState.profile;
       if (profile.placeOfResidence != null) {
         _controller.text = profile.placeOfResidence!;
-        _currentPlaceResidence = profile.placeOfResidence;
       }
     }
   }
@@ -182,26 +135,14 @@ class PlaceResidenceScreenWidgetModel
 
 /// Interface of [PlaceResidenceScreenWidgetModel].
 abstract class IPlaceResidenceScreenWidgetModel extends IWidgetModel {
-  /// Text Editing controller for [RawAutocomplete].
+  /// Text Editing controller for [FieldWithSuggestionsWidget].
   TextEditingController get controller;
 
-  /// FocusNode for [RawAutocomplete].
+  /// FocusNode for [FieldWithSuggestionsWidget].
   FocusNode get focusNode;
-
-  /// Suggestions status.
-  ListenableState<EntityState<List<String>>> get listSuggestionsState;
 
   /// Key to [Form].
   GlobalKey<FormState> get formKey;
-
-  /// Function to change place residence.
-  void updatePlaceResidence(String? newValue);
-
-  /// Callback on field submitted.
-  void onFieldSubmitted();
-
-  /// Function to get suggestion for entering a city.
-  FutureOr<List<String>> optionsBuilder(TextEditingValue enteredValue);
 
   /// Validator for checking the correctness of the entered city.
   String? placeResidenceValidator(String? value);
@@ -220,4 +161,7 @@ abstract class IPlaceResidenceScreenWidgetModel extends IWidgetModel {
 
   /// Function to save place of residence in [Profile].
   void updatePlace();
+
+  /// Callback on tap an empty space.
+  void onTapAnEmptySpace();
 }

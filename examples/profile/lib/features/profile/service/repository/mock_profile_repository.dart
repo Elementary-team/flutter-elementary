@@ -11,7 +11,7 @@ abstract class IProfileRepository {
 }
 
 /// Repository for working with a user profile by using [MockServer].
-class MockProfileRepository implements IProfileRepository{
+class MockProfileRepository implements IProfileRepository {
   final MockServer _mockServer;
 
   /// Create an instance [MockProfileRepository].

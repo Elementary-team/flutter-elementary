@@ -44,7 +44,7 @@ class PersonalDataScreenWidgetModel
 
   final _surnameEditingController = TextEditingController();
   final _nameEditingController = TextEditingController();
-  final _patronymicEditingController = TextEditingController();
+  final _secondNameEditingController = TextEditingController();
   final _birthdayEditingController = TextEditingController();
   final _profileEntityState = EntityStateNotifier<Profile>();
   late final StreamSubscription<BaseProfileState> _stateStatusSubscription;
@@ -64,8 +64,8 @@ class PersonalDataScreenWidgetModel
   TextEditingController get nameEditingController => _nameEditingController;
 
   @override
-  TextEditingController get patronymicEditingController =>
-      _patronymicEditingController;
+  TextEditingController get secondNameEditingController =>
+      _secondNameEditingController;
 
   @override
   TextEditingController get birthdayEditingController =>
@@ -89,9 +89,10 @@ class PersonalDataScreenWidgetModel
   void dispose() {
     _surnameEditingController.dispose();
     _nameEditingController.dispose();
-    _patronymicEditingController.dispose();
+    _secondNameEditingController.dispose();
     _birthdayEditingController.dispose();
     _stateStatusSubscription.cancel();
+    _profileEntityState.dispose();
     super.dispose();
   }
 
@@ -101,11 +102,11 @@ class PersonalDataScreenWidgetModel
       model.updatePersonalData(
         _surnameEditingController.text,
         _nameEditingController.text,
-        _patronymicEditingController.text,
+        _secondNameEditingController.text,
         DateTime.parse(_birthdayEditingController.text),
       );
+      coordinator.navigate(context, AppCoordinates.placeResidenceScreen);
     }
-    coordinator.navigate(context, AppCoordinates.placeResidenceScreen);
   }
 
   @override
@@ -173,8 +174,8 @@ class PersonalDataScreenWidgetModel
     if (profile.name != null) {
       _nameEditingController.text = profile.name!;
     }
-    if (profile.patronymic != null) {
-      _patronymicEditingController.text = profile.patronymic!;
+    if (profile.secondName != null) {
+      _secondNameEditingController.text = profile.secondName!;
     }
   }
 
@@ -201,8 +202,8 @@ abstract class IPersonalDataWidgetModel extends IWidgetModel {
   /// Text Editing Controller for name.
   TextEditingController get nameEditingController;
 
-  /// Text Editing Controller for patronymic.
-  TextEditingController get patronymicEditingController;
+  /// Text Editing Controller for secondName.
+  TextEditingController get secondNameEditingController;
 
   /// Text Editing Controller for birthday.
   TextEditingController get birthdayEditingController;
@@ -211,13 +212,12 @@ abstract class IPersonalDataWidgetModel extends IWidgetModel {
   ListenableState<EntityState<Profile>> get profileEntityState;
 
   /// Function to open DatePicker.
-  Future<void> onDateTap(BuildContext context) async {}
+  Future<void> onDateTap(BuildContext context);
 
   /// Function to save new [Profile].
-  void updatePersonalData() {}
-
+  void updatePersonalData();
   /// Callback on BackButton tap.
-  void backButtonTap() {}
+  void backButtonTap();
 
   /// Validator for surname field.
   String? surnameValidator(String? value);

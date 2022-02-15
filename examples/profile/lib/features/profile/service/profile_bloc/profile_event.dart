@@ -17,8 +17,8 @@ abstract class ProfileUpdateEvent extends BaseProfileEvent {
   /// User name.
   final String? name;
 
-  /// User patronymic.
-  final String? patronymic;
+  /// User secondName.
+  final String? secondName;
 
   /// User birthday.
   final DateTime? birthday;
@@ -39,7 +39,7 @@ abstract class ProfileUpdateEvent extends BaseProfileEvent {
   const ProfileUpdateEvent({
     this.surname,
     this.name,
-    this.patronymic,
+    this.secondName,
     this.birthday,
     this.placeResidence,
     this.interests,
@@ -56,12 +56,12 @@ class UpdatePersonalDataEvent extends ProfileUpdateEvent {
   const UpdatePersonalDataEvent({
     String? surname,
     String? name,
-    String? patronymic,
+    String? secondName,
     DateTime? birthday,
   }) : super(
           surname: surname,
           name: name,
-          patronymic: patronymic,
+          secondName: secondName,
           birthday: birthday,
         );
 }
@@ -88,8 +88,7 @@ class UpdateAboutMeInfoEvent extends ProfileUpdateEvent {
 
 /// Save profile event.
 class SaveProfileEvent extends BaseProfileEvent {
-
-  /// Create an instance [UpdatePlaceResidenceEvent].
+  /// Create an instance [SaveProfileEvent].
   const SaveProfileEvent();
 }
 

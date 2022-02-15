@@ -1,9 +1,9 @@
-// ignore_for_file: prefer_mixin
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/features/navigation/domain/entity/coordinate.dart';
 import 'package:profile/features/navigation/service/coordinator.dart';
+
+// ignore_for_file: prefer_mixin
 
 /// [RouterDelegate] implementation.
 /// Passed in the routerDelegate field in [MaterialApp.router].

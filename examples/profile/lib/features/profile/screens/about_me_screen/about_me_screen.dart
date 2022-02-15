@@ -79,38 +79,81 @@ class _AboutMeWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
-        TextFormField(
-          readOnly: readOnly ?? false,
+        _AboutMeField(
           focusNode: focusNode,
           controller: controller,
-          textCapitalization: TextCapitalization.sentences,
-          minLines: 6,
-          maxLines: 12,
-          decoration: const InputDecoration(
-            hintText: AboutMeScreenStrings.fewWordsAboutYourselfHint,
-            hintStyle: TextStyle(
-              fontSize: 18.0,
-              color: textFieldBorderColor,
-            ),
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: textFieldBorderColor),
-            ),
-          ),
+          readOnly: readOnly,
         ),
         const SizedBox(height: 16.0),
-        StateNotifierBuilder<String>(
-          listenableState: buttonState,
-          builder: (context, text) {
-            return ElevatedButton(
-              onPressed: onPressedElevatedButton,
-              child: SizedBox(
-                width: 100.0,
-                child: Center(child: Text(text ?? AboutMeScreenStrings.okButtonTitle)),
-              ),
-            );
-          },
+        _OkOrSaveButton(
+          buttonState: buttonState,
+          onPressedElevatedButton: onPressedElevatedButton,
         ),
       ],
+    );
+  }
+}
+
+class _AboutMeField extends StatelessWidget {
+  final FocusNode? focusNode;
+  final TextEditingController? controller;
+  final bool? readOnly;
+
+  const _AboutMeField({
+    required this.focusNode,
+    required this.controller,
+    required this.readOnly,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      readOnly: readOnly ?? false,
+      focusNode: focusNode,
+      controller: controller,
+      textCapitalization: TextCapitalization.sentences,
+      minLines: 6,
+      maxLines: 12,
+      decoration: const InputDecoration(
+        hintText: AboutMeScreenStrings.fewWordsAboutYourselfHint,
+        hintStyle: TextStyle(
+          fontSize: 18.0,
+          color: textFieldBorderColor,
+        ),
+        border: OutlineInputBorder(
+          borderSide: BorderSide(color: textFieldBorderColor),
+        ),
+      ),
+    );
+  }
+}
+
+class _OkOrSaveButton extends StatelessWidget {
+  final ListenableState<String> buttonState;
+  final VoidCallback? onPressedElevatedButton;
+
+  const _OkOrSaveButton({
+    required this.buttonState,
+    required this.onPressedElevatedButton,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return StateNotifierBuilder<String>(
+      listenableState: buttonState,
+      builder: (context, text) {
+        return ElevatedButton(
+          onPressed: onPressedElevatedButton,
+          child: SizedBox(
+            width: 100.0,
+            child: Center(
+              child: Text(text ?? AboutMeScreenStrings.okButtonTitle),
+            ),
+          ),
+        );
+      },
     );
   }
 }
