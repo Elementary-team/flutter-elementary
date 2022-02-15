@@ -216,6 +216,7 @@ abstract class IPersonalDataWidgetModel extends IWidgetModel {
 
   /// Function to save new [Profile].
   void updatePersonalData();
+
   /// Callback on BackButton tap.
   void backButtonTap();
 
