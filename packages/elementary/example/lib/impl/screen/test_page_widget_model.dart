@@ -2,25 +2,24 @@ import 'dart:async';
 
 import 'package:counter/impl/screen/test_page_model.dart';
 import 'package:counter/impl/screen/test_page_widget.dart';
+import 'package:counter/main.dart';
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Builder for [TestPageWidgetModel]
 TestPageWidgetModel testPageWidgetModelFactory(BuildContext context) {
-  final model = context.read<TestPageModel>();
-  return TestPageWidgetModel(model);
+  final errorHandler = context.read<TestErrorHandler>();
+  return TestPageWidgetModel(TestPageModel(errorHandler));
 }
 
+/// WidgetModel for [TestPageWidget]
 class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
     implements ITestPageWidgetModel {
   @override
   ListenableState<EntityState<int>> get valueState => _valueController;
 
-  @override
-  TextStyle get counterStyle => _counterStyle;
-
   late EntityStateNotifier<int> _valueController;
-  late TextStyle _counterStyle;
 
   TestPageWidgetModel(TestPageModel model) : super(model);
 
@@ -41,25 +40,6 @@ class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    _counterStyle = Theme.of(context).textTheme.headline4 ?? const TextStyle();
-  }
-
-  @override
-  void onErrorHandle(Object error) {
-    super.onErrorHandle(error);
-
-    // TODO(mjk): wrap this DialogController
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(error.toString()),
-      ),
-    );
-  }
-
-  @override
   void dispose() {
     _valueController.dispose();
 
@@ -69,8 +49,6 @@ class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
 
 abstract class ITestPageWidgetModel extends IWidgetModel {
   ListenableState<EntityState<int>> get valueState;
-
-  TextStyle get counterStyle;
 
   Future<void> increment();
 }
