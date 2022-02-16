@@ -260,7 +260,7 @@ void somewhereInTheBuildFunction() {
 
 ### MultiListenerRebuilder
 Widget that rebuild part of the ui when one of Listenable changes. The builder function in this widget has no values,
-and you need to get the values directly in function body.
+and you need to get the values directly in function's body.
 
 ```dart
 void somewhereInTheBuildFunction() {
