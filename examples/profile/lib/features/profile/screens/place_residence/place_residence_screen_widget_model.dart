@@ -81,6 +81,8 @@ class PlaceResidenceScreenWidgetModel
   String? placeResidenceValidator(String? value) {
     if (value == null || value.isEmpty) {
       return 'Select a city from the list or on the map';
+    } else {
+      return null;
     }
   }
 
