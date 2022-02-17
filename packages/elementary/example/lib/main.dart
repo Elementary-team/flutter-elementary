@@ -1,6 +1,6 @@
-import 'package:counter/impl/screen/test_page_model.dart';
 import 'package:counter/impl/screen/test_page_widget.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,18 +18,20 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Provider<TestPageModel>(
-        create: (_) => TestPageModel(TestErrorHandler()),
+      home: Provider<TestErrorHandler>(
+        create: (_) => TestErrorHandler(),
         child: const TestPageWidget(),
       ),
     );
   }
 }
 
+/// Error handler that print info to console
 class TestErrorHandler implements ErrorHandler {
   @override
   void handleError(Object error) {
-    // ignore: avoid_print
-    print(error);
+    if (kDebugMode) {
+      print(error);
+    }
   }
 }

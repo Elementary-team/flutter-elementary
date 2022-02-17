@@ -1,10 +1,9 @@
 # Elementary Plugin Changelog
 
-## [Unreleased]
+## [0.0.2]
 ### Added
-- Analyzer support
-- Live templates
-- More generating templates
+- Auto activation elementary_cli support
+- activate support for 2021.3.3 IDE
 
 ## [0.0.1]
 ### Added
@@ -12,8 +11,4 @@
 - `Elementary Module` template
 - `Elementary Widget Model Test` template
 - Generated files indexing
-
-<!--TODO make real links -->
-[Unreleased]: https:link-to-unreleased-changelog-compare-git-tags
-[0.0.1]: https:link-to-0.0.1-vs-0.0.0-changelog-compare-git-tags
 
