@@ -186,12 +186,16 @@ The StateNotifierBuilder is a widget that uses a StateNotifier as its data sourc
 StateNotifierBuilder must return the widget based on the current value passed.
 
 ```dart
-final widgetThatWillRebuildWhenSomeListenableStateChanged = StateNotifierBuilder<String>(
-  listenableState: someListenableState,
-  builder: (ctx, value) {
-    return Text(value);
-  },
-);
+void somewhereInTheBuildFunction() {
+  // ......
+  StateNotifierBuilder<String>(
+    listenableState: someListenableState,
+    builder: (ctx, value) {
+      return Text(value);
+    },
+  );
+  // ......
+}
 ```
 
 ### EntityStateNotifierBuilder
