@@ -186,12 +186,16 @@ The StateNotifierBuilder is a widget that uses a StateNotifier as its data sourc
 StateNotifierBuilder must return the widget based on the current value passed.
 
 ```dart
-final widgetThatWillRebuildWhenSomeListenableStateChanged = StateNotifierBuilder<String>(
-  listenableState: someListenableState,
-  builder: (ctx, value) {
-    return Text(value);
-  },
-);
+void somewhereInTheBuildFunction() {
+  // ......
+  StateNotifierBuilder<String>(
+    listenableState: someListenableState,
+    builder: (ctx, value) {
+      return Text(value);
+    },
+  );
+  // ......
+}
 ```
 
 ### EntityStateNotifierBuilder
@@ -218,6 +222,67 @@ Widget build(ICountryListWidgetModel wm) {
           ),
     ),
   );
+}
+```
+
+### DoubleSourceBuilder
+One of the multi-sources builders. It uses two ListenableStates as sources of data.
+The builder function will be called when any of the ListenableStates changes.
+
+```dart
+void somewhereInTheBuildFunction() {
+  // ......
+  DoubleSourceBuilder<String, TextStyle>(
+    firstSource: captionListenableState,
+    secondSource: captionStyleListenableState,
+    builder: (ctx, value, style) {
+      return Text(value, style: style);
+    },
+  );
+  // ......
+}
+```
+
+### TripleSourceBuilder
+One of the multi-sources builders. It uses three ListenableStates as sources of data.
+The builder function will be called when any of the ListenableStates changes.
+
+```dart
+void somewhereInTheBuildFunction() {
+  // ......
+  TripleSourceBuilder<String, int, TextStyle>(
+    firstSource: captionListenableState,
+    firstSource: valueListenableState,
+    secondSource: captionStyleListenableState,
+    builder: (ctx, title, value, style) {
+      return Text('$title: ${value ?? 0}', style: style);
+    },
+  );
+  // ......
+}
+```
+
+### MultiListenerRebuilder
+Widget that rebuild part of the ui when one of Listenable changes. The builder function in this widget has no values,
+and you need to get the values directly in function's body.
+
+```dart
+void somewhereInTheBuildFunction() {
+  // ......
+  MultiListenerRebuilder(
+    listenableList: [
+      firstListenable,
+      secondListenable,
+      thirdListenable,
+    ],
+    builder: (ctx) {
+      final title = firstListenable.value;
+      final value = secondListenable.value;
+      final style = thirdListenable.value;
+      return Text('$title: ${value ?? 0}', style: style);
+    },
+  );
+  // ......
 }
 ```
 
