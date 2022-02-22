@@ -21,4 +21,3 @@ const Color textFieldBorderColor = _darkGrey;
 const Color _oxfordBlue = Color(0xFF263238);
 const Color _white = Colors.white;
 const Color _darkGrey = Color(0xFFA7A7A7);
-const Color _grey = Color(0x8A000000);
