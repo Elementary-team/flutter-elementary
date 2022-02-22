@@ -86,26 +86,13 @@ class InterestsScreenWidgetModel
   }
 
   @override
-  bool isChecked(String interest) {
-    if (_listUserInterestsState.value!.isEmpty ||
-        !_listUserInterestsState.value!.contains(interest)) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
-  @override
   void onChanged({
     required String interest,
-    bool? isChecked,
   }) {
     final currentListUserInterest = _listUserInterestsState.value!.toList();
-    if (isChecked != null && isChecked) {
+    if(!currentListUserInterest.contains(interest)){
       currentListUserInterest.add(interest);
-    } else if (currentListUserInterest.contains(interest) &&
-        isChecked != null &&
-        !isChecked) {
+    } else {
       currentListUserInterest.remove(interest);
     }
     _listUserInterestsState.accept(currentListUserInterest);
@@ -123,7 +110,7 @@ class InterestsScreenWidgetModel
 
   void _initInterests() {
     final state = model.currentState;
-    if (state is IEditingAvailable) {
+    if (state is ProfileContentState) {
       final currentState = state as IEditingAvailable;
       final profile = currentState.profile;
       final initListInterests = profile.interests;
@@ -147,12 +134,8 @@ abstract class IInterestsScreenWidgetModel extends IWidgetModel {
   /// Function to save list interests in [Profile].
   void updateInterests();
 
-  /// Function that determines if a checkbox is checked.
-  bool isChecked(String interest);
-
   /// Callback on click on [Checkbox].
   void onChanged({
     required String interest,
-    bool? isChecked,
   });
 }

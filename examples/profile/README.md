@@ -31,7 +31,7 @@ This example implements the process of filling out a profile, saving it on the s
 
 ### Bloc diagram
 
-![Bloc diagram](assets/image/bloc_diagram.png)
+![Bloc diagram](res/bloc_diagram.png)
 
 ### UI implemented with [Elementary](https://pub.dev/packages/elementary). 
 
@@ -41,6 +41,6 @@ The [WidgetModels](https://pub.dev/packages/elementary#widgetmodel) of these scr
 logic of the display, supply the necessary controllers and respond to their changes.
 [Models](https://pub.dev/packages/elementary#model) provide relate with the block and repositories (where necessary).
 
-Widgets [CancelButton](lib/features/profile/widgets/cancel_button/cancel_button.dart) and [FieldWithSuggestionsWidget](lib/features/profile/screens/place_residence/widgets/field_with_suggestions_widget.dart)
+Widgets [CancelButton](lib/features/profile/widgets/cancel_button/cancel_button.dart) and [FieldWithSuggestionsWidget](lib/features/profile/screens/place_residence/widgets/field_with_suggestions_widget/field_with_suggestions_widget.dart)
 is also implemented using [Elementary](https://pub.dev/packages/elementary). They have their own logic of work, regardless of where they are used.
 CancelButton is used several times. FieldWithSuggestionsWidget rendered separately so that the [WidgetModel](lib/features/profile/screens/place_residence/place_residence_screen_widget_model.dart) of the [PlaceResidenceScreen](lib/features/profile/screens/place_residence/place_residence_screen.dart) does not grow. This widget can also be reused.

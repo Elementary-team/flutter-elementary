@@ -17,4 +17,7 @@ class PlaceResidenceScreenStrings {
   /// Text to display an error when loading a suggestions.
   static const String errorLoading =
       'An error occurred, please try again later';
+
+  /// Text to display city search error.
+  static const String cityNotFoundError = 'City not found';
 }

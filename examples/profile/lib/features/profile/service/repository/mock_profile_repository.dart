@@ -25,6 +25,6 @@ class MockProfileRepository implements IProfileRepository {
 
   @override
   Future<void> saveProfile(Profile profile) async {
-    await _mockServer.saveProfile(profile);
+    return _mockServer.saveProfile(profile);
   }
 }

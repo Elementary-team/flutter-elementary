@@ -8,7 +8,7 @@ import 'package:profile/features/navigation/service/coordinator.dart';
 import 'package:profile/features/profile/domain/profile.dart';
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen.dart';
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen_model.dart';
-import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions_widget.dart';
+import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions_widget/field_with_suggestions_widget.dart';
 import 'package:profile/features/profile/service/profile_bloc/profile_state.dart';
 import 'package:profile/util/dialog_controller.dart';
 import 'package:provider/provider.dart';
@@ -125,7 +125,7 @@ class PlaceResidenceScreenWidgetModel
 
   void _initPlaceResidence() {
     final state = model.currentState;
-    if (state is IEditingAvailable) {
+    if (state is ProfileContentState) {
       final currentState = state as IEditingAvailable;
       final profile = currentState.profile;
       if (profile.placeOfResidence != null) {

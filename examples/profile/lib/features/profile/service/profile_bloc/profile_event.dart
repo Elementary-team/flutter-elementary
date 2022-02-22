@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 /// Basic profile event.
 abstract class BaseProfileEvent extends Equatable {
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 
   /// Constructor.
   const BaseProfileEvent();
@@ -33,7 +33,15 @@ abstract class ProfileUpdateEvent extends BaseProfileEvent {
   final String? aboutMe;
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [
+        surname,
+        name,
+        secondName,
+        birthday,
+        placeResidence,
+        interests,
+        aboutMe,
+      ];
 
   /// Constructor.
   const ProfileUpdateEvent({

@@ -9,7 +9,7 @@ const Color secondaryColor = _darkGrey;
 const Color white = _white;
 
 /// Divider color.
-const Color dividerColor = _grey;
+const Color dividerColor = _darkGrey;
 
 /// Primary text color.
 const Color textColorPrimary = _oxfordBlue;

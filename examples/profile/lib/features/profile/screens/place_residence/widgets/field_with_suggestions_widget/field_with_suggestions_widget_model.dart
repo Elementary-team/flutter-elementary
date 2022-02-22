@@ -5,8 +5,8 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/features/app/di/app_scope.dart';
 import 'package:profile/features/profile/screens/place_residence/utils/overlay_entry_controller.dart';
-import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions_model.dart';
-import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions_widget.dart';
+import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions_widget/field_with_suggestions_model.dart';
+import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions_widget/field_with_suggestions_widget.dart';
 import 'package:provider/provider.dart';
 
 /// Factory for [FieldWithSuggestionsWidgetModel].

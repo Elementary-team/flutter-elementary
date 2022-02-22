@@ -133,7 +133,7 @@ class ProfileBloc extends Bloc<BaseProfileEvent, BaseProfileState> {
     CancelEditingEvent event,
     Emitter<BaseProfileState> emit,
   ) {
-    if (state is PendingProfileState) {
+    if (state is ICancelAvailable) {
       final currentState = state as PendingProfileState;
       emit(ProfileState(currentState.initialProfile));
     }

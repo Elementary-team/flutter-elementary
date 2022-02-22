@@ -4,7 +4,7 @@ import 'package:profile/assets/colors/colors.dart';
 import 'package:profile/assets/res/icons.dart';
 import 'package:profile/assets/strings/place_residence_screen_strings.dart';
 import 'package:profile/features/profile/screens/place_residence/place_residence_screen_widget_model.dart';
-import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions_widget.dart';
+import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions_widget/field_with_suggestions_widget.dart';
 import 'package:profile/features/profile/widgets/cancel_button/cancel_button.dart';
 import 'package:profile/features/profile/widgets/next_button.dart';
 import 'package:yandex_mapkit/yandex_mapkit.dart';

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:profile/features/profile/domain/profile.dart';
+import 'package:profile/features/profile/service/profile_bloc/profile_event.dart';
 
 /// Base state for profile.
 abstract class BaseProfileState extends Equatable {
@@ -46,7 +47,7 @@ class ErrorProfileLoadingState extends BaseProfileState
 
 /// Profile state.
 class ProfileState extends ProfileContentState
-    implements ILoadAvailable, IEditingAvailable, ICancelAvailable {
+    implements ILoadAvailable, IEditingAvailable {
   /// Create an instance [ProfileState].
   ProfileState(Profile profile) : super(profile: profile);
 }
@@ -96,18 +97,22 @@ class SavingProfileState extends ProfileContentWithInitialState {
 }
 
 /// State interface at which editing will be available.
+/// In this state, the [ProfileUpdateEvent] is applied.
 abstract class IEditingAvailable {
   /// Current profile.
   Profile get profile;
 }
 
 /// State interface at which you can download the profile from the server.
+/// In this state, the [ProfileLoadEvent] is applied.
 abstract class ILoadAvailable {}
 
 /// State interface at which you can cancel profile editing.
+/// In this state, the [CancelEditingEvent] is applied.
 abstract class ICancelAvailable {}
 
 /// State interface at which you can save profile.
+/// In this state, the [SaveProfileEvent] is applied.
 abstract class ISaveAvailable {
   /// Initial profile.
   Profile get initialProfile;

@@ -72,7 +72,7 @@ class _SuggestionWidget extends StatelessWidget {
                     );
                   } else {
                     return const CustomErrorWidget(
-                      error: PlaceResidenceScreenStrings.errorLoading,
+                      error: PlaceResidenceScreenStrings.cityNotFoundError,
                     );
                   }
                 },

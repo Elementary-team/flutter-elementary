@@ -2,9 +2,9 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/assets/colors/colors.dart';
 import 'package:profile/assets/strings/place_residence_screen_strings.dart';
-import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions_widget_model.dart';
+import 'package:profile/features/profile/screens/place_residence/widgets/field_with_suggestions_widget/field_with_suggestions_widget_model.dart';
 
-/// Widget screen with users place of residence.
+/// Field with suggestions widget.
 class FieldWithSuggestionsWidget
     extends ElementaryWidget<IFieldWithSuggestionsWidgetModel> {
   /// Text editing controller.

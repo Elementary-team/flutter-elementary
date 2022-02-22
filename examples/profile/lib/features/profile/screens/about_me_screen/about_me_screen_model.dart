@@ -32,4 +32,9 @@ class AboutMeScreenModel extends ElementaryModel {
   void saveProfile() {
     _profileBloc.add(const SaveProfileEvent());
   }
+
+  /// Cancel editing.
+  void cancelEditing() {
+    _profileBloc.add(CancelEditingEvent());
+  }
 }

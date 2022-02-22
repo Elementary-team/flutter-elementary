@@ -35,7 +35,8 @@ class Profile {
     this.aboutMe,
   });
 
-  /// Makes a copy with new margins.
+  /// Creates a copy of this input decoration with the given fields replaced
+  /// by the new values.
   Profile copyWith({
     String? surname,
     String? name,

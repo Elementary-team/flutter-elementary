@@ -53,7 +53,7 @@ class InterestsScreen extends ElementaryWidget<IInterestsScreenWidgetModel> {
 class _ContentWidget extends StatelessWidget {
   final List<String>? listInterests;
   final ListenableState<List<String>> listUserInterestsState;
-  final Function({required String interest, bool? isChecked}) onChanged;
+  final Function({required String interest}) onChanged;
 
   const _ContentWidget({
     required this.listInterests,
@@ -65,13 +65,21 @@ class _ContentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (listInterests != null) {
-      return ListView.builder(
+      return ListView.separated(
         itemBuilder: (_, index) => _ItemInterest(
           interest: listInterests![index],
           state: listUserInterestsState,
           onChanged: onChanged,
         ),
         itemCount: listInterests!.length,
+        separatorBuilder: (_, __) {
+          return const ColoredBox(
+            color: dividerColor,
+            child: SizedBox(
+              height: 1,
+            ),
+          );
+        },
       );
     } else {
       return const CustomErrorWidget(
@@ -84,7 +92,7 @@ class _ContentWidget extends StatelessWidget {
 class _ItemInterest extends StatelessWidget {
   final String interest;
   final ListenableState<List<String>> state;
-  final Function({required String interest, bool? isChecked}) onChanged;
+  final Function({required String interest}) onChanged;
 
   const _ItemInterest({
     required this.interest,
@@ -95,12 +103,14 @@ class _ItemInterest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(
-          height: 10.0,
-        ),
-        Row(
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        onChanged(interest: interest);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Row(
           children: [
             Transform.scale(
               scale: 1.5,
@@ -108,8 +118,8 @@ class _ItemInterest extends StatelessWidget {
                 listenableState: state,
                 builder: (_, userList) => Checkbox(
                   value: userList?.contains(interest) ?? false,
-                  onChanged: (isChecked) {
-                    onChanged(interest: interest, isChecked: isChecked);
+                  onChanged: (_) {
+                    onChanged(interest: interest);
                   },
                 ),
               ),
@@ -120,8 +130,7 @@ class _ItemInterest extends StatelessWidget {
             ),
           ],
         ),
-        const Divider(color: dividerColor),
-      ],
+      ),
     );
   }
 }

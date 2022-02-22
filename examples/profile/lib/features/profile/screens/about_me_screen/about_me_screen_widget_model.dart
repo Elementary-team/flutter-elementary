@@ -44,7 +44,7 @@ class AboutMeScreenWidgetModel
   final _buttonState = StateNotifier<String>();
   final _saveEntityState = EntityStateNotifier<Profile>();
   final _focusNode = FocusNode();
-  late final StreamSubscription<BaseProfileState> _stateStatusStream;
+  late final StreamSubscription<BaseProfileState> _stateStatusSubscription;
 
   @override
   FocusNode get focusNode => _focusNode;
@@ -58,7 +58,7 @@ class AboutMeScreenWidgetModel
   @override
   ListenableState<EntityState<Profile>> get saveEntityState => _saveEntityState;
 
-  String? _currentInfo;
+  String? _initialInfo;
 
   /// Create an instance [AboutMeScreenWidgetModel].
   AboutMeScreenWidgetModel({
@@ -70,8 +70,8 @@ class AboutMeScreenWidgetModel
   @override
   void initWidgetModel() {
     super.initWidgetModel();
-    _stateStatusStream = model.profileStateStream.listen(_updateState);
-    _controller.addListener(_controllerListener);
+    _stateStatusSubscription = model.profileStateStream.listen(_updateState);
+    _controller.addListener(_aboutMeTextChanged);
     _initAboutMeInfo();
     _initButtonState();
   }
@@ -79,9 +79,9 @@ class AboutMeScreenWidgetModel
   @override
   void dispose() {
     _controller
-      ..removeListener(_controllerListener)
+      ..removeListener(_aboutMeTextChanged)
       ..dispose();
-    _stateStatusStream.cancel();
+    _stateStatusSubscription.cancel();
     _buttonState.dispose();
     _saveEntityState.dispose();
     super.dispose();
@@ -92,33 +92,30 @@ class AboutMeScreenWidgetModel
     final currentState = model.currentState;
     if (currentState is ISaveAvailable) {
       focusNode.unfocus();
-      model
-        ..updateAboutMe(_currentInfo)
-        ..saveProfile();
+      model.saveProfile();
     } else {
       coordinator.popUntilRoot();
     }
   }
 
-  void _controllerListener() {
-    _onChanged(_controller.text);
-  }
-
-  void _onChanged(String newText) {
-    if (_currentInfo != newText) {
-      _currentInfo = newText;
+  void _aboutMeTextChanged() {
+    if (_initialInfo != _controller.text) {
       _buttonState.accept(AboutMeScreenStrings.saveButtonTitle);
+      model.updateAboutMe(_controller.text);
+    } else {
+      _buttonState.accept(AboutMeScreenStrings.okButtonTitle);
+      model.cancelEditing();
     }
   }
 
   void _initAboutMeInfo() {
     final state = model.currentState;
-    if (state is IEditingAvailable) {
+    if (state is ProfileContentState) {
       final currentState = state as IEditingAvailable;
       final profile = currentState.profile;
       if (profile.aboutMe != null) {
         _controller.text = profile.aboutMe!;
-        _currentInfo = profile.aboutMe;
+        _initialInfo = profile.aboutMe;
       }
     }
   }
