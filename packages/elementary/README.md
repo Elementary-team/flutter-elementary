@@ -252,8 +252,8 @@ void somewhereInTheBuildFunction() {
   // ......
   TripleSourceBuilder<String, int, TextStyle>(
     firstSource: captionListenableState,
-    firstSource: valueListenableState,
-    secondSource: captionStyleListenableState,
+    secondSource: valueListenableState,
+    thirdSource: captionStyleListenableState,
     builder: (ctx, title, value, style) {
       return Text('$title: ${value ?? 0}', style: style);
     },
