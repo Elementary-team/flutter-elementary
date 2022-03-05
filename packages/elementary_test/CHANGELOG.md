@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.1
+
+* changed the supported `mocktail` version to `^0.3.0`.
+
 ## 1.1.0
 
 * Add support of all test function params in testWidgetModel.
