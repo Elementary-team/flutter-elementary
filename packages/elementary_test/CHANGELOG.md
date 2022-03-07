@@ -1,8 +1,10 @@
 # Changelog
 
-## 1.1.1
+## Unreleased
 
-* changed the supported `mocktail` version to `^0.3.0`.
+## 1.1.1
+### Changed
+* supported `mocktail` version increased to `^0.3.0`;
 
 ## 1.1.0
 
