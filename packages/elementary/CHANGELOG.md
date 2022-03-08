@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+## 1.2.0
 ### Added
 * support reassemble for widget model when app hot reloaded;
 
