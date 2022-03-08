@@ -164,7 +164,7 @@ abstract class WidgetModel<W extends ElementaryWidget,
   @protected
   @mustCallSuper
   @visibleForTesting
-  void reassemble() { }
+  void reassemble() {}
 
   /// Method for setup WidgetModel for testing.
   /// This method can be used to set widget.
