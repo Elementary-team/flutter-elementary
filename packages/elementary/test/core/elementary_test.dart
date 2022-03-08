@@ -237,6 +237,22 @@ void main() {
       expect(elementary.widget, same(newWidget));
     },
   );
+
+  testWidgets(
+    'Element reassemble should invoke wm reassemble',
+    (tester) async {
+      await tester.pumpWidget(widget);
+
+      final elementary = tester.element<Elementary>(
+        find.byElementType(Elementary),
+      );
+
+      // ignore: cascade_invocations
+      elementary.reassemble();
+
+      verify(() => wm!.reassemble()).called(1);
+    },
+  );
 }
 
 class ElementaryWidgetTest

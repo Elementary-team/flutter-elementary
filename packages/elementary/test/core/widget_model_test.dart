@@ -35,6 +35,10 @@ void main() {
       expect(() => wm.deactivate(), returnsNormally);
     });
 
+    test('Reassemble WM should not throw error', () {
+      expect(() => wm.reassemble(), returnsNormally);
+    });
+
     test('WM should use correct model', () {
       final model1 = ElementaryModelMock();
       final wm1 = ElementaryWidgetModelTest(model1);
