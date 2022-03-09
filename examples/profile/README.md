@@ -1,46 +1,53 @@
 # Profile
 
-Example of using [Elementary](https://pub.dev/packages/elementary) with [Bloc](https://pub.dev/packages/bloc).
+Combining [Elementary](https://pub.dev/packages/elementary)
+and [Bloc](https://pub.dev/packages/bloc).
 
-This example implements the process of filling out a profile, saving it on the server, and the ability to edit an already completed profile.
+This example shows how a profile can be filled out, saved on a server (a mock server), and, if necessary, edited once
+filled out.
 
-### [Bloc](https://pub.dev/packages/bloc) is used to track the state of a profile:
+Bloc is used to track profile state (loaded, edited, saved). State interfaces are added to declare which events are
+applicable to which states.
 
-  - **InitProfileState** - no profile state, the profile has not yet been loaded from the server.
+### A profile can be in one of the following states:
 
-
-  - **ProfileLoadingState** - profile load state from the server.
-
-
-  - **ErrorProfileLoadingState** - state of the profile loading error from the server.
-
-
-  - **ProfileState** - the state in which the profile is loaded (it can be filled or empty).
+- **InitProfileState** - the profile is initialized with no actions yet taken.
 
 
-  - **PendingProfileState** - a state in which the profile has been edited but not yet saved.
+- **ProfileLoadingState** - the profile is loading.
 
 
-  - **SavingProfileState** - the state of saving the profile on the server.
+- **ErrorProfileLoadingState** - the profile failed to load from server.
 
 
-  - **ProfileSavedSuccessfullyState** - state of successful saving of the profile on the server.
+- **ProfileState** - the profile is loaded successfully.
 
 
-  - **ProfileSaveFailedState** - error state of saving the profile on the server.
+- **PendingProfileState** - the profile contains pending changes.
+
+
+- **SavingProfileState** - the profile is being saved on server.
+
+
+- **ProfileSavedSuccessfullyState** - the profile is successfully saved on server.
+
+
+- **ProfileSaveFailedState** - the profile failed to be saved on server.
 
 ### Bloc diagram
 
 ![Bloc diagram](res/bloc_diagram.png)
 
-### UI implemented with [Elementary](https://pub.dev/packages/elementary). 
+[PersonalDataScreen](lib/features/profile/screens/personal_data_screen/personal_data_screen.dart)
+, [PlaceResidenceScreen](lib/features/profile/screens/place_residence/place_residence_screen.dart)
+, [InterestsScreen](lib/features/profile/screens/interests_screen/interests_screen.dart),
+and [AboutMeScreen](lib/features/profile/screens/about_me_screen/about_me_screen.dart) contain presentation logic,
+therefore they are written with [Elementary](https://pub.dev/packages/elementary). Thanks to that, we can separate
+presentation from presentation logic and business logic.
 
-Screens are expands of [ElementaryWidget](https://pub.dev/packages/elementary#widget), they declare how the interface 
-should look like.
-The [WidgetModels](https://pub.dev/packages/elementary#widgetmodel) of these screens are responsible for the business 
-logic of the display, supply the necessary controllers and respond to their changes.
-[Models](https://pub.dev/packages/elementary#model) provide relate with the block and repositories (where necessary).
+[CancelButton](lib/features/profile/widgets/cancel_button/cancel_button.dart) is made into a separate widget because it
+has its own logic regardless of where it is used.
 
-Widgets [CancelButton](lib/features/profile/widgets/cancel_button/cancel_button.dart) and [FieldWithSuggestionsWidget](lib/features/profile/screens/place_residence/widgets/field_with_suggestions_widget/field_with_suggestions_widget.dart)
-is also implemented using [Elementary](https://pub.dev/packages/elementary). They have their own logic of work, regardless of where they are used.
-CancelButton is used several times. FieldWithSuggestionsWidget rendered separately so that the [WidgetModel](lib/features/profile/screens/place_residence/place_residence_screen_widget_model.dart) of the [PlaceResidenceScreen](lib/features/profile/screens/place_residence/place_residence_screen.dart) does not grow. This widget can also be reused.
+Widget [FieldWithSuggestions](lib/features/profile/screens/place_residence/widgets/field_with_suggestions_widget/field_with_suggestions_widget.dart)
+has extensive presentation logic and separate business logic that shows suggestions from the repository when users enter
+the name of their city.
