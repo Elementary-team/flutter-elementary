@@ -90,7 +90,7 @@ class InterestsScreenWidgetModel
     required String interest,
   }) {
     final currentListUserInterest = _listUserInterestsState.value!.toList();
-    if(!currentListUserInterest.contains(interest)){
+    if (!currentListUserInterest.contains(interest)) {
       currentListUserInterest.add(interest);
     } else {
       currentListUserInterest.remove(interest);

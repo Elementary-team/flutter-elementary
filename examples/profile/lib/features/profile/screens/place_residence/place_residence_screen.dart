@@ -27,11 +27,11 @@ class PlaceResidenceScreen
           CancelButton(),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
-        child: GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTap: wm.onTapAnEmptySpace,
+      body: GestureDetector(
+        behavior: HitTestBehavior.translucent,
+        onTap: wm.onTapAnEmptySpace,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [

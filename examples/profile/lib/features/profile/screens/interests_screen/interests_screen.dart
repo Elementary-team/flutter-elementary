@@ -112,16 +112,13 @@ class _ItemInterest extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Row(
           children: [
-            Transform.scale(
-              scale: 1.5,
-              child: StateNotifierBuilder<List<String>>(
-                listenableState: state,
-                builder: (_, userList) => Checkbox(
-                  value: userList?.contains(interest) ?? false,
-                  onChanged: (_) {
-                    onChanged(interest: interest);
-                  },
-                ),
+            StateNotifierBuilder<List<String>>(
+              listenableState: state,
+              builder: (_, userList) => Checkbox(
+                value: userList?.contains(interest) ?? false,
+                onChanged: (_) {
+                  onChanged(interest: interest);
+                },
               ),
             ),
             Text(
