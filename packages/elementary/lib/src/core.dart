@@ -154,6 +154,18 @@ abstract class WidgetModel<W extends ElementaryWidget,
     _model.dispose();
   }
 
+  /// Called whenever the application is reassembled during debugging, for
+  /// example during hot reload. Most cases therefore do not need to do
+  /// anything in the [reassemble] method.
+  ///
+  /// See also:
+  ///  * [Element.reassemble]
+  ///  * [BindingBase.reassembleApplication]
+  @protected
+  @mustCallSuper
+  @visibleForTesting
+  void reassemble() {}
+
   /// Method for setup WidgetModel for testing.
   /// This method can be used to set widget.
   @visibleForTesting
@@ -245,6 +257,13 @@ class Elementary extends ComponentElement {
     }
 
     super.performRebuild();
+  }
+
+  @override
+  void reassemble() {
+    super.reassemble();
+
+    _wm.reassemble();
   }
 }
 
