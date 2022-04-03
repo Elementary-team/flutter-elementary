@@ -1,6 +1,8 @@
 # Changelog
 
-## Unreleased (potential 1.3.0)
+## Unreleased
+
+## 1.3.0
 ### Added
 * property 'isMounted' for checking mounting into the tree;
 
