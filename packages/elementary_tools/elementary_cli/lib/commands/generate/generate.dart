@@ -4,13 +4,20 @@ import 'dart:isolate';
 
 import 'package:args/args.dart';
 import 'package:args/command_runner.dart';
-import 'package:elementary_cli/exit_code_exception.dart';
-import 'package:elementary_cli/generate/generate_module.dart';
-import 'package:elementary_cli/generate/generate_test.dart';
+import 'package:elementary_cli/commands/generate/generate_module.dart';
+import 'package:elementary_cli/commands/generate/generate_test/generate_test.dart';
+import 'package:elementary_cli/utils/exit_code_exception.dart';
 import 'package:path/path.dart' as p;
 
 /// `elementary_tools generate` command
 class GenerateCommand extends Command<void> {
+
+  GenerateCommand() {
+    addSubcommand(GenerateModuleCommand());
+    addSubcommand(GenerateTestCommand());
+    // addSubcommand(GenerateAnalysis());
+  }
+
   static const templatesUnreachable =
       FileSystemException('Generator misses template files');
 
@@ -22,11 +29,6 @@ class GenerateCommand extends Command<void> {
 
   @override
   bool get takesArguments => false;
-
-  GenerateCommand() {
-    addSubcommand(GenerateModuleCommand());
-    addSubcommand(GenerateTestCommand());
-  }
 }
 
 /// Command that generates files from templates
@@ -59,7 +61,7 @@ abstract class TemplateGeneratorCommand extends Command<void> {
 
   /// Maps template names to target file name
   /// uses `replaceAll('filename')` method for getting real target file name
-  /// Example 'model.dart.tp': 'filename_model.dart'
+  /// Example 'generate_module_model.dart.tp': 'filename_model.dart'
   Map<String, String> get templateToFilenameMap;
 
   /// Fills `templates` map with <templateName, fileContent> pairs
@@ -104,10 +106,10 @@ abstract class TemplateGeneratorCommand extends Command<void> {
   Future<void> copyTemplatesToScriptPath(String defaultTemplateDirPath) async {
     // TODO(AlexeyBukin): make generator for this list
     const resources = [
-      'package:elementary_cli/templates/widget.dart.tp',
-      'package:elementary_cli/templates/model.dart.tp',
-      'package:elementary_cli/templates/test_wm.dart.tp',
-      'package:elementary_cli/templates/widget_model.dart.tp',
+      'package:elementary_cli/templates/generate_module_widget.dart.tp',
+      'package:elementary_cli/templates/generate_module_model.dart.tp',
+      'package:elementary_cli/templates/generate_test_wm.dart.tp',
+      'package:elementary_cli/templates/generate_module_wm.dart.tp',
     ];
 
     for (final resource in resources) {
@@ -191,10 +193,19 @@ extension TemplateParseOption on ArgParser {
   static const templatesDirOption = 'templates';
   static const templatesDirOptionAbbreviation = 't';
 
+  static const verboseLoggingFlag = 'verbose';
+  static const verboseLoggingFlagAbbreviation = 'v';
+
   void addTemplatePathOption() => addOption(
         templatesDirOption,
         abbr: templatesDirOptionAbbreviation,
         help: 'Path to templates directory (testing only)',
         valueHelp: '/home/user/templates',
       );
+
+  void addVerboseLoggingFlag() => addFlag(
+    verboseLoggingFlag,
+    abbr: verboseLoggingFlagAbbreviation,
+    help: 'Enable verbose logging',
+  );
 }

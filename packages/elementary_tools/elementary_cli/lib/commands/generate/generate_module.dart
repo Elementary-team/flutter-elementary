@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:elementary_cli/console_writer.dart';
-import 'package:elementary_cli/exit_code_exception.dart';
-import 'package:elementary_cli/generate/generate.dart';
+import 'package:elementary_cli/commands/generate/generate.dart';
+import 'package:elementary_cli/utils/exit_code_exception.dart';
+import 'package:elementary_cli/utils/logger.dart';
 import 'package:path/path.dart' as p;
 
 /// `elementary_tools generate module` command
@@ -19,10 +19,10 @@ class GenerateModuleCommand extends TemplateGeneratorCommand {
   /// Maps template names to target suffixes
   @override
   Map<String, String> get templateToFilenameMap => {
-    'model.dart.tp': 'filename_model.dart',
-    'widget.dart.tp': 'filename_widget.dart',
-    'widget_model.dart.tp': 'filename_wm.dart',
-  };
+        'generate_module_model.dart.tp': 'filename_model.dart',
+        'generate_module_widget.dart.tp': 'filename_widget.dart',
+        'generate_module_wm.dart.tp': 'filename_wm.dart',
+      };
 
   @override
   String get description => 'Generates template elementary mwwm files';
@@ -32,7 +32,6 @@ class GenerateModuleCommand extends TemplateGeneratorCommand {
 
   @override
   bool get takesArguments => false;
-
 
   @override
   ArgParser get argParser {
@@ -56,6 +55,7 @@ class GenerateModuleCommand extends TemplateGeneratorCommand {
         abbr: 's',
         help: 'Should we generate subdirectory for module?',
       )
+      ..addVerboseLoggingFlag()
       // path to templates directory (mostly for testing purposes)
       ..addTemplatePathOption();
   }
@@ -66,6 +66,21 @@ class GenerateModuleCommand extends TemplateGeneratorCommand {
     final pathRaw = parsed[pathOption] as String;
     final fileNameBase = parsed[nameOption] as String;
     final isSubdirNeeded = parsed[isSubdirNeededFlag] as bool;
+
+    applyLoggingSettings(parsed);
+
+    await pureRun(
+      pathRaw: pathRaw,
+      fileNameBase: fileNameBase,
+      isSubdirNeeded: isSubdirNeeded,
+    );
+  }
+
+  Future<void> pureRun({
+    required String pathRaw,
+    required String fileNameBase,
+    required bool isSubdirNeeded,
+  }) async {
 
     final baseDir = Directory(pathRaw);
     if (!baseDir.existsSync()) {

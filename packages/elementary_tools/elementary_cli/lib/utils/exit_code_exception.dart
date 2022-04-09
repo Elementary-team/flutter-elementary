@@ -11,18 +11,19 @@ abstract class ExitCodeException {
 /// Exception thrown when arguments are incorrect.
 class CommandLineUsageException extends IOException
     implements ExitCodeException {
-  final String message;
-  final String argumentName;
-  final String argumentValue;
-
-  @override
-  int get exitCode => 64;
 
   CommandLineUsageException({
     this.message = '',
     this.argumentName = '',
     this.argumentValue = '',
   });
+
+  final String message;
+  final String argumentName;
+  final String argumentValue;
+
+  @override
+  int get exitCode => 64;
 
   @override
   String toString() {
@@ -42,50 +43,70 @@ class CommandLineUsageException extends IOException
 /// Exception thrown when user puts non-existent folder name.
 class NonExistentFolderException extends FileSystemException
     implements ExitCodeException {
-  @override
-  int get exitCode => 65;
 
   NonExistentFolderException(String folderPath)
       : super('Directory does not exist', folderPath);
+
+  @override
+  int get exitCode => 65;
 }
 
 /// Exception thrown when program cannot access template files.
 class GenerateTemplatesUnreachableException extends FileSystemException
     implements ExitCodeException {
-  @override
-  int get exitCode => 66;
 
   GenerateTemplatesUnreachableException(
     String message,
   ) : super('Generator misses template files. Cause: $message');
+
+  @override
+  int get exitCode => 66;
 }
 
 /// Exception thrown when program tries to create existing file.
 class GeneratorTargetFileExistsException extends FileSystemException
     implements ExitCodeException {
-  @override
-  int get exitCode => 67;
-
   GeneratorTargetFileExistsException(
     String filepath,
   ) : super('file already exists', filepath);
+
+  @override
+  int get exitCode => 67;
 }
 
 /// Exception thrown when program cannot successfully generate files.
 class GenerationException extends FileSystemException
     implements ExitCodeException {
-  @override
-  int get exitCode => 68;
 
   GenerationException() : super('generation cancelled: unknown error happened');
+
+  @override
+  int get exitCode => 68;
 }
 
 /// Exception thrown when user puts non-existent folder name.
 class NonExistentFileException extends FileSystemException
     implements ExitCodeException {
-  @override
-  int get exitCode => 69;
 
   NonExistentFileException(String filePath)
       : super('File does not exist', filePath);
+
+  @override
+  int get exitCode => 69;
+}
+
+/// Exception thrown when server timed out to connect.
+class ServerTimeoutException implements ExitCodeException, Exception {
+
+  ServerTimeoutException(this.message);
+
+  final String message;
+
+  @override
+  int get exitCode => 70;
+
+  @override
+  String toString() {
+    return message;
+  }
 }

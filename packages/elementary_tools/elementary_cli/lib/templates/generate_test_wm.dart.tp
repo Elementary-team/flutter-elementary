@@ -23,12 +23,12 @@ void main() {
   );
 
   testWidgetModel<ClassNameWidgetModel, ClassNameWidget>(
-      'mysecondtestcase',
-      setUpWm,
-      (wm, tester, context) {
-        // my second test
-      },
-    );
+    'mysecondtestcase',
+    setUpWm,
+    (wm, tester, context) {
+      // my second test
+    },
+  );
 }
 
 class ClassNameModelMock extends Mock

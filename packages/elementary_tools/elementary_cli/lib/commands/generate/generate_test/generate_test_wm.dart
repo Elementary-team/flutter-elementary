@@ -2,9 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:args/args.dart';
-import 'package:elementary_cli/console_writer.dart';
-import 'package:elementary_cli/exit_code_exception.dart';
-import 'package:elementary_cli/generate/generate.dart';
+import 'package:elementary_cli/commands/fix/fix_imports.dart';
+import 'package:elementary_cli/commands/generate/generate.dart';
+import 'package:elementary_cli/utils/exit_code_exception.dart';
+import 'package:elementary_cli/utils/logger.dart';
 import 'package:path/path.dart' as p;
 
 /// `elementary_tools generate test wm` command
@@ -63,6 +64,7 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
         help: 'Smart mode flag: --path is path to project root '
             'and --name is source file path/name.',
       )
+      ..addVerboseLoggingFlag()
       // path to templates directory (mostly for testing purposes)
       ..addTemplatePathOption();
   }
@@ -71,7 +73,7 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
   /// where we expect base name to be
   @override
   Map<String, String> get templateToFilenameMap => {
-        'test_wm.dart.tp': 'filename_wm_test.dart',
+        'generate_test_wm.dart.tp': 'filename_wm_test.dart',
       };
 
   @override
@@ -80,6 +82,17 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
     final smart = parsed[smartFlag] as bool;
     final pathRaw = parsed[pathOption] as String;
     final nameRaw = parsed[nameOption] as String;
+
+    applyLoggingSettings(parsed);
+
+    await pureRun(smart: smart, pathRaw: pathRaw, nameRaw: nameRaw);
+  }
+
+  Future<void> pureRun({
+    required bool smart,
+    required String pathRaw,
+    required String nameRaw,
+  }) async {
 
     if (smart) {
       // smartModeConfig just fills `targetDirectory` and `basename` fields.
@@ -120,16 +133,22 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
             file: files[templateName]!,
             content: contentCreator(templates[templateName]!),
           )),
-    ).then((files) => files.forEach(ConsoleWriter.write)).catchError(
-      // If some FileSystemException occurred - delete all files
-      // ignore: avoid_types_on_closure_parameters
-      (Object error, StackTrace stackTrace) async {
-        await Future.wait(files.values.map((f) => f.delete()));
-        // Then throw exception to return right exit code
-        throw GenerationException();
-      },
-      test: (error) => error is FileSystemException,
-    );
+    )
+        .then((files) async {
+          await FixImportsCommand.pureRun(files);
+          return files;
+        })
+        .then((files) => files.forEach(ConsoleWriter.write))
+        .catchError(
+          // If some FileSystemException occurred - delete all files
+          // ignore: avoid_types_on_closure_parameters
+          (Object error, StackTrace stackTrace) async {
+            await Future.wait(files.values.map((f) => f.delete()));
+            // Then throw exception to return right exit code
+            throw GenerationException();
+          },
+          test: (error) => error is FileSystemException,
+        );
   }
 
   Future<void> runDummyMode(ArgResults parsedArguments) async {
@@ -147,15 +166,19 @@ class GenerateTestWmCommand extends TemplateGeneratorCommand {
     final rootPath = path;
     final sourceFilePath = name;
 
-    const suffix = '_wm.dart';
-    if (!sourceFilePath.endsWith(suffix)) {
+    const suffixes = ['_wm.dart', '_widget_model.dart'];
+    // if filename does not end with one of suffixes
+    if (!suffixes.any(sourceFilePath.endsWith)) {
       throw CommandLineUsageException(
-        message: 'Widget model dart file name should end with "$suffix".',
+        message: 'Widget model dart file name should end with "$suffixes".',
       );
     }
 
     // export of basename
-    basename = p.basename(sourceFilePath).replaceAll(suffix, '');
+    basename = p
+        .basename(sourceFilePath)
+        .replaceAll(suffixes[0], '')
+        .replaceAll(suffixes[1], '');
 
     final root = Directory(rootPath);
     final sourceFile = File(sourceFilePath);
