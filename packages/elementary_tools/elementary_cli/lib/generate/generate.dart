@@ -95,8 +95,6 @@ abstract class TemplateGeneratorCommand extends Command<void> {
       p.dirname(p.joinAll(Platform.script.pathSegments)),
       p.normalize(templatesRelativeToExecutableDirectory),
     );
-    //ignore: avoid_print
-    print(defaultDirPath);
 
     final dir = Directory(defaultDirPath);
     if (!dir.existsSync()) {
