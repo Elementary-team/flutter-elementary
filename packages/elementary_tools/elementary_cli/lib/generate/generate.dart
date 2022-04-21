@@ -90,7 +90,12 @@ abstract class TemplateGeneratorCommand extends Command<void> {
         'script entry has no absolute path',
       );
     }
-    final defaultDirPath = p.join(p.dirname(Platform.script.path), templatesRelativeToExecutableDirectory);
+
+    final defaultDirPath = p.join(
+      p.dirname(p.joinAll(Platform.script.pathSegments)),
+      p.normalize(templatesRelativeToExecutableDirectory),
+    );
+
     final dir = Directory(defaultDirPath);
     if (!dir.existsSync()) {
       dir.createSync(recursive: true);
