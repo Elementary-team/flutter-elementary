@@ -4,7 +4,7 @@
 
 ## 1.0.1
 ### Fixed
-* wrong platform specific script path getting
+* wrong platform specific script path getting (thx LazyLazyMeat).
 
 ## 1.0.0
 * First stable release.
