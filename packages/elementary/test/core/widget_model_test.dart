@@ -114,6 +114,25 @@ void main() {
       },
     );
 
+    testWidgets(
+      'Property isMounted should return true when widget inflate into tree',
+      (tester) async {
+        await tester.pumpWidget(widget);
+
+        expect(wm.isMounted, isTrue);
+      },
+    );
+
+    testWidgets(
+      'Property isMounted should return false after defunct',
+      (tester) async {
+        await tester.pumpWidget(widget);
+        await tester.pumpWidget(Container());
+
+        expect(wm.isMounted, isFalse);
+      },
+    );
+
     testWidgets('Getter widget should return correct widget', (tester) async {
       await tester.pumpWidget(widget);
 

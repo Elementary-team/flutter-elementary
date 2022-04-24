@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 1.3.0
+### Added
+* property 'isMounted' for checking mounting into the tree;
+
 ## 1.2.0
 ### Added
 * support reassemble for widget model when app hot reloaded;

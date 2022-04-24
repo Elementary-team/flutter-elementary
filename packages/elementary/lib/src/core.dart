@@ -71,6 +71,11 @@ abstract class WidgetModel<W extends ElementaryWidget,
     return _element!;
   }
 
+  /// Are this [WidgetModel] and [Elementary] currently mounted in a tree.
+  @protected
+  @visibleForTesting
+  bool get isMounted => _element != null;
+
   Elementary? _element;
   W? _widget;
 

@@ -7,13 +7,13 @@ void main() {
   late _TestModel testModel;
   late ErrorHandler errorHandler;
 
-  late Object? _fakeHandlerHub;
+  late Object? fakeHandlerHub;
   void _fakeWmHandler(Object error) {
-    _fakeHandlerHub = error;
+    fakeHandlerHub = error;
   }
 
   setUp(() {
-    _fakeHandlerHub = null;
+    fakeHandlerHub = null;
     errorHandler = MockErrorHandler();
     testModel = _TestModel(errorHandler);
   });
@@ -50,10 +50,10 @@ void main() {
     final error2 = Exception('Test2');
 
     testModel.handleError(error);
-    expect(_fakeHandlerHub, same(error));
+    expect(fakeHandlerHub, same(error));
 
     testModel.handleError(error2);
-    expect(_fakeHandlerHub, same(error2));
+    expect(fakeHandlerHub, same(error2));
   });
 
   test('Init should returns normally', () {
