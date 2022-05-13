@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## 1.1.2
+### Changed
+* supported `elementary` version increased to `^1.3.0`;
+* supported `meta` version increased to `^1.7.0`;
+
 ## 1.1.1
 ### Changed
 * supported `mocktail` version increased to `^0.3.0`;
