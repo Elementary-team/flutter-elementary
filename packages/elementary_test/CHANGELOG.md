@@ -4,8 +4,9 @@
 
 ## 1.1.2
 ### Changed
-* supported `elementary` version increased to `^1.3.0`;
+* supported `elementary` version increased to `^1.3.1`;
 * supported `meta` version increased to `^1.7.0`;
+* dev dependencies actualized;
 
 ## 1.1.1
 ### Changed
