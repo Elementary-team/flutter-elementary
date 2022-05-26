@@ -1,0 +1,47 @@
+{
+  "ElementaryWidget": {
+    "prefix": "elementarywidget",
+    "body": [
+      "// TODO: cover with documentation",
+      "/// Main widget for ${1:Subject} module",
+      "class ${1:Subject}Widget extends ElementaryWidget<I${1:Subject}WidgetModel> {",
+      "\tconst ${1:Subject}Widget({",
+      "\t\tKey? key,",
+      "\t\tWidgetModelFactory wmFactory = default${1:Subject}WidgetModelFactory,",
+      "\t}) : super(wmFactory, key: key);",
+      "",
+      "\t@override",
+      "\tWidget build(I${1:Subject}WidgetModel wm) {",
+      "\t\treturn Container();",
+      "\t}",
+      "}"
+    ]
+  },
+  "ElementaryWidgetModel": {
+    "prefix": "elementarywm",
+    "body": [
+      "abstract class I${1:Subject}WidgetModel extends IWidgetModel {}",
+      "",
+      "${1:Subject}WidgetModel default${1:Subject}WidgetModelFactory(BuildContext context) {",
+      "\treturn ${1:Subject}WidgetModel();",
+      "}",
+      "",
+      "// TODO: cover with documentation",
+      "/// Default widget model for ${1:Subject}Widget",
+      "class ${1:Subject}WidgetModel extends WidgetModel<${1:Subject}Widget, ${1:Subject}Model>",
+      "\t\timplements I${1:Subject}WidgetModel {",
+      "\t${1:Subject}WidgetModel(${1:Subject}Model model) : super(model);",
+      "}"
+    ]
+  },
+  "ElementaryModel": {
+    "prefix": "elementarymodel",
+    "body": [
+      "// TODO: cover with documentation",
+      "/// Default Elementary model for ${1:Subject} module",
+      "class ${1:Subject}Model extends ElementaryModel {",
+      "\t${1:Subject}Model(ErrorHandler errorHandler) : super(errorHandler: errorHandler);",
+      "}"
+    ]
+  }
+}

@@ -54,7 +54,13 @@
 					"command": "elementary.generate.test.wm"
 				}
 			]
-		}
+		},
+		"snippets": [
+			{
+				"language": "dart",
+				"path": "./snippets/elementary.json"
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
