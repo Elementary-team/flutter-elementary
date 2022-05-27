@@ -2,7 +2,7 @@
 	"name": "elementary",
 	"displayName": "Elementary",
 	"description": "Extension for better experience with Elementary",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"publisher": "ElementaryTeam",
 	"repository": {
 		"type": "git",

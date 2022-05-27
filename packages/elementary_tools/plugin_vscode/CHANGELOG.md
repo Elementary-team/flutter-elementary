@@ -1,4 +1,7 @@
 # Elementary Extension Changelog
+## [0.0.3]
+### Added
+- Snippets for widget, widget model, and model
 
 ## [0.0.2]
 ### Added
