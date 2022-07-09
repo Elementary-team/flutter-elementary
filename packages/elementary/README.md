@@ -84,6 +84,28 @@ abstract class ICountryListWidgetModel extends IWidgetModel {
 
 _The only place where we have access to BuildContext and need to interact with it is WidgetModel._
 
+WidgetModel has access to Widget at any time, e.g. for using its properties like a configuration. It can be useful for
+initiate or update WidgetModel's properties like this:
+
+
+```dart
+@override
+void initWidgetModel() {
+  super.initWidgetModel();
+
+  _someProperty = EntityStateNotifier<int>.value(widget.passedValue);
+}
+
+@override
+void didUpdateWidget(TestPageWidget oldWidget) {
+  super.didUpdateWidget(oldWidget);
+
+  if (widget.passedValue != oldWidget.passedValue) {
+    _someProperty.content(widget.passedValue);
+  }
+}
+```
+
 ### Model
 
 The only WidgetModel dependency related to business logic is Model. The class representing this layer in the library is
