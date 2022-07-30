@@ -13,10 +13,10 @@ class CountryListScreenModel extends ElementaryModel {
   ) : super(errorHandler: errorHandler);
 
   /// Return iterable countries.
-  Future<Iterable<Country>> loadCountries() async {
+  Future<List<Country>> loadCountries() async {
     try {
       final res = await _countryRepository.getAllCountries();
-      return res;
+      return res.toList();
     } on Exception catch (e) {
       handleError(e);
       rethrow;

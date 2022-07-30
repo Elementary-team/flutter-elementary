@@ -22,11 +22,11 @@ class CountryListScreenWidgetModel
     implements ICountryListWidgetModel {
   final ThemeWrapper _themeWrapper;
 
-  final _countryListState = EntityStateNotifier<Iterable<Country>>();
+  final _countryListState = EntityStateNotifier<List<Country>>();
   late TextStyle _countryNameStyle;
 
   @override
-  ListenableState<EntityState<Iterable<Country>>> get countryListState =>
+  ListenableState<EntityState<List<Country>>> get countryListState =>
       _countryListState;
 
   @override
@@ -73,7 +73,7 @@ class CountryListScreenWidgetModel
 
 /// Interface of [CountryListScreenWidgetModel]
 abstract class ICountryListWidgetModel extends IWidgetModel {
-  ListenableState<EntityState<Iterable<Country>>> get countryListState;
+  ListenableState<EntityState<List<Country>>> get countryListState;
 
   TextStyle get countryNameStyle;
 }

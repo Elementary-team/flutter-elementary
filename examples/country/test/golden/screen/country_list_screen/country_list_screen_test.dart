@@ -18,7 +18,7 @@ void main() {
     ),
   ];
   late MockCountryListScreenWidgetModel wm;
-  late ListenableEntityStateMock<Iterable<Country>> countryListStateMock;
+  late ListenableEntityStateMock<List<Country>> countryListStateMock;
 
   setUpAll(() {
     registerFallbackValue(UriFake());
@@ -26,7 +26,7 @@ void main() {
 
   setUp(() {
     wm = MockCountryListScreenWidgetModel();
-    countryListStateMock = ListenableEntityStateMock<Iterable<Country>>();
+    countryListStateMock = ListenableEntityStateMock<List<Country>>();
 
     when(() => wm.countryListState).thenReturn(countryListStateMock);
     when(() => wm.countryNameStyle).thenReturn(AppTypography.title3);
