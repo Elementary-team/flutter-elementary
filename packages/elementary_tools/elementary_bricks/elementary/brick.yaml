@@ -1,0 +1,20 @@
+name: elementary
+description: Brick to generate template code for Elementary entities.
+
+version: 0.0.1
+
+environment:
+  mason: ">=0.1.0-dev.26 <0.1.0"
+
+vars:
+  name:
+    type: string
+    prompt: How would you like to name your widget?
+    default: Example
+  widget_model_suffix:
+    type: enum
+    prompt: Which suffix do you want for WidgetModel
+    default: WidgetModel
+    values:
+      - WidgetModel
+      - WM
