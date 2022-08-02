@@ -16,7 +16,7 @@ $ brew install mason
 
 Add elementary brick.
 ```
-mason add elementary --git-url https://github.com/Elementary-team/flutter-elementary --git-path packages/elementary_tools/elementary_bricks/elementary
+mason add elementary
 ```
 
 Generate code with.
