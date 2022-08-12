@@ -21,26 +21,30 @@ void main() {
   test('ErrorHandler should get every error from handleError', () {
     final error = Exception('Test');
     final error2 = Exception('Test2');
+    final stackTrace = StackTrace.fromString('Test stackTrace');
+    final stackTrace2 = StackTrace.fromString('Test2 stackTrace');
 
     testModel
-      ..handleError(error)
-      ..handleError(error2);
+      ..handleError(error, stackTrace)
+      ..handleError(error2, stackTrace2);
 
-    verify(() => errorHandler.handleError(error)).called(1);
-    verify(() => errorHandler.handleError(error2)).called(1);
+    verify(() => errorHandler.handleError(error, stackTrace)).called(1);
+    verify(() => errorHandler.handleError(error2, stackTrace2)).called(1);
   });
 
   test('ErrorHandler should get error in order', () {
     final error = Exception('Test');
     final error2 = Exception('Test2');
+    final stackTrace = StackTrace.fromString('Test stackTrace');
+    final stackTrace2 = StackTrace.fromString('Test2 stackTrace');
 
     testModel
-      ..handleError(error)
-      ..handleError(error2);
+      ..handleError(error, stackTrace)
+      ..handleError(error2, stackTrace2);
 
     verifyInOrder([
-      () => errorHandler.handleError(error),
-      () => errorHandler.handleError(error2),
+      () => errorHandler.handleError(error, stackTrace),
+      () => errorHandler.handleError(error2, stackTrace2),
     ]);
   });
 
@@ -48,11 +52,13 @@ void main() {
     testModel.setupWmHandler(_fakeWmHandler);
     final error = Exception('Test');
     final error2 = Exception('Test2');
+    final stackTrace = StackTrace.fromString('Test stackTrace');
+    final stackTrace2 = StackTrace.fromString('Test2 stackTrace');
 
-    testModel.handleError(error);
+    testModel.handleError(error, stackTrace);
     expect(fakeHandlerHub, same(error));
 
-    testModel.handleError(error2);
+    testModel.handleError(error2, stackTrace2);
     expect(fakeHandlerHub, same(error2));
   });
 

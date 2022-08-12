@@ -294,8 +294,8 @@ abstract class ElementaryModel {
   @protected
   @mustCallSuper
   @visibleForTesting
-  void handleError(Object error) {
-    _errorHandler?.handleError(error);
+  void handleError(Object error, StackTrace? stackTrace) {
+    _errorHandler?.handleError(error, stackTrace);
     _wmHandler?.call(error);
   }
 
