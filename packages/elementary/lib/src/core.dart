@@ -270,6 +270,27 @@ class Elementary extends ComponentElement {
 
     _wm.reassemble();
   }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+
+    properties
+      ..add(
+        DiagnosticsProperty<WidgetModel>(
+          'widget model',
+          _wm,
+          defaultValue: null,
+        ),
+      )
+      ..add(
+        DiagnosticsProperty<ElementaryModel>(
+          'model',
+          _wm.model,
+          defaultValue: null,
+        ),
+      );
+  }
 }
 
 /// Class that contains a business logic for Widget.
