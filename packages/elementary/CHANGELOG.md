@@ -1,6 +1,11 @@
 # Changelog
 
 ## Unreleased
+
+## 1.4.0
+### Changed
+* possible sending stacktrace to ErrorHandler;
+
 ## 1.3.1
 ### Changed
 * dev dependencies updated;
