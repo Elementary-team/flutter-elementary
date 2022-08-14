@@ -2,8 +2,12 @@
 
 ## Unreleased
 
+## 1.5.0
+### Added
+* widget model and model properties for elementary widget in devtool;
+
 ## 1.4.0
-### Changed
+### Added
 * possible sending stacktrace to ErrorHandler;
 
 ## 1.3.1
