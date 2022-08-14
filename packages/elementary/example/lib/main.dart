@@ -29,9 +29,10 @@ class MyApp extends StatelessWidget {
 /// Error handler that print info to console
 class TestErrorHandler implements ErrorHandler {
   @override
-  void handleError(Object error) {
+  void handleError(Object error, {StackTrace? stackTrace}) {
     if (kDebugMode) {
       print(error);
+      print(stackTrace);
     }
   }
 }
