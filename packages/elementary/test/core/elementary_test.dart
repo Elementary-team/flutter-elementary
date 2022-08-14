@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:elementary/src/core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ void main() {
   late int factoryCalledCount;
   late BuildContext? factoryCalledContext;
   late Object? buildCallbackObject;
+  late ElementaryModelMock? model;
   late ElementaryWidgetModelMock? wm;
   late ElementaryWidgetTest widget;
 
@@ -16,6 +18,7 @@ void main() {
     factoryCalledCount = 0;
     factoryCalledContext = null;
     buildCallbackObject = null;
+    model = null;
     wm = null;
 
     void buildCallback(Object object) {
@@ -25,7 +28,9 @@ void main() {
     ElementaryWidgetModelMock factory(BuildContext ctx) {
       factoryCalledContext = ctx;
       factoryCalledCount++;
+      model = ElementaryModelMock();
       wm = ElementaryWidgetModelMock();
+      when(() => wm!.model).thenReturn(model!);
       return wm!;
     }
 
@@ -251,6 +256,29 @@ void main() {
       elementary.reassemble();
 
       verify(() => wm!.reassemble()).called(1);
+    },
+  );
+
+  testWidgets(
+    'Debug fill properties shoud add widget model and model',
+        (tester) async {
+      await tester.pumpWidget(widget);
+
+      final elementary = tester.element<Elementary>(
+        find.byElementType(Elementary),
+      );
+
+      // ignore: cascade_invocations
+      final builder = DiagnosticPropertiesBuilder();
+      elementary.debugFillProperties(builder);
+
+
+      final props = builder.properties;
+      final widgetModelProp = props.firstWhereOrNull((p) => p.name == 'widget model');
+      final modelProp = props.firstWhereOrNull((p) => p.name == 'widget model');
+
+      expect(widgetModelProp, isNotNull);
+      expect(modelProp, isNotNull);
     },
   );
 }
