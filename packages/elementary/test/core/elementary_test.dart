@@ -261,7 +261,7 @@ void main() {
 
   testWidgets(
     'Debug fill properties shoud add widget model and model',
-        (tester) async {
+    (tester) async {
       await tester.pumpWidget(widget);
 
       final elementary = tester.element<Elementary>(
@@ -272,10 +272,13 @@ void main() {
       final builder = DiagnosticPropertiesBuilder();
       elementary.debugFillProperties(builder);
 
-
       final props = builder.properties;
-      final widgetModelProp = props.firstWhereOrNull((p) => p.name == 'widget model');
-      final modelProp = props.firstWhereOrNull((p) => p.name == 'widget model');
+      final widgetModelProp = props.firstWhereOrNull(
+        (p) => p.name == 'widget model',
+      );
+      final modelProp = props.firstWhereOrNull(
+        (p) => p.name == 'widget model',
+      );
 
       expect(widgetModelProp, isNotNull);
       expect(modelProp, isNotNull);
