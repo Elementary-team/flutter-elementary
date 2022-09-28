@@ -1,77 +1,77 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-/// Builder for presentation ui part using three listanable value..
+/// Builder for UI part presentation using two [ValueListenable].
 class TripleValueListenableBuilder<F, S, T> extends StatefulWidget {
-  /// State that used to detect change and rebuild.
-  final ValueListenable<F> firstSource;
+  /// State that is used to detect change and rebuild.
+  final ValueListenable<F> firstValue;
 
-  /// State that used to detect change and rebuild.
-  final ValueListenable<S> secondSource;
+  /// State that is used  to detect change and rebuild.
+  final ValueListenable<S> secondValue;
 
-  /// State that used to detect change and rebuild.
-  final ValueListenable<T> thirdSource;
+  /// State that is used  to detect change and rebuild.
+  final ValueListenable<T> thirdValue;
 
-  /// Function that used to describe the part of the user interface
+  /// Function that is used  to describe the part of the user interface
   /// represented by this widget.
   final Widget Function(
     BuildContext context,
-    F? firstValue,
-    S? secondValue,
-    T? thirdValue,
+    F firstValue,
+    S secondValue,
+    T thirdValue,
   ) builder;
 
   /// Create an instance of TripleValueListenableBuilder.
   const TripleValueListenableBuilder({
     Key? key,
-    required this.firstSource,
-    required this.secondSource,
-    required this.thirdSource,
+    required this.firstValue,
+    required this.secondValue,
+    required this.thirdValue,
     required this.builder,
   }) : super(key: key);
 
   @override
-  _TripleValueListenableBuilderState createState() =>
+  State<TripleValueListenableBuilder<F, S, T>> createState() =>
       _TripleValueListenableBuilderState<F, S, T>();
 }
 
 class _TripleValueListenableBuilderState<F, S, T>
     extends State<TripleValueListenableBuilder<F, S, T>> {
-  F? _firstValue;
-  S? _secondValue;
-  T? _thirdValue;
+  late F _firstValue;
+  late S _secondValue;
+  late T _thirdValue;
 
   @override
   void initState() {
     super.initState();
-    _firstValue = widget.firstSource.value;
-    widget.firstSource.addListener(_firstValueChanged);
+    _firstValue = widget.firstValue.value;
+    widget.firstValue.addListener(_firstValueChanged);
 
-    _secondValue = widget.secondSource.value;
-    widget.secondSource.addListener(_secondValueChanged);
+    _secondValue = widget.secondValue.value;
+    widget.secondValue.addListener(_secondValueChanged);
 
-    _thirdValue = widget.thirdSource.value;
-    widget.thirdSource.addListener(_thirdValueChanged);
+    _thirdValue = widget.thirdValue.value;
+    widget.thirdValue.addListener(_thirdValueChanged);
   }
 
   @override
   void didUpdateWidget(TripleValueListenableBuilder<F, S, T> oldWidget) {
-    if (oldWidget.firstSource != widget.firstSource) {
-      oldWidget.firstSource.removeListener(_firstValueChanged);
-      _firstValue = widget.firstSource.value;
-      widget.firstSource.addListener(_firstValueChanged);
+    if (oldWidget.firstValue != widget.firstValue) {
+      oldWidget.firstValue.removeListener(_firstValueChanged);
+      _firstValue = widget.firstValue.value;
+      widget.firstValue.addListener(_firstValueChanged);
     }
 
-    if (oldWidget.secondSource != widget.secondSource) {
-      oldWidget.secondSource.removeListener(_secondValueChanged);
-      _secondValue = widget.secondSource.value;
-      widget.secondSource.addListener(_secondValueChanged);
+    if (oldWidget.secondValue != widget.secondValue) {
+      oldWidget.secondValue.removeListener(_secondValueChanged);
+      _secondValue = widget.secondValue.value;
+      widget.secondValue.addListener(_secondValueChanged);
     }
 
-    if (oldWidget.thirdSource != widget.thirdSource) {
-      oldWidget.thirdSource.removeListener(_thirdValueChanged);
-      _thirdValue = widget.thirdSource.value;
-      widget.thirdSource.addListener(_thirdValueChanged);
+    if (oldWidget.thirdValue != widget.thirdValue) {
+      oldWidget.thirdValue.removeListener(_thirdValueChanged);
+      _thirdValue = widget.thirdValue.value;
+      widget.thirdValue.addListener(_thirdValueChanged);
     }
 
     super.didUpdateWidget(oldWidget);
@@ -79,38 +79,36 @@ class _TripleValueListenableBuilderState<F, S, T>
 
   @override
   void dispose() {
-    widget.firstSource.removeListener(_firstValueChanged);
-    widget.secondSource.removeListener(_secondValueChanged);
-    widget.thirdSource.removeListener(_thirdValueChanged);
+    widget.firstValue.removeListener(_firstValueChanged);
+    widget.secondValue.removeListener(_secondValueChanged);
+    widget.thirdValue.removeListener(_thirdValueChanged);
 
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return widget.builder(
-      context,
-      _firstValue,
-      _secondValue,
-      _thirdValue,
-    );
-  }
+  Widget build(BuildContext context) => widget.builder(
+        context,
+        _firstValue,
+        _secondValue,
+        _thirdValue,
+      );
 
   void _firstValueChanged() {
     setState(() {
-      _firstValue = widget.firstSource.value;
+      _firstValue = widget.firstValue.value;
     });
   }
 
   void _secondValueChanged() {
     setState(() {
-      _secondValue = widget.secondSource.value;
+      _secondValue = widget.secondValue.value;
     });
   }
 
   void _thirdValueChanged() {
     setState(() {
-      _thirdValue = widget.thirdSource.value;
+      _thirdValue = widget.thirdValue.value;
     });
   }
 }

@@ -1,17 +1,17 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-/// Builder for presentation ui part using two listanable value.
+/// Builder for UI part presentation using two [ValueListenable].
 class DoubleValueListenableBuilder<F, S> extends StatefulWidget {
-  /// State that used to detect change and rebuild.
+  /// State that is used to detect change and rebuild.
   final ValueListenable<F> firstValue;
 
-  /// State that used to detect change and rebuild.
+  /// State that is used  to detect change and rebuild.
   final ValueListenable<S> secondValue;
 
-  /// Function that used to describe the part of the user interface
+  /// Function that is used  to describe the part of the user interface
   /// represented by this widget.
-  final Widget Function(BuildContext context, F? firstValue, S? secondValue)
+  final Widget Function(BuildContext context, F firstValue, S secondValue)
       builder;
 
   /// Create an instance of DoubleValueListenableBuilder.
@@ -23,14 +23,14 @@ class DoubleValueListenableBuilder<F, S> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DoubleValueListenableBuilderState createState() =>
+  State<DoubleValueListenableBuilder<F, S>> createState() =>
       _DoubleValueListenableBuilderState<F, S>();
 }
 
 class _DoubleValueListenableBuilderState<F, S>
     extends State<DoubleValueListenableBuilder<F, S>> {
-  F? _firstValue;
-  S? _secondValue;
+  late F _firstValue;
+  late S _secondValue;
 
   @override
   void initState() {
@@ -68,9 +68,8 @@ class _DoubleValueListenableBuilderState<F, S>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return widget.builder(context, _firstValue, _secondValue);
-  }
+  Widget build(BuildContext context) =>
+      widget.builder(context, _firstValue, _secondValue);
 
   void _firstValueChanged() {
     setState(() {
