@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 1.6.0
+### Added
+* builders for using ValueListenable as sources;
+
 ## 1.5.0
 ### Added
 * widget model and model properties for elementary widget in devtool;
