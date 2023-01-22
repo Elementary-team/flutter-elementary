@@ -8,7 +8,7 @@ void main() {
   late ErrorHandler errorHandler;
 
   late Object? fakeHandlerHub;
-  void _fakeWmHandler(Object error) {
+  void fakeWmHandler(Object error) {
     fakeHandlerHub = error;
   }
 
@@ -51,7 +51,7 @@ void main() {
   });
 
   test('WidgetModel should get every error from handleError', () {
-    testModel.setupWmHandler(_fakeWmHandler);
+    testModel.setupWmHandler(fakeWmHandler);
     final error = Exception('Test');
     final error2 = Exception('Test2');
     final stackTrace = StackTrace.fromString('Test stackTrace');
