@@ -2,10 +2,10 @@ name: elementary
 description: Brick to generate template code for Elementary entities.
 repository: https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_tools/elementary_bricks/elementary
 
-version: 0.0.1
+version: 0.0.2
 
 environment:
-  mason: ">=0.1.0-dev.26 <0.1.0"
+  mason: ">=0.1.0-dev.40 <0.1.0"
 
 vars:
   name:
