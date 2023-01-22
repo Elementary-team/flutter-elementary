@@ -1,5 +1,4 @@
 import 'package:mason/mason.dart';
-import 'package:recase/recase.dart';
 
 void run(HookContext context) {
   final String name = context.vars['name'] as String;
