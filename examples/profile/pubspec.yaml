@@ -14,7 +14,7 @@ dependencies:
   provider: ^6.0.1
   shimmer: ^2.0.0
   surf_logger: ^1.0.1
-  yandex_mapkit: ^2.0.1
+  yandex_mapkit: ^2.0.6
 
 dev_dependencies:
   build_runner: ^2.1.5

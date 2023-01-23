@@ -14,9 +14,9 @@ dependencies:
     sdk: flutter
   flutter_test:
     sdk: flutter
-  elementary: ^1.3.1
+  elementary: ^1.6.0
   mocktail: ^0.3.0
-  meta: ^1.7.0
+  meta: ^1.8.0
 
 dev_dependencies:
   surf_lint_rules: ^1.5.0
