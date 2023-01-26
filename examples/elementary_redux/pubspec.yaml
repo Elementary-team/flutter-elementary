@@ -13,7 +13,7 @@ dependencies:
   cached_network_image: ^3.2.0
   cupertino_icons: ^1.0.2
   dio: ^4.0.6
-  elementary: ^1.2.0
+  elementary: ^1.6.0
   fast_immutable_collections: ^7.2.1
   flutter:
     sdk: flutter
@@ -28,13 +28,10 @@ dependencies:
 
 dev_dependencies:
   mocktail: ^0.3.0
-  build_runner: ^2.1.8
+  build_runner: ^2.2.1
   flutter_lints: ^1.0.0
   flutter_test:
     sdk: flutter
-
-dependency_overrides:
-  test_api: 0.4.9
 
 flutter:
   uses-material-design: true

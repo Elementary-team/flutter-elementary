@@ -37,7 +37,10 @@ class MyApp extends StatelessWidget {
 
 class TestErrorHandler implements ErrorHandler {
   @override
-  void handleError(Object error) {
+  void handleError(
+    Object error, {
+    StackTrace? stackTrace,
+  }) {
     // ignore: avoid_print
     print(error);
   }
