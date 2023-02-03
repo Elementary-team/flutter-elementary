@@ -306,6 +306,7 @@ class ElementaryWidgetTest
 class IElementaryWidgetModelMock extends IWidgetModel {}
 
 class ElementaryWidgetModelMock extends DiagnosticableMock
+    with MockWidgetModelMixin<ElementaryWidgetTest, ElementaryModelMock>
     implements
         WidgetModel<ElementaryWidgetTest, ElementaryModelMock>,
         IElementaryWidgetModelMock {}
