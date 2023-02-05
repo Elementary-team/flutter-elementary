@@ -207,4 +207,6 @@ class ElementaryWidgetModelTest
   ElementaryWidgetModelTest(ElementaryModelMock model) : super(model);
 }
 
-class ElementaryModelMock extends Mock implements ElementaryModel {}
+class ElementaryModelMock extends Mock
+    with MockElementaryModelMixin
+    implements ElementaryModel {}

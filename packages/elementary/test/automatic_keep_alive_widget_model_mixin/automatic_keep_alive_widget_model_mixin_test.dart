@@ -338,4 +338,6 @@ class TestTabScreen extends StatelessWidget {
   }
 }
 
-class ElementaryModelMock extends Mock implements ElementaryModel {}
+class ElementaryModelMock extends Mock
+    with MockElementaryModelMixin
+    implements ElementaryModel {}

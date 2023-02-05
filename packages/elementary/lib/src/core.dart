@@ -336,3 +336,21 @@ abstract class ElementaryModel {
     _wmHandler = function;
   }
 }
+
+/// Mock that helps to prevent [NoSuchMethodError] exception when we mock ElementaryModel
+@visibleForTesting
+mixin MockElementaryModelMixin implements ElementaryModel {
+  @override
+  set _wmHandler(Function(Object)? _) {}
+}
+
+/// Mock that helps to prevent [NoSuchMethodError] exception when we mock WidgetModel
+@visibleForTesting
+mixin MockWidgetModelMixin<W extends ElementaryWidget,
+    M extends ElementaryModel> implements WidgetModel<W, M> {
+  @override
+  set _element(Elementary? _) {}
+
+  @override
+  set _widget(W? _) {}
+}
