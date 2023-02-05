@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+## 2.0.0
+### Added
+* [BREAKING CHANGE] supported breaking changes for noSuchMethod in dart 2.19;
+    
+  Migration: use MockElementaryModelMixin and MockWidgetModelMixin in the tests for WM and Model mocks to avoid fails
+
 ## 1.6.0
 ### Added
 * builders for using ValueListenable as sources;
