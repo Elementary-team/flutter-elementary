@@ -337,14 +337,14 @@ abstract class ElementaryModel {
   }
 }
 
-/// Mock that help to prevent [NoSuchMethodError] exception when we mock ElementaryModel
+/// Mock that helps to prevent [NoSuchMethodError] exception when we mock ElementaryModel
 @visibleForTesting
 mixin MockElementaryModelMixin implements ElementaryModel {
   @override
   set _wmHandler(Function(Object)? _) {}
 }
 
-/// Mock that help to prevent [NoSuchMethodError] exception when we mock WidgetModel
+/// Mock that helps to prevent [NoSuchMethodError] exception when we mock WidgetModel
 @visibleForTesting
 mixin MockWidgetModelMixin<W extends ElementaryWidget,
     M extends ElementaryModel> implements WidgetModel<W, M> {
