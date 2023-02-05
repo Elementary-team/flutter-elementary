@@ -79,7 +79,9 @@ void main() {
   );
 }
 
-class TestPageModelMock extends Mock implements TestPageModel {}
+class TestPageModelMock extends Mock
+    with MockElementaryModelMixin
+    implements TestPageModel {}
 
 class ThemeWrapperMock extends Mock implements ThemeWrapper {}
 
