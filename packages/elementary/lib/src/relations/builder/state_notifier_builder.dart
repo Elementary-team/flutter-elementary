@@ -8,7 +8,7 @@ class StateNotifierBuilder<T> extends StatefulWidget {
 
   /// Function that used to describe the part of the user interface
   /// represented by this widget.
-  final Widget Function(BuildContext context, T? value) builder;
+  final Widget Function(BuildContext context, T value) builder;
 
   /// Create an instance of StateNotifierBuilder.
   const StateNotifierBuilder({
@@ -22,7 +22,7 @@ class StateNotifierBuilder<T> extends StatefulWidget {
 }
 
 class _StateNotifierBuilderState<T> extends State<StateNotifierBuilder<T>> {
-  T? value;
+  late T value;
 
   @override
   void initState() {

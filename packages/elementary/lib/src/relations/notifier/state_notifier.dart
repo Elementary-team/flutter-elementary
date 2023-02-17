@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 /// You can set initial value by pass initValue to constructor.
 class StateNotifier<T> extends ChangeNotifier implements ListenableState<T> {
   @override
-  T? get value => _value;
+  T get value => _value;
 
-  T? _value;
+  T _value;
 
   /// Create an instance of StateNotifier.
-  StateNotifier({T? initValue}) : _value = initValue;
+  StateNotifier({required T initValue}) : _value = initValue;
 
   @override
   void addListener(VoidCallback listener) {
@@ -20,7 +20,7 @@ class StateNotifier<T> extends ChangeNotifier implements ListenableState<T> {
   }
 
   /// Accept new value.
-  void accept(T? newValue) {
+  void accept(T newValue) {
     if (_value == newValue) return;
 
     _value = newValue;
@@ -31,7 +31,7 @@ class StateNotifier<T> extends ChangeNotifier implements ListenableState<T> {
 /// An interface that can be listened and return current value.
 abstract class ListenableState<T> extends Listenable {
   /// Return current state
-  T? get value;
+  T get value;
 }
 
 /// Change notifier with value that presented by [EntityState].
@@ -39,8 +39,7 @@ abstract class ListenableState<T> extends Listenable {
 /// Empty initial value create empty EntityState for initial value.
 class EntityStateNotifier<T> extends StateNotifier<EntityState<T>> {
   /// Create an instance of EntityStateNotifier.
-  EntityStateNotifier([EntityState<T>? initialData])
-      : super(initValue: initialData ?? EntityState<T>());
+  EntityStateNotifier([EntityState<T>? initialData]) : super(initValue: initialData ?? EntityState<T>());
 
   /// Constructor for easy set initial value.
   EntityStateNotifier.value(T initialData)
@@ -52,12 +51,10 @@ class EntityStateNotifier<T> extends StateNotifier<EntityState<T>> {
   void content(T data) => super.accept(EntityState<T>.content(data));
 
   /// Accept state with error.
-  void error([Exception? exception, T? data]) =>
-      super.accept(EntityState<T>.error(exception, data));
+  void error([Exception? exception, T? data]) => super.accept(EntityState<T>.error(exception, data));
 
   /// Accept loading state.
-  void loading([T? previousData]) =>
-      super.accept(EntityState<T>.loading(previousData));
+  void loading([T? previousData]) => super.accept(EntityState<T>.loading(previousData));
 }
 
 /// State of some logical entity.
