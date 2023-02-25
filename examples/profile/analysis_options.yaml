@@ -1,4 +1,4 @@
-include: package:surf_lint_rules/analysis_options.yaml
+include: package:mjk_lint_rules/mjk_lint_rules.yaml
 
 dart_code_metrics:
   metrics:

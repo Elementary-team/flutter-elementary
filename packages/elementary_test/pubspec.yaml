@@ -19,4 +19,4 @@ dependencies:
   meta: ^1.8.0
 
 dev_dependencies:
-  surf_lint_rules: ^1.5.0
+  mjk_lint_rules: ^1.0.1

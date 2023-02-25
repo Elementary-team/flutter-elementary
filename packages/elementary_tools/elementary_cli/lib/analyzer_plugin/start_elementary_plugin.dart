@@ -6,6 +6,8 @@ import 'package:elementary_cli/analyzer_plugin/elementary_plugin.dart';
 
 void startElementaryPlugin(List<String> _, SendPort sendPort) {
   ServerPluginStarter(
-    ElementaryAnalyzerPlugin(PhysicalResourceProvider.INSTANCE),
+    ElementaryAnalyzerPlugin(
+      resourceProvider: PhysicalResourceProvider.INSTANCE,
+    ),
   ).start(sendPort);
 }

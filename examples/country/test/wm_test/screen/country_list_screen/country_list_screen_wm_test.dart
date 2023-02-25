@@ -33,7 +33,7 @@ void main() {
     setUpWm,
     (wm, tester, context) {
       final style = TextStyleMock();
-      when(() => textTheme.headline4).thenReturn(style);
+      when(() => textTheme.headlineMedium).thenReturn(style);
 
       tester.init();
 
@@ -45,7 +45,7 @@ void main() {
     'countryNameStyle should be AppTypography.title3 when headline4 not found',
     setUpWm,
     (wm, tester, context) {
-      when(() => textTheme.headline4).thenReturn(null);
+      when(() => textTheme.headlineMedium).thenReturn(null);
 
       tester.init();
 
@@ -64,8 +64,10 @@ class TextThemeMock extends DiagnosticableMock implements TextTheme {}
 class TextStyleMock extends DiagnosticableMock implements TextStyle {
   @override
   // ignore: must_call_super
-  void debugFillProperties(DiagnosticPropertiesBuilder properties,
-      {String prefix = ''}) {}
+  void debugFillProperties(
+    DiagnosticPropertiesBuilder properties, {
+    String prefix = '',
+  }) {}
 }
 
 class DiagnosticableMock extends Mock with Diagnosticable {}

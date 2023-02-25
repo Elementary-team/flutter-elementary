@@ -11,7 +11,7 @@ import '../../golden_helper.dart';
 
 void main() {
   const widget = CountryListScreen();
-  final _countries = [
+  final countries = [
     Country(
       flag: 'rf-flag-url',
       name: 'Russian Federation',
@@ -58,7 +58,7 @@ void main() {
 
   testGoldens('CountryListScreen content test', (tester) async {
     when(() => countryListStateMock.value).thenReturn(
-      EntityState.content(_countries),
+      EntityState.content(countries),
     );
 
     await provideMockedNetworkImages(

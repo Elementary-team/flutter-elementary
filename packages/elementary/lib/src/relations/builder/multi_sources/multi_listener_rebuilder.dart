@@ -17,10 +17,11 @@ class MultiListenerRebuilder extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _MultiListenerRebuilderState createState() => _MultiListenerRebuilderState();
+  MultiListenerRebuilderState createState() => MultiListenerRebuilderState();
 }
 
-class _MultiListenerRebuilderState extends State<MultiListenerRebuilder> {
+/// State for the [MultiListenerRebuilder].
+class MultiListenerRebuilderState extends State<MultiListenerRebuilder> {
   @override
   void initState() {
     super.initState();

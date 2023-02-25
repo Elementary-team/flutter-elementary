@@ -123,7 +123,7 @@ class FieldWithSuggestionsWidgetModel
         _onSelected,
         _optionsLayerLink,
       );
-      Overlay.of(context, rootOverlay: true)!.insert(_floatingOptions!);
+      Overlay.of(context, rootOverlay: true).insert(_floatingOptions!);
     } else if (_floatingOptions != null) {
       _floatingOptions!.remove();
       _floatingOptions = null;

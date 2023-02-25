@@ -81,7 +81,7 @@ class _CounterText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       value,
-      style: Theme.of(context).textTheme.headline4,
+      style: Theme.of(context).textTheme.headlineMedium,
     );
   }
 }
