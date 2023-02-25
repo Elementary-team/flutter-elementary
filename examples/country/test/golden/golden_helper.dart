@@ -32,7 +32,9 @@ class MockHttpClientResponse extends Mock implements HttpClientResponse {}
 class MockHttpHeaders extends Mock implements HttpHeaders {}
 
 MockHttpClient _createMockImageHttpClient(
-    SecurityContext? _, List<int> imageBytes) {
+  SecurityContext? _,
+  List<int> imageBytes,
+) {
   final client = MockHttpClient();
   final request = MockHttpClientRequest();
   final response = MockHttpClientResponse();
@@ -64,10 +66,11 @@ MockHttpClient _createMockImageHttpClient(
       final cancelOnError = invocation.namedArguments[#cancelOnError] as bool;
 
       return Stream<List<int>>.fromIterable(<List<int>>[imageBytes]).listen(
-          onData,
-          onDone: onDone,
-          onError: onError,
-          cancelOnError: cancelOnError);
+        onData,
+        onDone: onDone,
+        onError: onError,
+        cancelOnError: cancelOnError,
+      );
     },
   );
 

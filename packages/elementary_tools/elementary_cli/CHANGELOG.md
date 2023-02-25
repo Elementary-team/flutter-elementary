@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 1.1.0
+### Add
+* support of the new analyzer plugin
+
 ## 1.0.1
 ### Fixed
 * wrong platform specific script path getting (thx LazyLazyMeat).

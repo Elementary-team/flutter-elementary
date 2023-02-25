@@ -12,10 +12,11 @@ class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
 
   @override
-  _AppState createState() => _AppState();
+  AppState createState() => AppState();
 }
 
-class _AppState extends State<App> {
+/// State for the [App].
+class AppState extends State<App> {
   late IAppScope _scope;
 
   @override

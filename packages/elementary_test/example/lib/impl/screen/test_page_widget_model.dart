@@ -51,7 +51,7 @@ class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
     super.didChangeDependencies();
 
     _counterStyle =
-        _themeWrapper.getTextTheme(context).headline4 ?? const TextStyle();
+        _themeWrapper.getTextTheme(context).headlineMedium ?? const TextStyle();
   }
 
   @override

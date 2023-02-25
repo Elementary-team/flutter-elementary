@@ -21,9 +21,7 @@ class CountryListScreenWidgetModel
     extends WidgetModel<CountryListScreen, CountryListScreenModel>
     implements ICountryListWidgetModel {
   final ThemeWrapper _themeWrapper;
-
   final _countryListState = EntityStateNotifier<List<Country>>();
-  late TextStyle _countryNameStyle;
 
   @override
   ListenableState<EntityState<List<Country>>> get countryListState =>
@@ -31,6 +29,8 @@ class CountryListScreenWidgetModel
 
   @override
   TextStyle get countryNameStyle => _countryNameStyle;
+
+  late TextStyle _countryNameStyle;
 
   CountryListScreenWidgetModel(
     CountryListScreenModel model,
@@ -43,7 +43,7 @@ class CountryListScreenWidgetModel
 
     _loadCountryList();
     _countryNameStyle =
-        _themeWrapper.getTextTheme(context).headline4 ?? AppTypography.title3;
+        _themeWrapper.getTextTheme(context).headlineMedium ?? AppTypography.title3;
   }
 
   @override

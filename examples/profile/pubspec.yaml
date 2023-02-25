@@ -18,11 +18,11 @@ dependencies:
 
 dev_dependencies:
   build_runner: ^2.1.5
-  dart_code_metrics: ^4.7.0
+  dart_code_metrics: ^5.5.1
   elementary_test: ^1.0.1
   flutter_test:
     sdk: flutter
-  surf_lint_rules: ^1.4.1
+  mjk_lint_rules: ^1.0.1
 
 environment:
   sdk: ">=2.14.0-0 <3.0.0"

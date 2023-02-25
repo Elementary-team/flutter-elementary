@@ -4,10 +4,7 @@ version: 0.0.1
 publish_to: none
 
 environment:
-  sdk: '>=2.14.0 <3.0.0'
+  sdk: '>=2.17.0 <3.0.0'
 
 dependencies:
-  elementary_cli: ^0.0.2
-
-dev_dependencies:
-  surf_lint_rules: ^1.0.0
+  elementary_cli: ^1.1.0

@@ -15,24 +15,25 @@ dependencies:
   dio: ^4.0.0
   retrofit: ^3.3.1
   provider: ^6.0.0
+  # json annotation
+  json_annotation: ^4.8.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  # кодген для ретрофита
+  # codegen for retrofit
   retrofit_generator: ^4.2.0
-  # билдер для кодгена - flutter pub run build_runner build
+  # codegen builder - flutter pub run build_runner build
   build_runner: ^2.2.1
-  # сериализация json
+  # serialization json
   json_serializable: ^6.5.4
-  # голден тесты
+  # golden tests
   golden_toolkit: ^0.10.0
-  # мокирование
+  # mocking
   mocktail: ^0.3.0
-  # анализатор
-  surf_lint_rules: ^1.4.0
-  # тестирование elementary
+  # analyzer
+  mjk_lint_rules: ^1.0.1
+  # testing elementary
   elementary_test: ^1.1.2
 
 flutter:

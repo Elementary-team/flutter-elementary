@@ -5,7 +5,7 @@ import 'package:profile/features/profile/screens/init_screen/init_screen.dart';
 /// Class that coordinates navigation for the whole app and provides
 /// methods for navigation.
 class Coordinator extends ChangeNotifier {
-  final _coordinates = <Coordinate, _Route>{};
+  final _coordinates = <Coordinate, Route>{};
 
   final _pages = [
     const MaterialPage<void>(
@@ -19,7 +19,7 @@ class Coordinator extends ChangeNotifier {
   Coordinate? initialCoordinate;
 
   /// Coordinate list.
-  Map<Coordinate, _Route> get coordinates => _coordinates;
+  Map<Coordinate, Route> get coordinates => _coordinates;
 
   /// [Page]s list.
   List<Page> get pages => List.of(_pages);
@@ -36,7 +36,7 @@ class Coordinator extends ChangeNotifier {
       coordinates.entries.map(
         (entry) => MapEntry(
           entry.key,
-          _Route('$name${entry.key}', entry.value),
+          Route('$name${entry.key}', entry.value),
         ),
       ),
     );
@@ -127,9 +127,13 @@ class Coordinator extends ChangeNotifier {
   }
 }
 
-class _Route {
+/// Route for navigation.
+class Route {
+  /// Path.
   final String path;
+  /// Factory for building coordinates.
   final CoordinateBuilder builder;
 
-  const _Route(this.path, this.builder);
+  /// Create an instance [Route].
+  const Route(this.path, this.builder);
 }

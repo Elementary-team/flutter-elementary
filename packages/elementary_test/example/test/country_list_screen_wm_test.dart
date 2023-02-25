@@ -1,5 +1,7 @@
 // ignore_for_file: avoid_implementing_value_types
 
+import 'dart:async';
+
 import 'package:counter/impl/screen/test_page_model.dart';
 import 'package:counter/impl/screen/test_page_widget.dart';
 import 'package:counter/impl/screen/test_page_widget_model.dart';
@@ -9,7 +11,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:surf_lint_rules/surf_lint_rules.dart';
 
 /// Тесты для [TestPageWidgetModel]
 void main() {
@@ -19,7 +20,7 @@ void main() {
 
   TestPageWidgetModel setUpWm() {
     textTheme = TextThemeMock();
-    when(() => textTheme.headline4).thenReturn(null);
+    when(() => textTheme.headlineMedium).thenReturn(null);
     theme = ThemeWrapperMock();
     when(() => theme.getTextTheme(any())).thenReturn(textTheme);
     model = TestPageModelMock();
@@ -34,7 +35,7 @@ void main() {
     setUpWm,
     (wm, tester, context) {
       final style = TextStyleMock();
-      when(() => textTheme.headline4).thenReturn(style);
+      when(() => textTheme.headlineMedium).thenReturn(style);
 
       tester.init();
 

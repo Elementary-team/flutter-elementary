@@ -21,10 +21,12 @@ class DiScope<T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DiScopeState createState() => _DiScopeState<T>();
+  DiScopeState createState() => DiScopeState<T>();
 }
 
-class _DiScopeState<T> extends State<DiScope<T>> {
+/// State for the [DiScope].
+class DiScopeState<T> extends State<DiScope<T>> {
+  /// Dependency scope to pass.
   late T scope;
 
   @override

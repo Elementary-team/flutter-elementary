@@ -31,11 +31,12 @@ class TripleSourceBuilder<F, S, T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _TripleSourceBuilderState createState() =>
-      _TripleSourceBuilderState<F, S, T>();
+  TripleSourceBuilderState createState() =>
+      TripleSourceBuilderState<F, S, T>();
 }
 
-class _TripleSourceBuilderState<F, S, T>
+/// State for the [TripleSourceBuilder].
+class TripleSourceBuilderState<F, S, T>
     extends State<TripleSourceBuilder<F, S, T>> {
   F? _firstValue;
   S? _secondValue;

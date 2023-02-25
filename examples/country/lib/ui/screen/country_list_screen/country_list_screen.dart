@@ -152,7 +152,7 @@ class _CountryWidget extends StatelessWidget {
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );

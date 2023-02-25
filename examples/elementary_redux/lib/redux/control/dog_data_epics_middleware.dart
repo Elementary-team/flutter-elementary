@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:redux_elementary_test/model/dog_data.dart';
-import 'package:redux_elementary_test/model/dog_dto.dart';
 import 'package:redux_elementary_test/redux/actions/adding_data_action.dart';
 import 'package:redux_elementary_test/redux/actions/catching_error_action.dart';
 import 'package:redux_elementary_test/redux/actions/clearing_all_data_action.dart';

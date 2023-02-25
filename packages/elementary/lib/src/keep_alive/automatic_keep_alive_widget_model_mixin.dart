@@ -53,7 +53,7 @@ mixin AutomaticKeepAliveWidgetModelMixin<W extends ElementaryWidget,
   }
 
   void _releaseKeepAlive() {
-    _keepAliveHandle!.release();
+    _keepAliveHandle!.dispose();
     _keepAliveHandle = null;
   }
 }
