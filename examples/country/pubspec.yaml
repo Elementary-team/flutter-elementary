@@ -10,10 +10,10 @@ dependencies:
   flutter:
     sdk: flutter
 
-  elementary: ^1.6.0
-  cupertino_icons: 1.0.2
-  dio: ^4.0.0
-  retrofit: ^3.3.1
+  elementary: ^2.0.0
+  cupertino_icons: ^1.0.5
+  dio: ^5.0.3
+  retrofit: ^4.0.1
   provider: ^6.0.0
   # json annotation
   json_annotation: ^4.8.0
@@ -22,19 +22,19 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   # codegen for retrofit
-  retrofit_generator: ^4.2.0
+  retrofit_generator: ^6.0.0+1
   # codegen builder - flutter pub run build_runner build
   build_runner: ^2.2.1
   # serialization json
   json_serializable: ^6.5.4
   # golden tests
-  golden_toolkit: ^0.10.0
+  golden_toolkit: ^0.15.0
   # mocking
   mocktail: ^0.3.0
   # analyzer
   mjk_lint_rules: ^1.0.1
   # testing elementary
-  elementary_test: ^1.1.2
+  elementary_test: ^1.1.3
 
 flutter:
   uses-material-design: true
