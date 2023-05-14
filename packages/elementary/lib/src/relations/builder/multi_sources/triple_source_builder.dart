@@ -31,7 +31,7 @@ class TripleSourceBuilder<F, S, T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  TripleSourceBuilderState createState() =>
+  TripleSourceBuilderState<F, S, T> createState() =>
       TripleSourceBuilderState<F, S, T>();
 }
 

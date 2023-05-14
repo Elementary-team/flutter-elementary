@@ -10,7 +10,7 @@ executables:
   elementary_tools:
 
 environment:
-  sdk: '>=2.17.0 <3.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   args: ^2.3.0
@@ -21,4 +21,4 @@ dependencies:
 dev_dependencies:
   dart_code_metrics: ^5.6.0
   lints: ^2.0.1
-  mjk_lint_rules: ^1.0.1
+  mjk_lint_rules: ^2.0.0

@@ -332,7 +332,7 @@ abstract class ElementaryModel {
   /// This method can be used to WidgetModels error handler.
   @visibleForTesting
   // ignore: use_setters_to_change_properties
-  void setupWmHandler(Function(Object)? function) {
+  void setupWmHandler(void Function(Object)? function) {
     _wmHandler = function;
   }
 }
@@ -341,7 +341,7 @@ abstract class ElementaryModel {
 @visibleForTesting
 mixin MockElementaryModelMixin implements ElementaryModel {
   @override
-  set _wmHandler(Function(Object)? _) {}
+  set _wmHandler(void Function(Object)? _) {}
 }
 
 /// Mock that helps to prevent [NoSuchMethodError] exception when we mock WidgetModel

@@ -23,7 +23,7 @@ class DoubleSourceBuilder<F, S> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  DoubleSourceBuilderState createState() => DoubleSourceBuilderState<F, S>();
+  DoubleSourceBuilderState<F, S> createState() => DoubleSourceBuilderState<F, S>();
 }
 
 /// State for the [DoubleSourceBuilder].

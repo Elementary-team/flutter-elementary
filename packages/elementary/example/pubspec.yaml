@@ -4,7 +4,7 @@ version: 1.0.0+1
 publish_to: none
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
   elementary:
@@ -15,7 +15,7 @@ dependencies:
   provider: ^6.0.2
 
 dev_dependencies:
-  mjk_lint_rules: ^1.0.1
+  mjk_lint_rules: ^2.0.0
 
 flutter:
   uses-material-design: true

@@ -18,7 +18,7 @@ class StateNotifierBuilder<T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  StateNotifierBuilderState createState() => StateNotifierBuilderState<T>();
+  StateNotifierBuilderState<T> createState() => StateNotifierBuilderState<T>();
 }
 
 /// State for the [StateNotifierBuilder].
