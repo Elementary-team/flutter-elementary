@@ -8,7 +8,7 @@ typedef WidgetModelFactory<T extends WidgetModel> = T Function(
 );
 
 /// Base interface for all Widget Model.
-abstract class IWidgetModel {}
+abstract interface class IWidgetModel {}
 
 /// A widget that use WidgetModel for build.
 ///
@@ -30,7 +30,7 @@ abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
   ///
   /// It is uncommon for subclasses to override this method.
   @override
-  Element createElement() {
+  Elementary createElement() {
     return Elementary(this);
   }
 
@@ -76,7 +76,7 @@ abstract class WidgetModel<W extends ElementaryWidget,
   @visibleForTesting
   bool get isMounted => _element != null;
 
-  Elementary? _element;
+  BuildContext? _element;
   W? _widget;
 
   /// Create an instance of WidgetModel.
@@ -183,13 +183,13 @@ abstract class WidgetModel<W extends ElementaryWidget,
   /// This method can be used to set element (BuildContext).
   @visibleForTesting
   // ignore: use_setters_to_change_properties
-  void setupTestElement(Elementary? testElement) {
+  void setupTestElement(BuildContext? testElement) {
     _element = testElement;
   }
 }
 
 /// An element for managing a widget whose display depends on the Widget Model.
-class Elementary extends ComponentElement {
+final class Elementary extends ComponentElement {
   @override
   ElementaryWidget get widget => super.widget as ElementaryWidget;
 
@@ -349,7 +349,7 @@ mixin MockElementaryModelMixin implements ElementaryModel {
 mixin MockWidgetModelMixin<W extends ElementaryWidget,
     M extends ElementaryModel> implements WidgetModel<W, M> {
   @override
-  set _element(Elementary? _) {}
+  set _element(BuildContext? _) {}
 
   @override
   set _widget(W? _) {}

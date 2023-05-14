@@ -14,7 +14,8 @@ dependencies:
     sdk: flutter
   flutter_test:
     sdk: flutter
-  elementary: ^2.0.0
+  elementary:
+    path: ../elementary
   mocktail: ^0.3.0
   meta: ^1.8.0
 

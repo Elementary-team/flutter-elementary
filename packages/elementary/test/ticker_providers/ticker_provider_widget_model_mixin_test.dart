@@ -96,7 +96,7 @@ void main() {
   );
 }
 
-class IElementaryWidgetModelTest extends IWidgetModel {}
+class IElementaryWidgetModelTest implements IWidgetModel {}
 
 class TestWidgetModel
     extends WidgetModel<TestElementaryWidget, ElementaryModelMock>

@@ -47,7 +47,7 @@ class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
   }
 }
 
-abstract class ITestPageWidgetModel extends IWidgetModel {
+abstract interface class ITestPageWidgetModel implements IWidgetModel {
   ListenableState<EntityState<int>> get valueState;
 
   Future<void> increment();
