@@ -29,7 +29,7 @@ class StateNotifier<T> extends ChangeNotifier implements ListenableState<T> {
 }
 
 /// An interface that can be listened and return current value.
-abstract class ListenableState<T> extends Listenable {
+abstract interface class ListenableState<T> extends Listenable {
   /// Return current state
   T? get value;
 }
