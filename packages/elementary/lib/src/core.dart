@@ -19,6 +19,7 @@ abstract interface class IWidgetModel {}
 /// build a part of the user interface described by this widget.
 ///
 /// This widget is a starting or updating configuration for the [WidgetModel].
+/// More details about this in methods of the [WidgetModel] lifecycle.
 ///
 /// This widget doesn't have its own [RenderObject], and just describes a part
 /// of the user interface using other widgets. The same behavior as other
@@ -49,7 +50,7 @@ abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
   }
 
   /// Describes the part of the user interface represented by this widget,
-  /// based on the state of the [WidgetModel] passed by [wm].
+  /// based on the state of the [WidgetModel] passed to the [wm] argument.
   ///
   /// There is no access to the [BuildContext] in this method,
   /// because all needed in this method should be provided by
@@ -57,7 +58,8 @@ abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
   /// It is uncommon to use [BuildContext] here, possibly in this case you need
   /// to improve implementation of the [WidgetModel] of this widget.
   /// But all widgets that used in this method to describe the user interface
-  /// CAN use [BuildContext] as they needed.
+  /// CAN use [BuildContext] being encapsulated to the one of common separated
+  /// widget.
   Widget build(I wm);
 }
 
@@ -66,7 +68,7 @@ abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
 /// in the form of [ElementaryModel].
 ///
 /// This class contains all internal mechanisms and process that need to
-/// guarantee the conceived behavior. In the subclasses you need to expand it
+/// guarantee the conceived behavior. In the subclasses you need to extend it
 /// only with specific behaviour that needed by the described part
 /// of the user interface.
 abstract class WidgetModel<W extends ElementaryWidget,
@@ -125,7 +127,10 @@ abstract class WidgetModel<W extends ElementaryWidget,
   /// Creates an instance of the [WidgetModel].
   WidgetModel(this._model);
 
-  /// Called at first build for initialization of this Widget Model.
+  /// Called while the first build for initialization of this [WidgetModel].
+  ///
+  /// This method is called only ones for the instance of the [WidgetModel]
+  /// while its lifecycle.
   @protected
   @mustCallSuper
   @visibleForTesting
@@ -156,7 +161,7 @@ abstract class WidgetModel<W extends ElementaryWidget,
   /// Called whenever the Model use method handleError.
   ///
   /// This method is the place for presentation handling error like a
-  /// showing snackbar or something else.
+  /// showing a snack-bar or something else.
   @protected
   @visibleForTesting
   void onErrorHandle(Object error) {}
@@ -214,16 +219,16 @@ abstract class WidgetModel<W extends ElementaryWidget,
   @visibleForTesting
   void reassemble() {}
 
-  /// Method for setup WidgetModel for testing.
-  /// This method can be used to set widget.
+  /// Method for associate another instance of the widget to this [WidgetModel].
+  /// MUST be used only for testing purposes.
   @visibleForTesting
   // ignore: use_setters_to_change_properties
   void setupTestWidget(W? testWidget) {
     _widget = testWidget;
   }
 
-  /// Method for setup WidgetModel for testing.
-  /// This method can be used to set element (BuildContext).
+  /// Method for associate another element to this [WidgetModel].
+  /// MUST be used only for testing purposes.
   @visibleForTesting
   // ignore: use_setters_to_change_properties
   void setupTestElement(BuildContext? testElement) {
