@@ -2,31 +2,45 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// Factory function for creating Widget Model.
+/// Type for a factory function used to create a [WidgetModel].
+///
+/// The [WidgetModel] is created once for the [ElementaryWidget] when it
+/// is inflating to the tree. If [Elementary] updates its widget [WidgetModel]
+/// will not create again. Use the method [WidgetModel.didUpdateWidget] in
+/// this case.
 typedef WidgetModelFactory<T extends WidgetModel> = T Function(
   BuildContext context,
 );
 
-/// Base interface for all Widget Model.
+/// A basic interface for every [WidgetModel].
 abstract interface class IWidgetModel {}
 
-/// A widget that use WidgetModel for build.
+/// A widget that uses information and properties of the [WidgetModel] to
+/// build a part of the user interface described by this widget.
 ///
-/// You must provide [wmFactory] factory function to the constructor
-/// to instantiate WidgetModel. For testing, you can replace
-/// this function for returning mock.
+/// This widget is a starting or updating configuration for the [WidgetModel].
+///
+/// This widget doesn't have its own [RenderObject], and just describes a part
+/// of the user interface using other widgets. The same behavior as other
+/// widgets which inflate to [ComponentElement]. See also [StatelessWidget],
+/// [StatefulWidget], [InheritedWidget].
+///
+/// An instance of the [WidgetModelFactory] must be provided to the widget
+/// constructor into the [wmFactory] property, in order to create
+/// the [WidgetModel] instance for this widget.
+/// This property can also be used to test this widget by passing a fake factory
+/// that returns a mock instead real [WidgetModel].
 abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
-  /// Factory-function for creating WidgetModel
+  /// The factory function used to create a [WidgetModel].
   final WidgetModelFactory wmFactory;
 
-  /// Create an instance of ElementaryWidget.
+  /// Creates an instance of ElementaryWidget.
   const ElementaryWidget(
     this.wmFactory, {
     Key? key,
   }) : super(key: key);
 
-  /// Creates a [Elementary] to manage this widget's location
-  /// in the tree.
+  /// Creates a [Elementary] to manage this widget's location in the tree.
   ///
   /// It is uncommon for subclasses to override this method.
   @override
@@ -34,31 +48,60 @@ abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
     return Elementary(this);
   }
 
-  /// Describes the part of the user interface represented by this widget.
+  /// Describes the part of the user interface represented by this widget,
+  /// based on the state of the [WidgetModel] passed by [wm].
   ///
-  /// You can use all properties and methods provided by Widget Model.
-  /// You should not use [BuildContext] or something else, all you need
-  /// must contains in Widget Model.
+  /// There is no access to the [BuildContext] in this method,
+  /// because all needed in this method should be provided by
+  /// [WidgetModel] which has direct access to the [BuildContext].
+  /// It is uncommon to use [BuildContext] here, possibly in this case you need
+  /// to improve implementation of the [WidgetModel] of this widget.
+  /// But all widgets that used in this method to describe the user interface
+  /// CAN use [BuildContext] as they needed.
   Widget build(I wm);
 }
 
-/// Entity that contains all presentation logic of the widget.
+/// The basic implementation of the entity that contains all presentation logic,
+/// properties with data for the widget, and relations with the business logic
+/// in the form of [ElementaryModel].
+///
+/// This class contains all internal mechanisms and process that need to
+/// guarantee the conceived behavior. In the subclasses you need to expand it
+/// only with specific behaviour that needed by the described part
+/// of the user interface.
 abstract class WidgetModel<W extends ElementaryWidget,
     M extends ElementaryModel> with Diagnosticable implements IWidgetModel {
   final M _model;
 
-  /// [ElementaryModel] for this WidgetModel.
-  /// Only one of business-logic dependencies, that WidgetModel needs.
+  /// Instance of [ElementaryModel] for this [WidgetModel].
+  ///
+  /// The only business logic dependency that is needed for the [WidgetModel].
   @protected
   @visibleForTesting
   M get model => _model;
 
-  /// Widget that use WidgetModel for build.
+  /// Widget that uses [WidgetModel] for the building part of user interface.
+  ///
+  /// The [WidgetModel] is associated with the [Widget] by [Elementary]. This
+  /// association is temporary and can be changed when [Elementary] updates its
+  /// link to the widget. Before the first update this field contains
+  /// a widget that created this [WidgetModel].
+  ///
+  /// At the any time this field contains the actual configuration as a widget.
   @protected
   @visibleForTesting
   W get widget => _widget!;
 
-  /// A handle to the location of a WidgetModel in the tree.
+  /// The location in the tree where this widget builds.
+  ///
+  /// The [WidgetModel] will be associated with the [BuildContext] by
+  /// [Elementary] after creating and before calling [initWidgetModel].
+  /// The association is permanent: the [WidgetModel] object will never
+  /// change its [BuildContext]. However, the [BuildContext] itself can be
+  /// moved around the tree.
+  ///
+  /// After calling [dispose] the association between the [WidgetModel] and
+  /// the [BuildContext] will be broken.
   @protected
   @visibleForTesting
   BuildContext get context {
@@ -71,7 +114,7 @@ abstract class WidgetModel<W extends ElementaryWidget,
     return _element!;
   }
 
-  /// Are this [WidgetModel] and [Elementary] currently mounted in a tree.
+  /// Whether [WidgetModel] and [Elementary] are currently mounted in the tree.
   @protected
   @visibleForTesting
   bool get isMounted => _element != null;
@@ -79,7 +122,7 @@ abstract class WidgetModel<W extends ElementaryWidget,
   BuildContext? _element;
   W? _widget;
 
-  /// Create an instance of WidgetModel.
+  /// Creates an instance of the [WidgetModel].
   WidgetModel(this._model);
 
   /// Called at first build for initialization of this Widget Model.
