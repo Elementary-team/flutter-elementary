@@ -2,35 +2,173 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// Type for a factory function used to create a [WidgetModel].
+/// Type for a factory function that is used to create
+/// an instance of [WidgetModel].
 ///
-/// The [WidgetModel] is created once for the [ElementaryWidget] when it
-/// is inflating to the tree. If [Elementary] updates its widget [WidgetModel]
-/// will not create again. Use the method [WidgetModel.didUpdateWidget] in
-/// this case.
+/// ## The part of Elementary Lifecycle
+/// The [WidgetModel] instance is created for the [ElementaryWidget] when it
+/// instantiate into the tree. Only in this moment the factory is called once(*)
+/// to get the instance of the [WidgetModel] and associate it with
+/// the [Elementary]. After this the [WidgetModel] will alive while
+/// the [Elementary] is alive. If [Elementary] updates the widget associated
+/// with it, the [WidgetModel] will not be recreated and continue work with
+/// the same state that has before the update. But the [WidgetModel] will be
+/// notified about the update by calling the method
+/// [WidgetModel.didUpdateWidget]. All needed state adjustments can be
+/// handle inside this method.
+///
+/// (*) Once per insert into the tree. As all other widgets, an instance of
+/// [ElementaryWidget] can be inserted many times. Every time the element and
+/// separate [WidgetModel] will be created for manage different state for every
+/// concrete inserts.
+///
+/// ## Examples
+/// {@tool snippet}
+///
+/// The following is a an example for the top-level factory function
+/// that creates dependencies right on the spot.
+///
+/// ```dart
+/// ExampleWidgetModel exampleWidgetModelFactory(BuildContext context) {
+///   final modelDependency = ModelDependency();
+///   final exampleModel = ExampleModel(modelDependency);
+///   return ExampleWidgetModel(exampleModel);
+/// }
+/// ```
+/// {@end-tool}
+///
+/// {@tool snippet}
+///
+/// The following is a an example for the top-level factory function
+/// that creates dependencies using one of the DI containers.
+///
+/// ```dart
+/// ExampleWidgetModel exampleWidgetModelFactory(BuildContext context) {
+///   final exampleModel = ContainerInstance.createExampleModel();
+///   return ExampleWidgetModel(exampleModel);
+/// }
+/// ```
+/// {@end-tool}
+///
+/// {@tool snippet}
+///
+/// The following is a an example for the top-level factory function
+/// that get dependencies using passed BuildContext.
+///
+/// ```dart
+/// ExampleWidgetModel exampleWidgetModelFactory(BuildContext context) {
+///   final modelDependency = ModelDependency();
+///   final exampleModel = ExampleModel(modelDependency);
+///   final widgetModelAnotherDependency = SomeWidget.of(context).getSomething;
+///   return ExampleWidgetModel(exampleModel, widgetModelAnotherDependency);
+/// }
+/// ```
+/// {@end-tool}
 typedef WidgetModelFactory<T extends WidgetModel> = T Function(
   BuildContext context,
 );
 
 /// A basic interface for every [WidgetModel].
+///
+/// The general approach for the [WidgetModel] is implement interface that
+/// expanded from [IWidgetModel]. This expanded interface describes the contract
+/// which the inheritor of the [WidgetModel] implemented this interface
+/// is providing for the [ElementaryWidget]. The contract includes all
+/// properties and methods which the [ElementaryWidget] can use for build a
+/// part of the tree it describes.
+///
+/// {@tool snippet}
+///
+/// The following is a an example for the top-level factory function
+/// that get dependencies using passed BuildContext.
+///
+/// ```dart
+/// abstract interface class IExampleWidgetModel implements IWidgetModel {
+///   ListenableState<int> get somePublisher;
+///   Stream<String> get anotherPublisher;
+///   Color get justProperty;
+///
+///   Future<void> doSomething();
+///   Future<void> anotherOptionOfInteract();
+/// }
+/// ```
+/// {@end-tool}
 abstract interface class IWidgetModel {}
 
-/// A widget that uses information and properties of the [WidgetModel] to
+/// A widget that uses state of [WidgetModel] properties to
 /// build a part of the user interface described by this widget.
 ///
-/// This widget is a starting or updating configuration for the [WidgetModel].
-/// More details about this in methods of the [WidgetModel] lifecycle.
+/// For inheritors of this widget is common to be parameterized by
+/// the interface expanded from [IWidgetModel] that provides all special
+/// information which needed for this widget for correctly describe the subtree.
 ///
-/// This widget doesn't have its own [RenderObject], and just describes a part
-/// of the user interface using other widgets. The same behavior as other
-/// widgets which inflate to [ComponentElement]. See also [StatelessWidget],
-/// [StatefulWidget], [InheritedWidget].
+/// Only one thing should be implemented in inheritors of this widget is a
+/// build method. Build method in this case is pure function which gets the
+/// [WidgetModel] as argument and based on this [WidgetModel] returns
+/// the [Widget]. There isn't additional interactions with anything external,
+/// everything needed for describe should be provided by [WidgetModel].
 ///
+/// {@tool snippet}
+///
+/// The following widget shows a default example of Flutter app, which created
+/// with a new Flutter project.
+///
+/// ```dart
+/// class ExampleWidget extends ElementaryWidget<IExampleWidgetModel> {
+///   const ExampleWidget({
+///     Key? key,
+///     WidgetModelFactory wmFactory = exampleWidgetModelFactory,
+///   }) : super(wmFactory, key: key);
+///
+///   @override
+///   Widget build(IExampleWidgetModel wm) {
+///     return Scaffold(
+///       appBar: AppBar(
+///         title: const Text('Test'),
+///       ),
+///       body: Center(
+///         child: Column(
+///           mainAxisAlignment: MainAxisAlignment.center,
+///           children: <Widget>[
+///             const Text('You have pushed the button this many times:'),
+///             ValueListenableBuilder<int>(
+///               valueListenable: wm.pressCountPublisher,
+///               builder: (_, value, __) {
+///                 return Text(value.toString());
+///               },
+///             ),
+///           ],
+///         ),
+///       ),
+///       floatingActionButton: FloatingActionButton(
+///         onPressed: wm.increment,
+///         tooltip: 'Increment',
+///         child: const Icon(Icons.add),
+///       ),
+///     );
+///   }
+/// }
+/// ```
+/// {@end-tool}
+///
+/// ## wmFactory
 /// An instance of the [WidgetModelFactory] must be provided to the widget
-/// constructor into the [wmFactory] property, in order to create
+/// constructor as [wmFactory] property. This is required to create
 /// the [WidgetModel] instance for this widget.
-/// This property can also be used to test this widget by passing a fake factory
-/// that returns a mock instead real [WidgetModel].
+/// You can use additional factories for different purpose. For example create
+/// a special one that returns a mock [WidgetModel] for the tests.
+///
+/// ## The part of Elementary Lifecycle
+/// This widget is a starting and updating configuration for the [WidgetModel].
+/// More details about using it while life cycle see in the methods docs of the
+/// [WidgetModel].
+///
+/// ## Internal details
+/// This widget doesn't have its own [RenderObject], and just describes a part
+/// of the user interface using other widgets. It is a common approach for the
+/// widgets those inflate to [ComponentElement].
+///
+/// See also: [StatelessWidget], [StatefulWidget], [InheritedWidget].
 abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
   /// The factory function used to create a [WidgetModel].
   final WidgetModelFactory wmFactory;
@@ -56,21 +194,78 @@ abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
   /// because all needed in this method should be provided by
   /// [WidgetModel] which has direct access to the [BuildContext].
   /// It is uncommon to use [BuildContext] here, possibly in this case you need
-  /// to improve implementation of the [WidgetModel] of this widget.
-  /// But all widgets that used in this method to describe the user interface
-  /// CAN use [BuildContext] being encapsulated to the one of common separated
-  /// widget.
+  /// to improve implementation of the [WidgetModel].
+  /// But [BuildContext] CAN be used in all builder functions and all widgets
+  /// used here.
   Widget build(I wm);
 }
 
-/// The basic implementation of the entity that contains all presentation logic,
-/// properties with data for the widget, and relations with the business logic
-/// in the form of [ElementaryModel].
+/// The basic implementation of the entity responsible for all
+/// presentation logic, providing properties and data for the widget,
+/// and keep relations with the business logic. Business logic represented in
+/// the form of [ElementaryModel].
 ///
-/// This class contains all internal mechanisms and process that need to
-/// guarantee the conceived behavior. In the subclasses you need to extend it
-/// only with specific behaviour that needed by the described part
-/// of the user interface.
+/// [WidgetModel] is a working horse of the Elementary library. It unites the
+/// trio of 'widget - widget model - model'. So the inheritors of [WidgetModel]
+/// parameterized by an inheritor of the ElementaryWidget and an inheritor
+/// of the ElementaryModel. This mean that this WidgetModel subclass encapsulate
+/// all required logic for the concrete ElementaryWidget subclass that
+/// mentioned as parameter and only for it. Also this WidgetModel subclass uses
+/// exactly the mentioned ElementaryModel subclass as an available contract of
+/// business logic.
+///
+/// It is common for inheritors to implement the expanded from [IWidgetModel]
+/// interface that describes special contract for the relevant
+/// [ElementaryWidget] subclass. Moreover using the contract is preferable way
+/// because this interface explicitly shows available properties and methods
+/// for declarative part (for ElementaryWidget).
+///
+/// ## Approach to update
+/// It is a rare case when [ElementaryWidget] completely rebuild. The most
+/// common case is a partial rebuild of UI parts. In order to get this, using
+/// publishers can be helpful. Declare any publishers which you prefer and
+/// update their values in suitable conditions. In the declarative part just
+/// use these publishers for describe parts of the UI, which depends on them.
+/// Here is a far from complete list of options for use as publishers:
+/// [Stream], [ChangeNotifier], [StateNotifier], [EntityStateNotifier].
+///
+/// ## The part of Elementary Lifecycle
+/// Base class contains all internal mechanisms and process that need to
+/// guarantee the conceived behavior for the Elementary library.
+///
+/// [initWidgetModel] is called only once for lifecycle
+/// of the [WidgetModel] in the really beginning before the first build.
+/// It can be used for initiate a starting state of the [WidgetModel].
+///
+/// [didUpdateWidget] called whenever widget instance in the tree has been
+/// updated. Common case where rebuild comes from the top. This method is a good
+/// place for update state of the [WidgetModel] based on the new configuration
+/// of widget. When this method is called is just a signal for decide what
+/// exactly should be updated or rebuilt. The fact of update doesn't mean that
+/// build method of the widget will be called. Set new values to publishers
+/// for rebuild concrete parts of the UI.
+///
+/// [didChangeDependencies] called whenever dependencies which [WidgetModel]
+/// subscribed with [BuildContext] change.
+/// When this method is called is just a signal for decide what
+/// exactly should be updated or rebuilt. The fact of update doesn't mean that
+/// build method of the widget will be called. Set new values to publishers
+/// for rebuild concrete parts of the UI.
+///
+/// [deactivate] called when the [WidgetModel] with [Elementary] removed from
+/// the tree.
+///
+/// [activate] called when [WidgetModel] with [Elementary] are reinserted into
+/// the tree after having been removed via [deactivate].
+///
+/// [dispose] called when [WidgetModel] is going to be permanently destroyed.
+///
+/// [reassemble] called whenever the application is reassembled during
+/// debugging, for example during the hot reload.
+///
+/// [onErrorHandle] called when the [ElementaryModel] handle error with the
+/// [ElementaryModel.handleError] method. Can be useful for general handling
+/// errors such as showing snack-bars.
 abstract class WidgetModel<W extends ElementaryWidget,
     M extends ElementaryModel> with Diagnosticable implements IWidgetModel {
   final M _model;
@@ -82,14 +277,14 @@ abstract class WidgetModel<W extends ElementaryWidget,
   @visibleForTesting
   M get model => _model;
 
-  /// Widget that uses [WidgetModel] for the building part of user interface.
+  /// Widget that uses this [WidgetModel] for building part of the user interface.
   ///
-  /// The [WidgetModel] is associated with the [Widget] by [Elementary]. This
-  /// association is temporary and can be changed when [Elementary] updates its
-  /// link to the widget. Before the first update this field contains
-  /// a widget that created this [WidgetModel].
-  ///
-  /// At the any time this field contains the actual configuration as a widget.
+  /// The [WidgetModel] has an associated [ElementaryWidget].
+  /// This relation is managed by [Elementary], and in every time of lifecycle
+  /// in this property is an actual widget. Before the first update this field
+  /// contains a widget that created this [WidgetModel]. This instance can be
+  /// changed during the lifecycle, and [didUpdateWidget] will be called each
+  /// time it is changed.
   @protected
   @visibleForTesting
   W get widget => _widget!;
@@ -129,8 +324,8 @@ abstract class WidgetModel<W extends ElementaryWidget,
 
   /// Called while the first build for initialization of this [WidgetModel].
   ///
-  /// This method is called only ones for the instance of the [WidgetModel]
-  /// while its lifecycle.
+  /// This method is called only ones for the instance of [WidgetModel]
+  /// during its lifecycle.
   @protected
   @mustCallSuper
   @visibleForTesting
@@ -140,33 +335,30 @@ abstract class WidgetModel<W extends ElementaryWidget,
       .._wmHandler = onErrorHandle;
   }
 
-  /// Called whenever the widget configuration changes.
+  /// Called whenever the widget configuration is changed.
   @protected
   @visibleForTesting
   void didUpdateWidget(W oldWidget) {}
 
-  /// Called when a dependency of this Widget Model changes.
+  /// Called when a dependency (by Build Context) of this Widget Model changes.
   ///
-  /// For example, if Widget Model has reference an
-  /// [InheritedWidget] that later changed, this
-  /// method will called to notify about change.
+  /// For example, if Widget Model has reference on [InheritedWidget].
+  /// This widget can change and method will called to notify about change.
   ///
   /// This method is also called immediately after [initWidgetModel].
-  /// It is safe to call [BuildContext.dependOnInheritedWidgetOfExactType]
-  /// from this method.
   @protected
   @visibleForTesting
   void didChangeDependencies() {}
 
-  /// Called whenever the Model use method handleError.
+  /// Called whenever [ElementaryModel.handleError] is called.
   ///
-  /// This method is the place for presentation handling error like a
-  /// showing a snack-bar or something else.
+  /// This method is a common place for presentation handling error like a
+  /// showing a snack-bar, etc.
   @protected
   @visibleForTesting
   void onErrorHandle(Object error) {}
 
-  /// Called when this WidgetModel and Elementary are removed from the tree.
+  /// Called when this [WidgetModel] and [Elementary] are removed from the tree.
   ///
   /// Implementations of this method should end with a call to the inherited
   /// method, as in `super.deactivate()`.
@@ -175,17 +367,17 @@ abstract class WidgetModel<W extends ElementaryWidget,
   @visibleForTesting
   void deactivate() {}
 
-  /// Called when this WidgetModel and Elementary are reinserted into the tree
-  /// after having been removed via [deactivate].
+  /// Called when this [WidgetModel] and [Elementary] are reinserted into
+  /// the tree after having been removed via [deactivate].
   ///
-  /// In most cases, after a WidgetModel has been deactivated, it is not
+  /// In most cases, after a [WidgetModel] has been deactivated, it is not
   /// reinserted into the tree, and its [dispose] method will be called to
   /// signal that it is ready to be garbage collected.
   ///
-  /// In some cases, however, after a WidgetModel has been deactivated, it will
-  /// reinserted it into another part of the tree (e.g., if the
-  /// subtree containing this Elementary of this WidgetModel is grafted from
-  /// one location in the tree to another due to the use of a [GlobalKey]).
+  /// In some cases, however, after a [WidgetModel] has been deactivated,
+  /// it will reinserted it into another part of the tree (e.g., if there is a
+  /// subtree uses a [GlobalKey] that match with key of the [Elementary]
+  /// linked with this [WidgetModel]).
   ///
   /// This method does not called the first time a WidgetModel object
   /// is inserted into the tree. Instead, calls [initWidgetModel] in
@@ -198,8 +390,9 @@ abstract class WidgetModel<W extends ElementaryWidget,
   @visibleForTesting
   void activate() {}
 
-  /// Called when element with this Widget Model is removed from the tree
+  /// Called when [Elementary] with this [WidgetModel] is removed from the tree
   /// permanently.
+  /// Should be used for preparation to be garbage collected.
   @protected
   @mustCallSuper
   @visibleForTesting
