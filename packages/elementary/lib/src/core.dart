@@ -534,16 +534,22 @@ final class Elementary extends ComponentElement {
   }
 }
 
-/// Class that contains a business logic for Widget.
+/// The base class for an entity that contains a business logic required for
+/// a specific inheritor of [ElementaryWidget].
 ///
-/// You can write this freestyle. It may be collection of methods,
-/// streams or something else.
+/// You can implement this class freestyle. It may be a bunch of methods,
+/// streams or something else. Also it is not a mandatory for business logic
+/// to be implemented right inside the class, this model can be proxy for other
+/// responsible entities with business logic.
 ///
-/// This class can take [ErrorHandler] for handling caught error
-/// like a logging or something else. This realize by using
-/// [handleError] method. This method also notifies the Widget Model about the
-/// error that has occurred. You can use onErrorHandle method of Widget Model
-/// to handle on UI like show snackbar or something else.
+/// This class can take [ErrorHandler] as dependency for centralize handling
+/// error (for example logging). The [handleError] method can be used for it.
+/// When the [handleError] is called passed [ErrorHandler] handles exception.
+/// Also the [WidgetModel] is notified about this exception with
+/// [WidgetModel.onErrorHandle] method.
+///
+/// ## The part of Elementary Lifecycle
+///
 abstract class ElementaryModel {
   final ErrorHandler? _errorHandler;
   void Function(Object)? _wmHandler;
@@ -551,8 +557,8 @@ abstract class ElementaryModel {
   /// Create an instance of ElementaryModel.
   ElementaryModel({ErrorHandler? errorHandler}) : _errorHandler = errorHandler;
 
-  /// Should be used for report error Error Handler if it was set and notify
-  /// Widget Model about error.
+  /// Can be used for send [error] to [ErrorHandler] if it defined and notify
+  /// [WidgetModel].
   @protected
   @mustCallSuper
   @visibleForTesting
@@ -561,12 +567,15 @@ abstract class ElementaryModel {
     _wmHandler?.call(error);
   }
 
-  /// Method for initialize this Model.
+  /// Initializes [ElementaryModel].
   ///
-  /// Will be call at first build when Widget Model created.
+  /// Called once before the first build of the [ElementaryWidget].
   void init() {}
 
-  /// Called when Widget Model disposing.
+  /// Prepares the [ElementaryModel] to be completely destroyed.
+  ///
+  /// Called once when [Elementary] going to be destroyed. Should be used for
+  /// clearing links, subscriptions, and preparation to be garbage collected.
   void dispose() {}
 
   /// Method for setup ElementaryModel for testing.
@@ -578,14 +587,16 @@ abstract class ElementaryModel {
   }
 }
 
-/// Mock that helps to prevent [NoSuchMethodError] exception when we mock ElementaryModel
+/// Mock that helps to prevent [NoSuchMethodError] exception when the
+/// ElementaryModel is mocked.
 @visibleForTesting
 mixin MockElementaryModelMixin implements ElementaryModel {
   @override
   set _wmHandler(void Function(Object)? _) {}
 }
 
-/// Mock that helps to prevent [NoSuchMethodError] exception when we mock WidgetModel
+/// Mock that helps to prevent [NoSuchMethodError] exception when the
+/// WidgetModel is mocked.
 @visibleForTesting
 mixin MockWidgetModelMixin<W extends ElementaryWidget,
     M extends ElementaryModel> implements WidgetModel<W, M> {
