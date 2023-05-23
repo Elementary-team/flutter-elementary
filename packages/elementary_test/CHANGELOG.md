@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 2.0.0-dev
+### Changed
+* supported `elementary` version increased to `^3.0.0-dev`;
+
 ## 1.1.3
 ### Changed
 * supported `elementary` version increased to `^2.0.0`;
