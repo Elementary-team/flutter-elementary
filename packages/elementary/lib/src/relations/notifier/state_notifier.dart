@@ -1,15 +1,26 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
-/// Source of some listenable property.
+/// Publisher that can store some value. As soon the value is changed
+/// all subscribers will be notified about it. When listener is adding it also
+/// initiate a notification for exactly this listener.
 ///
-/// You can set initial value by pass initValue to constructor.
+/// ## Limitation
+/// This publisher has the almost same behavior as [ValueNotifier],
+/// excepting it is not required to be initiated with value during creation.
+/// It is make you allow emit the first value lately, but at the same time
+/// make the value nullable.
+/// If you don't need such behavior for publisher, probably [ValueNotifier]
+/// is more suitable.
+///
+/// See also:
+/// [ValueNotifier], [ChangeNotifier]
 class StateNotifier<T> extends ChangeNotifier implements ListenableState<T> {
   @override
   T? get value => _value;
 
   T? _value;
 
-  /// Create an instance of StateNotifier.
+  /// Create an instance of [StateNotifier].
   StateNotifier({T? initValue}) : _value = initValue;
 
   @override
@@ -19,7 +30,7 @@ class StateNotifier<T> extends ChangeNotifier implements ListenableState<T> {
     listener.call();
   }
 
-  /// Accept new value.
+  /// Accept a new value.
   void accept(T? newValue) {
     if (_value == newValue) return;
 
@@ -28,75 +39,8 @@ class StateNotifier<T> extends ChangeNotifier implements ListenableState<T> {
   }
 }
 
-/// An interface that can be listened and return current value.
+/// An interface for instances that can be listened and return current value.
 abstract interface class ListenableState<T> extends Listenable {
-  /// Return current state
+  /// Returns current state
   T? get value;
-}
-
-/// Change notifier with value that presented by [EntityState].
-///
-/// Empty initial value create empty EntityState for initial value.
-class EntityStateNotifier<T> extends StateNotifier<EntityState<T>> {
-  /// Create an instance of EntityStateNotifier.
-  EntityStateNotifier([EntityState<T>? initialData])
-      : super(initValue: initialData ?? EntityState<T>());
-
-  /// Constructor for easy set initial value.
-  EntityStateNotifier.value(T initialData)
-      : super(
-          initValue: EntityState<T>(data: initialData),
-        );
-
-  /// Accept state with content.
-  void content(T data) => super.accept(EntityState<T>.content(data));
-
-  /// Accept state with error.
-  void error([Exception? exception, T? data]) =>
-      super.accept(EntityState<T>.error(exception, data));
-
-  /// Accept loading state.
-  void loading([T? previousData]) =>
-      super.accept(EntityState<T>.loading(previousData));
-}
-
-/// State of some logical entity.
-class EntityState<T> {
-  /// Data of entity.
-  final T? data;
-
-  /// State is loading.
-  final bool isLoading;
-
-  /// State has error.
-  final bool hasError;
-
-  /// Exception from state.
-  final Exception? error;
-
-  /// Create an instance of EntityState.
-  const EntityState({
-    this.data,
-    this.isLoading = false,
-    this.hasError = false,
-    this.error,
-  })  : assert(error == null || hasError),
-        assert(!hasError && !isLoading || hasError != isLoading);
-
-  /// Loading constructor
-  const EntityState.loading([this.data])
-      : isLoading = true,
-        hasError = false,
-        error = null;
-
-  /// Error constructor
-  const EntityState.error([this.error, this.data])
-      : isLoading = false,
-        hasError = true;
-
-  /// Content constructor
-  const EntityState.content(this.data)
-      : isLoading = false,
-        hasError = false,
-        error = null;
 }

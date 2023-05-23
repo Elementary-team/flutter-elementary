@@ -75,7 +75,7 @@ void main() {
       final value = wm.valueState.value;
 
       expect(value, isNotNull);
-      expect(value!.isLoading, isTrue);
+      expect(value.isLoadingState, isTrue);
     },
   );
 }

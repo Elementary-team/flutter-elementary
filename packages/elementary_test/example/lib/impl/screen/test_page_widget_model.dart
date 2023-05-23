@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:counter/impl/screen/test_page_model.dart';
 import 'package:counter/impl/screen/test_page_widget.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,7 @@ class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
   final ThemeWrapper _themeWrapper;
 
   @override
-  ListenableState<EntityState<int>> get valueState => _valueController;
+  ValueListenable<EntityState<int>> get valueState => _valueController;
 
   @override
   TextStyle get counterStyle => _counterStyle;
@@ -63,7 +64,7 @@ class TestPageWidgetModel extends WidgetModel<TestPageWidget, TestPageModel>
 }
 
 abstract interface class ITestPageWidgetModel implements IWidgetModel {
-  ListenableState<EntityState<int>> get valueState;
+  ValueListenable<EntityState<int>> get valueState;
 
   TextStyle get counterStyle;
 

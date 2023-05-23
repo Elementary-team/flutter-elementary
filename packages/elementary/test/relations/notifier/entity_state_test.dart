@@ -3,82 +3,85 @@ import 'package:flutter_test/flutter_test.dart';
 
 /// Tests for [EntityState].
 void main() {
-  test('Data should be equal to init data', () {
+  test('Data for every type of states should be equal to init data', () {
     const data = 1;
-    const state = EntityState<int>(data: data);
+    final state = EntityState<int>.content(data);
+    final loadingState = EntityState<int>.loading(data);
+    final errorState = EntityState<int>.error(null, data);
+
     expect(state.data, equals(data));
+    expect(loadingState.data, equals(data));
+    expect(errorState.data, equals(data));
   });
 
-  test('Error should be equal to init error', () {
-    final error = Exception('test');
-    final state = EntityState<int>(error: error, hasError: true);
-    expect(state.error, equals(error));
-  });
+  test('Data for every type should be null if is not init', () {
+    final state = EntityState<int>.content();
+    final loadingState = EntityState<int>.loading();
+    final errorState = EntityState<int>.error();
 
-  test('Has error should be equal to init has error', () {
-    const state = EntityState<int>(hasError: true);
-    expect(state.hasError, isTrue);
-  });
-
-  test('Loading should be equal to init loading', () {
-    const state = EntityState<int>(isLoading: true);
-    expect(state.isLoading, isTrue);
-  });
-
-  test('Data should be equal to init data', () {
-    const state = EntityState<int>(data: 1);
-    expect(state.data, 1);
-  });
-
-  test('Data should be null if not init', () {
-    const state = EntityState<int>();
     expect(state.data, isNull);
+    expect(loadingState.data, isNull);
+    expect(errorState.data, isNull);
   });
 
-  test('Error should be null if not init', () {
-    const state = EntityState<int>();
-    expect(state.error, isNull);
+  test('Content factory should return ContentEntityState instance', () {
+    const data = 1;
+    final state = EntityState<int>.content(data);
+
+    expect(state, const TypeMatcher<ContentEntityState<int>>());
   });
 
-  test('Loading should be false if not init', () {
-    const state = EntityState<int>();
-    expect(state.isLoading, isFalse);
-  });
-
-  test('Has error should be false if not init', () {
-    const state = EntityState<int>();
-    expect(state.hasError, isFalse);
-  });
-
-  test('Error without hasError should throw assert exception', () {
+  test('Error factory should return ErrorEntityState instance', () {
     final error = Exception('test');
-    expect(() => EntityState<int>(error: error), throwsAssertionError);
+    final state = EntityState<int>.error(error);
+
+    expect(state, const TypeMatcher<ErrorEntityState<int>>());
   });
 
-  test('Loading and Error in same time should throw assert exception', () {
-    expect(
-      () => EntityState<int>(hasError: true, isLoading: true),
-      throwsAssertionError,
-    );
+  test('Loading factory should return LoadingEntityState instance', () {
+    const data = 1;
+    final state = EntityState<int>.loading(data);
+
+    expect(state, const TypeMatcher<LoadingEntityState<int>>());
   });
 
-  test('Loading constructor should create correct entity', () {
-    const state = EntityState<int>.loading();
-    expect(state.isLoading, isTrue);
-    expect(state.hasError, isFalse);
-    expect(state.error, isNull);
+  test('Error for error state should be equal to init error', () {
+    final error = Exception('test');
+    final state = EntityState<int>.error(error);
+
+    expect((state as ErrorEntityState).error, equals(error));
   });
 
-  test('Error constructor should create correct entity', () {
-    const state = EntityState<int>.error();
-    expect(state.isLoading, isFalse);
-    expect(state.hasError, isTrue);
+  test('isErrorState should return correct result', () {
+    final state = EntityState<int>.content(1);
+    final loadingState = EntityState<int>.loading(1);
+    final errorState = EntityState<int>.error(null, 1);
+
+    expect(state.isErrorState, isFalse);
+    expect(loadingState.isErrorState, isFalse);
+    expect(errorState.isErrorState, isTrue);
   });
 
-  test('Content constructor should create correct entity', () {
-    const state = EntityState<int>.content(1);
-    expect(state.isLoading, isFalse);
-    expect(state.hasError, isFalse);
-    expect(state.data, 1);
+  test('isLoadingState should return correct result', () {
+    final state = EntityState<int>.content(1);
+    final loadingState = EntityState<int>.loading(1);
+    final errorState = EntityState<int>.error(null, 1);
+
+    expect(state.isLoadingState, isFalse);
+    expect(loadingState.isLoadingState, isTrue);
+    expect(errorState.isLoadingState, isFalse);
+  });
+
+  test('errorOrNull should return correct result', () {
+    final error = Exception('test');
+    final state = EntityState<int>.content(1);
+    final loadingState = EntityState<int>.loading(1);
+    final errorState = EntityState<int>.error(error, 1);
+    final errorStateWithoutError = EntityState<int>.error(null, 1);
+
+    expect(state.errorOrNull, isNull);
+    expect(loadingState.errorOrNull, isNull);
+    expect(errorStateWithoutError.errorOrNull, isNull);
+    expect(errorState.errorOrNull, equals(error));
   });
 }

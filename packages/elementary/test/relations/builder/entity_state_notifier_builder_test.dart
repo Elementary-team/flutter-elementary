@@ -1,4 +1,5 @@
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
@@ -38,7 +39,7 @@ void main() {
     'When state with content should call build method',
     (tester) async {
       final testData = TestEntity();
-      testEntity = EntityState<TestEntity>(data: testData);
+      testEntity = EntityState<TestEntity>.content(testData);
       when(() => listenableState.value).thenReturn(testEntity);
 
       await tester.pumpWidget(testingWidget);
@@ -73,10 +74,45 @@ void main() {
       verify(() => errorBuilder.call(any(), exception, testData)).called(1);
     },
   );
+
+  testWidgets(
+    'Default builder should be called for error state when errorBuilder is not set',
+    (tester) async {
+      final testData = TestEntity();
+      final exception = Exception('test');
+      testEntity = EntityState<TestEntity>.error(exception, testData);
+      when(() => listenableState.value).thenReturn(testEntity);
+      testingWidget = EntityStateNotifierBuilder<TestEntity>(
+        listenableEntityState: listenableState,
+        builder: builder.call,
+      );
+
+      await tester.pumpWidget(testingWidget);
+
+      verify(() => builder.call(any(), testData)).called(1);
+    },
+  );
+
+  testWidgets(
+    'Default builder should be called for loading state when loadingBuilder is not set',
+    (tester) async {
+      final testData = TestEntity();
+      testEntity = EntityState<TestEntity>.loading(testData);
+      when(() => listenableState.value).thenReturn(testEntity);
+      testingWidget = EntityStateNotifierBuilder<TestEntity>(
+        listenableEntityState: listenableState,
+        builder: builder.call,
+      );
+
+      await tester.pumpWidget(testingWidget);
+
+      verify(() => builder.call(any(), testData)).called(1);
+    },
+  );
 }
 
 class ListenableEntityStateMock<T> extends Mock
-    implements ListenableState<EntityState<T>> {}
+    implements ValueListenable<EntityState<T>> {}
 
 class MockBuilder<T> extends Mock {
   Widget call(BuildContext context, T? value);

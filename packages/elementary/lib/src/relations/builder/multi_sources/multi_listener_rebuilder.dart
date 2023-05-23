@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// Widget which rebuild when anyone of the listeners
+/// Builder that initiates rebuild when anyone of the listeners
 /// in the [listenableList] changed.
 class MultiListenerRebuilder extends StatefulWidget {
   /// A collection of Listenable elements whose changes are to be listened for.
@@ -9,7 +9,7 @@ class MultiListenerRebuilder extends StatefulWidget {
   /// Builder which build a widget when any listened get update.
   final Widget Function(BuildContext context) builder;
 
-  /// Create an instance of [MultiListenerRebuilder]
+  /// Creates an instance of [MultiListenerRebuilder]
   const MultiListenerRebuilder({
     Key? key,
     required this.listenableList,
@@ -17,11 +17,10 @@ class MultiListenerRebuilder extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  MultiListenerRebuilderState createState() => MultiListenerRebuilderState();
+  State<MultiListenerRebuilder> createState() => _MultiListenerRebuilderState();
 }
 
-/// State for the [MultiListenerRebuilder].
-class MultiListenerRebuilderState extends State<MultiListenerRebuilder> {
+class _MultiListenerRebuilderState extends State<MultiListenerRebuilder> {
   @override
   void initState() {
     super.initState();

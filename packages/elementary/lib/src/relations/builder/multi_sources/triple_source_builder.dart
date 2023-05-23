@@ -1,7 +1,7 @@
 import 'package:elementary/src/relations/notifier/state_notifier.dart';
 import 'package:flutter/material.dart';
 
-/// Builder for presentation ui part using two listenable states.
+/// Builder that uses three [ListenableState] sources of data.
 class TripleSourceBuilder<F, S, T> extends StatefulWidget {
   /// State that used to detect change and rebuild.
   final ListenableState<F> firstSource;
@@ -21,7 +21,7 @@ class TripleSourceBuilder<F, S, T> extends StatefulWidget {
     T? thirdValue,
   ) builder;
 
-  /// Create an instance of DoubleSourceBuilder.
+  /// Creates an instance of [TripleSourceBuilder].
   const TripleSourceBuilder({
     Key? key,
     required this.firstSource,
@@ -31,12 +31,11 @@ class TripleSourceBuilder<F, S, T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  TripleSourceBuilderState<F, S, T> createState() =>
-      TripleSourceBuilderState<F, S, T>();
+  State<TripleSourceBuilder<F, S, T>> createState() =>
+      _TripleSourceBuilderState<F, S, T>();
 }
 
-/// State for the [TripleSourceBuilder].
-class TripleSourceBuilderState<F, S, T>
+class _TripleSourceBuilderState<F, S, T>
     extends State<TripleSourceBuilder<F, S, T>> {
   F? _firstValue;
   S? _secondValue;

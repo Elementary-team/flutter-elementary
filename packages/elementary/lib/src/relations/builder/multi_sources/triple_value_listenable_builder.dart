@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-/// Builder for UI part presentation using two [ValueListenable].
+/// Builder that uses three [ValueListenable] sources of data.
 class TripleValueListenableBuilder<F, S, T> extends StatefulWidget {
   /// State that is used to detect change and rebuild.
   final ValueListenable<F> firstValue;
@@ -21,7 +21,7 @@ class TripleValueListenableBuilder<F, S, T> extends StatefulWidget {
     T thirdValue,
   ) builder;
 
-  /// Create an instance of TripleValueListenableBuilder.
+  /// Creates an instance of [TripleValueListenableBuilder].
   const TripleValueListenableBuilder({
     Key? key,
     required this.firstValue,

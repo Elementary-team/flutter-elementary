@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-/// Builder for UI part presentation using two [ValueListenable].
+/// Builder that uses two [ValueListenable] sources of data.
 class DoubleValueListenableBuilder<F, S> extends StatefulWidget {
   /// State that is used to detect change and rebuild.
   final ValueListenable<F> firstValue;
@@ -14,7 +14,7 @@ class DoubleValueListenableBuilder<F, S> extends StatefulWidget {
   final Widget Function(BuildContext context, F firstValue, S secondValue)
       builder;
 
-  /// Create an instance of DoubleValueListenableBuilder.
+  /// Creates an instance of [DoubleValueListenableBuilder].
   const DoubleValueListenableBuilder({
     Key? key,
     required this.firstValue,
