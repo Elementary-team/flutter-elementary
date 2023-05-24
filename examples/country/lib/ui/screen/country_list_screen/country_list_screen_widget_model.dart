@@ -4,6 +4,7 @@ import 'package:country/ui/screen/country_list_screen/country_list_screen.dart';
 import 'package:country/ui/screen/country_list_screen/country_list_screen_model.dart';
 import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +25,7 @@ class CountryListScreenWidgetModel
   final _countryListState = EntityStateNotifier<List<Country>>();
 
   @override
-  ListenableState<EntityState<List<Country>>> get countryListState =>
+  ValueListenable<EntityState<List<Country>>> get countryListState =>
       _countryListState;
 
   @override
@@ -51,7 +52,7 @@ class CountryListScreenWidgetModel
     super.onErrorHandle(error);
 
     if (error is DioError &&
-        (error.type == DioErrorType.connectTimeout ||
+        (error.type == DioErrorType.connectionTimeout ||
             error.type == DioErrorType.receiveTimeout)) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Connection troubles')));
@@ -59,7 +60,7 @@ class CountryListScreenWidgetModel
   }
 
   Future<void> _loadCountryList() async {
-    final previousData = _countryListState.value?.data;
+    final previousData = _countryListState.value.data;
     _countryListState.loading(previousData);
 
     try {
@@ -72,8 +73,8 @@ class CountryListScreenWidgetModel
 }
 
 /// Interface of [CountryListScreenWidgetModel]
-abstract class ICountryListWidgetModel extends IWidgetModel {
-  ListenableState<EntityState<List<Country>>> get countryListState;
+abstract class ICountryListWidgetModel implements IWidgetModel {
+  ValueListenable<EntityState<List<Country>>> get countryListState;
 
   TextStyle get countryNameStyle;
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/features/app/di/app_scope.dart';
 import 'package:profile/features/navigation/domain/entity/app_coordinate.dart';
@@ -53,7 +54,7 @@ class PersonalDataScreenWidgetModel
   GlobalKey<FormState> get formKey => _formKey;
 
   @override
-  ListenableState<EntityState<Profile>> get profileEntityState =>
+  ValueListenable<EntityState<Profile>> get profileEntityState =>
       _profileEntityState;
 
   @override
@@ -192,7 +193,7 @@ class PersonalDataScreenWidgetModel
 }
 
 /// Interface of [PersonalDataScreenWidgetModel].
-abstract class IPersonalDataWidgetModel extends IWidgetModel {
+abstract class IPersonalDataWidgetModel implements IWidgetModel {
   /// Validation form key for surname.
   GlobalKey<FormState> get formKey;
 
@@ -209,7 +210,7 @@ abstract class IPersonalDataWidgetModel extends IWidgetModel {
   TextEditingController get birthdayEditingController;
 
   /// State of state.
-  ListenableState<EntityState<Profile>> get profileEntityState;
+  ValueListenable<EntityState<Profile>> get profileEntityState;
 
   /// Function to open DatePicker.
   Future<void> onDateTap(BuildContext context);

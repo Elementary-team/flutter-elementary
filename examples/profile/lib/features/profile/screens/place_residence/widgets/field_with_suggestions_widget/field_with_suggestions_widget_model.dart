@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:async/async.dart';
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/features/app/di/app_scope.dart';
 import 'package:profile/features/profile/screens/place_residence/utils/overlay_entry_controller.dart';
@@ -38,7 +39,7 @@ class FieldWithSuggestionsWidgetModel
   FocusNode get focusNode => _focusNode;
 
   @override
-  ListenableState<EntityState<List<String>>> get listSuggestionsState =>
+  ValueListenable<EntityState<List<String>>> get listSuggestionsState =>
       _listSuggestionsState;
 
   @override
@@ -133,8 +134,7 @@ class FieldWithSuggestionsWidgetModel
   bool _shouldShowOptions() {
     return _focusNode.hasFocus &&
         _selection == null &&
-        _controller.text.isNotEmpty &&
-        _listSuggestionsState.value != null;
+        _controller.text.isNotEmpty;
   }
 
   void _onSelected(String value) {
@@ -149,7 +149,7 @@ class FieldWithSuggestionsWidgetModel
 }
 
 /// Interface of [FieldWithSuggestionsWidgetModel].
-abstract class IFieldWithSuggestionsWidgetModel extends IWidgetModel {
+abstract class IFieldWithSuggestionsWidgetModel implements IWidgetModel {
   /// Text editing controller.
   TextEditingController get controller;
 
@@ -157,7 +157,7 @@ abstract class IFieldWithSuggestionsWidgetModel extends IWidgetModel {
   FocusNode get focusNode;
 
   /// Suggestions state.
-  ListenableState<EntityState<List<String>>> get listSuggestionsState;
+  ValueListenable<EntityState<List<String>>> get listSuggestionsState;
 
   /// Layer link for list suggestion.
   LayerLink get optionsLayerLink;

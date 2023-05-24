@@ -10,7 +10,7 @@ abstract class MockWM extends Mock with Diagnosticable {}
 class ListenableStateMock<T> extends Mock implements ListenableState<T> {}
 
 class ListenableEntityStateMock<T> extends Mock
-    implements ListenableState<EntityState<T>> {}
+    implements ValueListenable<EntityState<T>> {}
 
 // Реализация подмены http клиента для загрузки Image.network
 R provideMockedNetworkImages<R>(R Function() body, {List<int>? imageBytes}) {

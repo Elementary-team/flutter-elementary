@@ -136,7 +136,7 @@ class PlaceResidenceScreenWidgetModel
 }
 
 /// Interface of [PlaceResidenceScreenWidgetModel].
-abstract class IPlaceResidenceScreenWidgetModel extends IWidgetModel {
+abstract class IPlaceResidenceScreenWidgetModel implements IWidgetModel {
   /// Text Editing controller for [FieldWithSuggestionsWidget].
   TextEditingController get controller;
 

@@ -34,7 +34,7 @@ void main() {
 
   testGoldens('CountryListScreen loading test', (tester) async {
     when(() => countryListStateMock.value).thenReturn(
-      const EntityState.loading(),
+      EntityState.loading(),
     );
 
     await tester.pumpWidgetBuilder(
@@ -46,7 +46,7 @@ void main() {
 
   testGoldens('CountryListScreen error test', (tester) async {
     when(() => countryListStateMock.value).thenReturn(
-      const EntityState.error(),
+      EntityState.error(),
     );
 
     await tester.pumpWidgetBuilder(

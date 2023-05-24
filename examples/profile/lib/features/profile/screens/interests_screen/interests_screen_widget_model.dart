@@ -1,4 +1,5 @@
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/assets/strings/interests_screen_strings.dart';
 import 'package:profile/features/app/di/app_scope.dart';
@@ -48,7 +49,7 @@ class InterestsScreenWidgetModel
       _listUserInterestsState;
 
   @override
-  ListenableState<EntityState<List<String>>> get listAllInterestsEntityState =>
+  ValueListenable<EntityState<List<String>>> get listAllInterestsEntityState =>
       _listAllInterestsEntityState;
 
   /// Create an instance [InterestsScreenWidgetModel].
@@ -124,9 +125,9 @@ class InterestsScreenWidgetModel
 }
 
 /// Interface of [IInterestsScreenWidgetModel].
-abstract class IInterestsScreenWidgetModel extends IWidgetModel {
+abstract class IInterestsScreenWidgetModel implements IWidgetModel {
   /// All interest list state.
-  ListenableState<EntityState<List<String>>> get listAllInterestsEntityState;
+  ValueListenable<EntityState<List<String>>> get listAllInterestsEntityState;
 
   /// Status of selected checkboxes.
   ListenableState<List<String>> get listUserInterestsState;

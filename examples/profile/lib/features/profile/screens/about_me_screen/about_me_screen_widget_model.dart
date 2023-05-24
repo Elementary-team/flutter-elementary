@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:elementary/elementary.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/assets/strings/about_me_screen_strings.dart';
 import 'package:profile/features/app/di/app_scope.dart';
@@ -56,7 +57,7 @@ class AboutMeScreenWidgetModel
   ListenableState<String> get buttonState => _buttonState;
 
   @override
-  ListenableState<EntityState<Profile>> get saveEntityState => _saveEntityState;
+  ValueListenable<EntityState<Profile>> get saveEntityState => _saveEntityState;
 
   String? _initialInfo;
 
@@ -151,7 +152,7 @@ class AboutMeScreenWidgetModel
 }
 
 /// Interface of [AboutMeScreenWidgetModel].
-abstract class IAboutMeScreenWidgetModel extends IWidgetModel {
+abstract class IAboutMeScreenWidgetModel implements IWidgetModel {
   /// Focus node.
   FocusNode get focusNode;
 
@@ -162,7 +163,7 @@ abstract class IAboutMeScreenWidgetModel extends IWidgetModel {
   ListenableState<String> get buttonState;
 
   /// Save state.
-  ListenableState<EntityState<Profile>> get saveEntityState;
+  ValueListenable<EntityState<Profile>> get saveEntityState;
 
   /// Function to save user info in [Profile].
   void updateAboutMe();
