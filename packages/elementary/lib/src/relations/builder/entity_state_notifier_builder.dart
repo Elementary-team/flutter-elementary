@@ -2,36 +2,42 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-/// Builder that uses [ValueListenable] parametrized by [EntityState] as
+/// A builder that uses [ValueListenable] parameterized by [EntityState] as
 /// a source of data.
-/// Usually can be helpful with the [EntityStateNotifier].
+/// This builder is usually helpful with the [EntityStateNotifier].
 ///
-/// This builder uses 3 possible builders function:
-/// [errorBuilder] - for the case when [listenableEntityState] value is error
-/// state of [EntityState].
-/// [loadingBuilder] - for the case when [listenableEntityState] value is
-/// loading state of [EntityState].
-/// [builder] - the default one includes all previous when [errorBuilder] and
-/// [loadingBuilder] are not set, and for the content state of [EntityState].
+/// This builder supports three possible builder functions:
+///
+/// * [errorBuilder] - used when [listenableEntityState] value
+/// represents an error state of [EntityState.error].
+/// * [loadingBuilder] - used when [listenableEntityState] value represents
+/// a loading state of [EntityState.loading].
+/// * [builder] - the default builder that encompasses the previous two
+/// cases when [errorBuilder] and [loadingBuilder] are not set,
+/// and is used for the content state of [EntityState].
 class EntityStateNotifierBuilder<T> extends StatelessWidget {
   /// Source that used to detect change and rebuild.
   final ValueListenable<EntityState<T>> listenableEntityState;
 
   /// Default builder that is used for the content state and all other states if
-  /// special builders are not specified.
+  /// no special builders are specified.
   final DataWidgetBuilder<T> builder;
 
   /// Builder that used for the loading state.
+  ///
   /// See also:
-  /// [EntityState], [LoadingEntityState]
+  /// * [EntityState]
+  /// * [LoadingEntityState]
   final LoadingWidgetBuilder<T>? loadingBuilder;
 
   /// Builder that used for the error state.
+  ///
   /// See also:
-  /// [EntityState], [LoadingEntityState]
+  /// * [EntityState]
+  /// * [LoadingEntityState]
   final ErrorWidgetBuilder<T>? errorBuilder;
 
-  /// Create an instance of EntityStateNotifierBuilder.
+  /// Creates an instance of [EntityStateNotifierBuilder].
   const EntityStateNotifierBuilder({
     Key? key,
     required this.listenableEntityState,
@@ -62,21 +68,24 @@ class EntityStateNotifierBuilder<T> extends StatelessWidget {
 }
 
 /// Builder function for loading state.
+///
 /// See also:
-///   [EntityState] - State of some logical entity.
+/// * [EntityState] - State of some logical entity.
 typedef LoadingWidgetBuilder<T> = Widget Function(
   BuildContext context,
   T? data,
 );
 
 /// Builder function for content state.
+///
 /// See also:
-///   [EntityState] - State of some logical entity.
+/// * [EntityState] - State of some logical entity.
 typedef DataWidgetBuilder<T> = Widget Function(BuildContext context, T? data);
 
 /// Builder function for error state.
+///
 /// See also:
-///   [EntityState] - State of some logical entity.
+/// * [EntityState] - State of some logical entity.
 typedef ErrorWidgetBuilder<T> = Widget Function(
   BuildContext context,
   Exception? e,

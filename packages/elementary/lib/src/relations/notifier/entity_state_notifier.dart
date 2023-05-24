@@ -28,17 +28,21 @@ class EntityStateNotifier<T> extends ValueNotifier<EntityState<T>> {
   }
 }
 
-/// Describes a state of the stored value. Can be helpful to interact with
-/// values over the network, or other options with long asynchronous operations.
+/// Describes the state of the stored value. It can be helpful when
+/// interacting with values over the network or other options involving
+/// long asynchronous operations.
 ///
-/// Can be in one of three possible states:
-/// ## loading
-/// This state means the value in a process of loading.
+/// It can be in one of three possible states:
+/// ## Loading
+/// This state indicates that the value is currently being loaded.
+/// This state doesn't exclude the existence of a value while the actual value
+/// is being in loading, such as the previous value.
 /// Concrete implementation for this state is [LoadingEntityState].
 /// ## error
-/// This state means there is a problem with the value, for example trying to
-/// load ends with exception. This state doesn't exclude the value exist, for
-/// example it can be previous value, but emphasise the fact of problems.
+/// This state indicates that there is a problem with the value,
+/// such as an exception occurring during the loading process.
+/// This state doesn't exclude the existence of a value, for example
+/// it can refer to the previous value, but emphasizes the presence of problems.
 /// Concrete implementation for this state is [ErrorEntityState].
 /// ## content
 /// This state means some value is stored, without highlight additional aspects.
@@ -52,17 +56,17 @@ sealed class EntityState<T> {
     this.data,
   });
 
-  /// Loading constructor
+  /// Loading constructor.
   factory EntityState.loading([T? data]) {
     return LoadingEntityState<T>(data: data);
   }
 
-  /// Error constructor
+  /// Error constructor.
   factory EntityState.error([Exception? error, T? data]) {
     return ErrorEntityState<T>(error: error, data: data);
   }
 
-  /// Content constructor
+  /// Content constructor.
   factory EntityState.content([T? data]) {
     return ContentEntityState<T>(data: data);
   }

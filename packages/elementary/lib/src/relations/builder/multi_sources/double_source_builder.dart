@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 /// Builder that uses two [ListenableState] sources of data.
 class DoubleSourceBuilder<F, S> extends StatefulWidget {
   /// State that used to detect change and rebuild.
+  ///
+  /// {@macro state_notifier.short_description}
   final ListenableState<F> firstSource;
 
   /// State that used to detect change and rebuild.
+  ///
+  /// {@macro state_notifier.short_description}
   final ListenableState<S> secondSource;
 
-  /// Function that used to describe the part of the user interface
+  /// Function that is used to describe the part of the user interface
   /// represented by this widget.
   final Widget Function(BuildContext context, F? firstValue, S? secondValue)
       builder;

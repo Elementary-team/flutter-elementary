@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-/// Builder that initiates rebuild when anyone of the listeners
-/// in the [listenableList] changed.
+/// Builder that initiates a rebuild when any of the listeners in the
+/// [listenableList] changes.
 class MultiListenerRebuilder extends StatefulWidget {
   /// A collection of Listenable elements whose changes are to be listened for.
   final Iterable<Listenable> listenableList;

@@ -1,19 +1,21 @@
 import 'package:flutter/foundation.dart';
 
-/// Publisher that can store some value. As soon the value is changed
-/// all subscribers will be notified about it. When listener is adding it also
-/// initiate a notification for exactly this listener.
+/// Publisher that can store a value. Whenever the value changes,
+/// all subscribers will be notified. When a listener is added, it also
+/// initiates a notification specifically for that listener.
 ///
 /// ## Limitation
-/// This publisher has the almost same behavior as [ValueNotifier],
-/// excepting it is not required to be initiated with value during creation.
-/// It is make you allow emit the first value lately, but at the same time
-/// make the value nullable.
-/// If you don't need such behavior for publisher, probably [ValueNotifier]
-/// is more suitable.
+/// This publisher behaves almost the same as [ValueNotifier],
+/// except that it is not required to be initialized with a value
+/// during creation.
+/// This allows you to emit the first value later, but it also makes the
+/// value nullable.
+/// If you don't need this behavior for the publisher, [ValueNotifier]
+/// is likely more suitable.
 ///
 /// See also:
-/// [ValueNotifier], [ChangeNotifier]
+/// * [ValueNotifier]
+/// * [ChangeNotifier]
 class StateNotifier<T> extends ChangeNotifier implements ListenableState<T> {
   @override
   T? get value => _value;
@@ -40,7 +42,12 @@ class StateNotifier<T> extends ChangeNotifier implements ListenableState<T> {
 }
 
 /// An interface for instances that can be listened and return current value.
+///
+/// {@template state_notifier.short_description}
+/// Basically, it is the state that is used to detect changes and
+/// trigger a rebuild.
+/// {@endtemplate}
 abstract interface class ListenableState<T> extends Listenable {
-  /// Returns current state
+  /// Returns current state.
   T? get value;
 }
