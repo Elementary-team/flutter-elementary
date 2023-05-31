@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 
 /// Publisher that uses [EntityState] to describe concrete state of stored data.
-class EntityStateNotifier<T> extends ValueNotifier<EntityState<T>> {
+class EntityStateNotifier<T> extends ValueNotifier<EntityState<T>>
+    implements EntityValueListenable<T> {
   /// Creates an instance of [EntityStateNotifier].
   EntityStateNotifier([EntityState<T>? initialData])
       : super(initialData ?? EntityState<T>.content());
@@ -110,3 +111,9 @@ final class ErrorEntityState<T> extends ContentEntityState<T> {
   /// Creates an instance of [ErrorEntityState].
   const ErrorEntityState({this.error, super.data});
 }
+
+/// Alias for [EntityStateNotifier] interface.
+///
+/// Can be useful for simplify description of Widget Model interface.
+abstract interface class EntityValueListenable<T>
+    implements ValueListenable<EntityState<T>> {}

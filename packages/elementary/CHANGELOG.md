@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+### Added
+* Alias for EntityStateNotifier's interface
 
 ## 3.0.0-dev
 ### Added
