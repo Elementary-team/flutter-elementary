@@ -38,6 +38,26 @@ Benefits from using:
 - speed boost for a team consisting of more than one person, due to the easy sharing of independent task-parts among
   team members.
 
+## Environment
+
+For reduce amount of boilerplate and the manual work, for Elementary there are few options:
+
+- [elementary_cli](https://pub.dev/packages/elementary_cli) - command line util helps with boilerplate generation;
+- [plugin for IntelliJ](https://plugins.jetbrains.com/plugin/18099-elementary) - plugin for IntelliJ IDE family,
+based on elementary_cli;
+- [plugin for VSCode](https://marketplace.visualstudio.com/items?itemName=ElementaryTeam.elementary) - plugin for VSCode,
+based on elementary_cli;
+- [elementary brick](https://brickhub.dev/bricks/elementary/0.0.2) - command line util helps with boilerplate generation,
+based on mason.
+
+## Examples
+
+[Country](https://github.com/Elementary-team/flutter-elementary/tree/main/examples/country) - general example how to use elementary for development;
+
+[Elementary with Redux](https://github.com/Elementary-team/flutter-elementary/tree/main/examples/elementary_redux) - example how to use elementary + redux;
+
+[Profile](https://github.com/Elementary-team/flutter-elementary/tree/main/examples/profile) - example shows the feature with the process that spread by separate screens, and also how to use elementary + bloc;
+
 ## Maintainer
 
 <a href="https://github.com/MbIXjkee">
