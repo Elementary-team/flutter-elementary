@@ -227,7 +227,7 @@ abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
 /// update their values in suitable conditions. In the declarative part just
 /// use these publishers for describe parts of the UI, which depends on them.
 /// Here is a far from complete list of options for use as publishers:
-/// [Stream], [ChangeNotifier], [StateNotifier], [EntityStateNotifier].
+/// [Stream], [ChangeNotifier], StateNotifier, EntityStateNotifier.
 ///
 /// ## The part of Elementary Lifecycle
 /// Base class contains all internal mechanisms and process that need to
@@ -248,7 +248,7 @@ abstract class ElementaryWidget<I extends IWidgetModel> extends Widget {
 /// [didChangeDependencies] called whenever dependencies which [WidgetModel]
 /// subscribed with [BuildContext] change.
 /// When this method is called is just a signal for decide what
-/// exactly should be updated or rebuilt. The fact of update doesn't mean that
+/// exactly should be updated or rebuilt. The fact of the call doesn't mean that
 /// build method of the widget will be called. Set new values to publishers
 /// for rebuild concrete parts of the UI.
 ///

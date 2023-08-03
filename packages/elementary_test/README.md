@@ -1,16 +1,23 @@
 # Elementary-test
+###
+<p align="center">
+    <img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo">
+</p>
 
-<img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo" style="margin:50px 0px">
+###
 
-[![Pub Version](https://img.shields.io/pub/v/elementary_test?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_test)
-[![Pub points](https://badgen.net/pub/points/elementary_test)](https://pub.dev/packages/elementary_test)
-[![Pub Likes](https://badgen.net/pub/likes/elementary_test)](https://pub.dev/packages/elementary_test)
-[![Pub popularity](https://badgen.net/pub/popularity/elementary_test)](https://pub.dev/packages/elementary_test)
+<p align="center">
+    <a href="https://github.com/MbIXjkee"><img src="https://img.shields.io/badge/Owner-mbixjkee-red.svg" alt="Owner"></a>
+    <a href="https://pub.dev/packages/elementary_test"><img src="https://img.shields.io/pub/v/elementary_test?logo=dart&logoColor=white" alt="Pub Version"></a>
+    <a href="https://pub.dev/packages/elementary_test"><img src="https://badgen.net/pub/points/elementary_test" alt="Pub points"></a>
+    <a href="https://pub.dev/packages/elementary_test"><img src="https://badgen.net/pub/likes/elementary_test" alt="Pub Likes"></a>
+    <a href="https://pub.dev/packages/elementary_test"><img src="https://badgen.net/pub/popularity/elementary_test" alt="Pub popularity"></a>
+</p>
+
 
 ## Description
 
 A handy testing library for the apps built with Elementary.
-This one’s helpful when used with the Elementary architecture package.
 
 ## Overview
 
@@ -88,10 +95,37 @@ void main() {
 }
 ```
 
-## Sponsor
-
-Our main sponsor is [Surf](https://surf.ru/).
-
 ## Maintainer
 
-[Mikhail Zotyev](https://github.com/MbIXjkee)
+<a href="https://github.com/MbIXjkee">
+    <div style="display: inline-block;">
+        <img src="https://i.ibb.co/6Hhpg5L/circle-ava-jedi.png" height="64" width="64" alt="Maintainer avatar">
+        <p style="float:right; margin-left: 8px;">Mikhail Zotyev</p>
+    </div>
+</a>
+
+## Contributors thanks
+
+Big thanks to all these people, who put their effort to help the project.
+
+![contributors](https://contributors-img.firebaseapp.com/image?repo=Elementary-team/flutter-elementary)
+<a href="https://github.com/Elementary-team/flutter-elementary/graphs/contributors"></a>
+
+Special thanks to:
+
+[Dmitry Krutskikh](https://github.com/dkrutskikh), [Konoshenko Vlad](https://github.com/vlkonoshenko),
+[Denis Grafov](https://github.com/grafovdenis) for the early adoption and the first production feedback;
+
+[Alex Bukin](https://github.com/AlexeyBukin) for IDE plugins;
+
+All members of the Surf Flutter Team for actively using and providing feedback.
+
+## Sponsorship
+
+Special sponsor of the project:
+
+<a href="https://surf.ru/">
+<img src="https://surf.ru/wp-content/themes/surf/assets/img/logo.svg" alt="Surf"/>
+</a>
+
+For all questions regarding sponsorship/collaboration connect with [Mikhail Zotyev](https://github.com/MbIXjkee).

@@ -9,6 +9,8 @@ environment:
 dependencies:
   elementary:
     path: ../
+  elementary_helper:
+    path: ../../elementary_helper
   flutter:
     sdk: flutter
 

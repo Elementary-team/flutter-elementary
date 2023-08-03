@@ -1,10 +1,12 @@
 # Elementary-helper
+###
+<p align="center">
+    <img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo">
+</p>
 
-<div style="text-align: center;">
-    <img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo" style="margin:50px 0px">
-</div>
+###
 
-<div style="text-align: center;">
+<p align="center">
     <a href="https://github.com/MbIXjkee"><img src="https://img.shields.io/badge/Owner-mbixjkee-red.svg" alt="Owner"></a>
     <a href="https://pub.dev/packages/elementary_helper"><img src="https://img.shields.io/pub/v/elementary_helper?logo=dart&logoColor=white" alt="Pub Version"></a>
     <a href="https://app.codecov.io/gh/Elementary-team/flutter-elementary"><img src="https://img.shields.io/codecov/c/github/Elementary-team/flutter-elementary?flag=elementary_helper&logo=codecov&logoColor=white" alt="Coverage Status"></a>
@@ -13,7 +15,7 @@
     <a href="https://pub.dev/packages/elementary_helper"><img src="https://badgen.net/pub/popularity/elementary_helper" alt="Pub popularity"></a>
     <a href="https://github.com/Elementary-team/flutter-elementary/graphs/contributors"><img src="https://badgen.net/github/contributors/Elementary-team/flutter-elementary" alt="Contributors"></a>
     <a href="https://github.com/Elementary-team/flutter-elementary/blob/main/LICENSE"><img src="https://badgen.net/github/license/Elementary-team/flutter-elementary" alt="License"></a>
-</div>
+</p>
 
 ## Description
 
@@ -211,7 +213,7 @@ void somewhereInTheBuildFunction() {
 
 <a href="https://github.com/MbIXjkee">
     <div style="display: inline-block;">
-        <img src="https://avatars.githubusercontent.com/u/14325911?v=4" height="64" width="64" style="border-radius: 50%" alt="Maintainer avatar">
+        <img src="https://i.ibb.co/6Hhpg5L/circle-ava-jedi.png" height="64" width="64" alt="Maintainer avatar">
         <p style="float:right; margin-left: 8px;">Mikhail Zotyev</p>
     </div>
 </a>

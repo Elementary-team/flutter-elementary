@@ -73,7 +73,7 @@ class CountryListScreenWidgetModel
 }
 
 /// Interface of [CountryListScreenWidgetModel]
-abstract class ICountryListWidgetModel implements IWidgetModel {
+abstract interface class ICountryListWidgetModel implements IWidgetModel {
   ValueListenable<EntityState<List<Country>>> get countryListState;
 
   TextStyle get countryNameStyle;

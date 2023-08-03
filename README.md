@@ -1,10 +1,12 @@
 # Flutter Elementary repository
+###
+<p align="center">
+    <img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo">
+</p>
 
-<div style="text-align: center;">
-    <img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo" style="margin:50px 0px">
-</div>
+###
 
-<div style="text-align: center;">
+<p align="center">
     <a href="https://github.com/MbIXjkee"><img src="https://img.shields.io/badge/Owner-mbixjkee-red.svg" alt="Owner"></a>
     <a href="https://pub.dev/packages/elementary"><img src="https://img.shields.io/pub/v/elementary?logo=dart&logoColor=white" alt="Pub Version"></a>
     <a href="https://app.codecov.io/gh/Elementary-team/flutter-elementary"><img src="https://img.shields.io/codecov/c/github/Elementary-team/flutter-elementary?flag=elementary&logo=codecov&logoColor=white" alt="Coverage Status"></a>
@@ -13,17 +15,18 @@
     <a href="https://pub.dev/packages/elementary"><img src="https://badgen.net/pub/popularity/elementary" alt="Pub popularity"></a>
     <a href="https://github.com/Elementary-team/flutter-elementary/graphs/contributors"><img src="https://badgen.net/github/contributors/Elementary-team/flutter-elementary" alt="Contributors"></a>
     <a href="https://github.com/Elementary-team/flutter-elementary/blob/main/LICENSE"><img src="https://badgen.net/github/license/Elementary-team/flutter-elementary" alt="License"></a>
-</div>
+</p>
 
 ## Description
 
 This repository is a home to packages and tools from the Elementary library family.
 
-| Package                                                                                                                    |                                                              Version                                                               |
-|----------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------------------------------------------------:|
-| [elementary](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary)                          |      [![Pub Version](https://img.shields.io/pub/v/elementary?logo=dart&logoColor=white)](https://pub.dev/packages/elementary)      |
-| [elementary_test](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_test)                | [![Pub Version](https://img.shields.io/pub/v/elementary_test?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_test) |
-| [elementary_cli](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_tools/elementary_cli) |  [![Pub Version](https://img.shields.io/pub/v/elementary_cli?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_cli)  |
+| Package                                                                                                                    |                                                                Version                                                                 |
+|----------------------------------------------------------------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------:|
+| [elementary](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary)                          |        [![Pub Version](https://img.shields.io/pub/v/elementary?logo=dart&logoColor=white)](https://pub.dev/packages/elementary)        |
+| [elementary_helper](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_helper)            | [![Pub Version](https://img.shields.io/pub/v/elementary_helper?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_helper) |
+| [elementary_test](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_test)                |   [![Pub Version](https://img.shields.io/pub/v/elementary_test?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_test)   |
+| [elementary_cli](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_tools/elementary_cli) |    [![Pub Version](https://img.shields.io/pub/v/elementary_cli?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_cli)    |
 
 ## Elementary overview
 
@@ -47,7 +50,7 @@ For reduce amount of boilerplate and the manual work, for Elementary there are f
 based on elementary_cli;
 - [plugin for VSCode](https://marketplace.visualstudio.com/items?itemName=ElementaryTeam.elementary) - plugin for VSCode,
 based on elementary_cli;
-- [elementary brick](https://brickhub.dev/bricks/elementary/0.0.2) - command line util helps with boilerplate generation,
+- [elementary brick](https://brickhub.dev/bricks/elementary) - command line util helps with boilerplate generation,
 based on mason.
 
 ## Examples
@@ -62,7 +65,7 @@ based on mason.
 
 <a href="https://github.com/MbIXjkee">
     <div style="display: inline-block;">
-        <img src="https://avatars.githubusercontent.com/u/14325911?v=4" height="64" width="64" style="border-radius: 50%" alt="Maintainer avatar">
+        <img src="https://i.ibb.co/6Hhpg5L/circle-ava-jedi.png" height="64" width="64" alt="Maintainer avatar">
         <p style="float:right; margin-left: 8px;">Mikhail Zotyev</p>
     </div>
 </a>
