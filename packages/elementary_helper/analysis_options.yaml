@@ -1,0 +1,7 @@
+include: package:mjk_lint_rules/mjk_lint_rules.yaml
+
+linter:
+  rules:
+    always_put_required_named_parameters_first: false
+    sort_pub_dependencies: false
+    public_member_api_docs: true
