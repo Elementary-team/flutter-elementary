@@ -7,10 +7,8 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  elementary:
-    path: ../../elementary
-  elementary_helper:
-    path: ../../elementary_helper
+  elementary: ^3.0.0
+  elementary_helper: ^1.0.1
   flutter:
     sdk: flutter
 

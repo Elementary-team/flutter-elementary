@@ -3,7 +3,7 @@
 ## Unreleased
 
 ## 2.0.0
-is equal to 2.0.0-dev
+* supported `elementary` version increased to `^3.0.0`;
 
 ## 2.0.0-dev
 ### Changed
