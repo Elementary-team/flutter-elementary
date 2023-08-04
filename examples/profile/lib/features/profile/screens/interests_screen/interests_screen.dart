@@ -54,7 +54,7 @@ class InterestsScreen extends ElementaryWidget<IInterestsScreenWidgetModel> {
 class _ContentWidget extends StatelessWidget {
   final List<String>? listInterests;
   final ListenableState<List<String>> listUserInterestsState;
-  final Function({required String interest}) onChanged;
+  final void Function({required String interest}) onChanged;
 
   const _ContentWidget({
     required this.listInterests,
@@ -93,7 +93,7 @@ class _ContentWidget extends StatelessWidget {
 class _ItemInterest extends StatelessWidget {
   final String interest;
   final ListenableState<List<String>> state;
-  final Function({required String interest}) onChanged;
+  final void Function({required String interest}) onChanged;
 
   const _ItemInterest({
     required this.interest,

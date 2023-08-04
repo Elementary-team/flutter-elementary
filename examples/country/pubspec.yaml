@@ -34,7 +34,7 @@ dev_dependencies:
   # mocking
   mocktail: ^1.0.0
   # analyzer
-  mjk_lint_rules: ^1.0.1
+  mjk_lint_rules: ^2.0.0
   # testing elementary
   elementary_test: ^2.0.0
 

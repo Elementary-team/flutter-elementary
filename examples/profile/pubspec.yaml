@@ -23,7 +23,7 @@ dev_dependencies:
   elementary_test: ^2.0.0
   flutter_test:
     sdk: flutter
-  mjk_lint_rules: ^1.0.1
+  mjk_lint_rules: ^2.0.0
 
 environment:
   sdk: ">=2.14.0-0 <3.0.0"

@@ -22,7 +22,7 @@ class Coordinator extends ChangeNotifier {
   Map<Coordinate, Route> get coordinates => _coordinates;
 
   /// [Page]s list.
-  List<Page> get pages => List.of(_pages);
+  List<Page<dynamic>> get pages => List.of(_pages);
 
   /// Initial screens route.
   String? get initialRoute => _coordinates[initialCoordinate]?.path;

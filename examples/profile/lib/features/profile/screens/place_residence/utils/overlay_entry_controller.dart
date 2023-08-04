@@ -12,7 +12,7 @@ class OverlayEntryController {
   /// Create [OverlayEntry].
   OverlayEntry createOverlayEntry(
     ValueListenable<EntityState<List<String>>> listSuggestionsState,
-    Function(String) onSelected,
+    void Function(String) onSelected,
     LayerLink link,
   ) {
     return OverlayEntry(
@@ -29,7 +29,7 @@ class OverlayEntryController {
 
 class _SuggestionWidget extends StatelessWidget {
   final ValueListenable<EntityState<List<String>>> listSuggestionsState;
-  final Function(String) onSelected;
+  final void Function(String) onSelected;
   final LayerLink layerLink;
 
   const _SuggestionWidget({
