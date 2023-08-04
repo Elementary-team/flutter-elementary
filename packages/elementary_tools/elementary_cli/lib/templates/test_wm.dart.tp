@@ -32,4 +32,5 @@ void main() {
 }
 
 class ClassNameModelMock extends Mock
+    with MockElementaryModelMixin
     implements ClassNameModel {}
