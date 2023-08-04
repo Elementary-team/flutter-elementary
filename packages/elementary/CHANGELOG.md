@@ -2,6 +2,31 @@
 
 ## Unreleased
 
+## 3.1.0
+### Added
+* [BREAKING CHANGE] support dart 3 version:
+  - IWidgetModel now is abstract interface;
+  - ErrorHandler now is abstract interface;
+  - EntityState has become sealed.
+* More detailed dartdoc for classes and methods.
+* Alias for EntityStateNotifier's interface.
+### Changed
+* Supported mocktail 1.0.0 version.
+* Updated documentation in repository.
+* [BREAKING CHANGE] all custom pub-sub implementation, builders and wrapper moved to
+separate package - elementary_helper.
+
+## 3.0.0-dev
+### Added
+* [BREAKING CHANGE] support dart 3 version:
+  - IWidgetModel now is abstract interface;
+  - ErrorHandler now is abstract interface;
+  - EntityState has become sealed;
+* More detailed dartdoc for classes and methods.
+
+### Changed
+* [BREAKING CHANGE] EntityStateNotifier now extends ValueNotifier;
+
 ## 2.0.0
 ### Added
 * [BREAKING CHANGE] supported breaking changes for noSuchMethod in dart 2.19;

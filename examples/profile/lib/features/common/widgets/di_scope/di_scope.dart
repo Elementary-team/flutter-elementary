@@ -21,7 +21,7 @@ class DiScope<T> extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  DiScopeState createState() => DiScopeState<T>();
+  DiScopeState<T> createState() => DiScopeState<T>();
 }
 
 /// State for the [DiScope].

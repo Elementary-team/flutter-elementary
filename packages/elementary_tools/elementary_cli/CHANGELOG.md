@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## 2.0.0
+### Add
+* support elementary 3.0.0 changes in templates
+
 ## 1.1.0
 ### Add
 * support of the new analyzer plugin

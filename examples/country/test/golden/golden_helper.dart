@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:elementary/elementary.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -10,7 +10,7 @@ abstract class MockWM extends Mock with Diagnosticable {}
 class ListenableStateMock<T> extends Mock implements ListenableState<T> {}
 
 class ListenableEntityStateMock<T> extends Mock
-    implements ListenableState<EntityState<T>> {}
+    implements ValueListenable<EntityState<T>> {}
 
 // Реализация подмены http клиента для загрузки Image.network
 R provideMockedNetworkImages<R>(R Function() body, {List<int>? imageBytes}) {

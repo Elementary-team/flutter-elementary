@@ -199,7 +199,7 @@ class ElementaryWidgetTest
   }
 }
 
-class IElementaryWidgetModelTest extends IWidgetModel {}
+class IElementaryWidgetModelTest implements IWidgetModel {}
 
 class ElementaryWidgetModelTest
     extends WidgetModel<ElementaryWidgetTest, ElementaryModelMock>

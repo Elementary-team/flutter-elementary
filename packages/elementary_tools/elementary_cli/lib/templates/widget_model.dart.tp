@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'filename_model.dart';
 import 'filename_widget.dart';
 
-abstract class IClassNameWidgetModel extends IWidgetModel {
+abstract interface class IClassNameWidgetModel implements IWidgetModel {
 }
 
 ClassNameWidgetModel defaultClassNameWidgetModelFactory(BuildContext context) {

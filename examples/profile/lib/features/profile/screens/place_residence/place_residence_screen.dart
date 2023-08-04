@@ -62,9 +62,10 @@ class PlaceResidenceScreen
 
 class _MapOpenButton extends StatelessWidget {
   final FocusNode focusNode;
-  final Function({required WidgetBuilder builder, required ShapeBorder shape})
-      showBottomSheet;
-  final Function(Point) getMockCityByCoordinates;
+  final void Function(
+      {required WidgetBuilder builder,
+      required ShapeBorder shape}) showBottomSheet;
+  final void Function(Point) getMockCityByCoordinates;
   final VoidCallback updateSelectedCityOnMap;
 
   const _MapOpenButton({
@@ -103,7 +104,7 @@ class _MapOpenButton extends StatelessWidget {
 }
 
 class _BottomSheetWithMapWidget extends StatelessWidget {
-  final Function(Point) onMapTap;
+  final void Function(Point) onMapTap;
   final VoidCallback saveCity;
 
   const _BottomSheetWithMapWidget({
@@ -135,7 +136,7 @@ class _BottomSheetWithMapWidget extends StatelessWidget {
 }
 
 class _MapWidget extends StatefulWidget {
-  final Function(Point) onMapTap;
+  final void Function(Point) onMapTap;
 
   const _MapWidget({
     required this.onMapTap,
@@ -147,7 +148,7 @@ class _MapWidget extends StatefulWidget {
 }
 
 class _MapWidgetState extends State<_MapWidget> {
-  List<MapObject> mapObject = [];
+  List<MapObject<dynamic>> mapObject = [];
   YandexMapController? controller;
 
   @override

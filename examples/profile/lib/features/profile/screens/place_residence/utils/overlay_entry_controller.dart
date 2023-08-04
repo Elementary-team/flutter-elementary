@@ -1,4 +1,5 @@
-import 'package:elementary/elementary.dart';
+import 'package:elementary_helper/elementary_helper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/assets/strings/place_residence_screen_strings.dart';
 import 'package:profile/features/profile/widgets/error_widget.dart';
@@ -10,8 +11,8 @@ class OverlayEntryController {
 
   /// Create [OverlayEntry].
   OverlayEntry createOverlayEntry(
-    ListenableState<EntityState<List<String>>> listSuggestionsState,
-    Function(String) onSelected,
+    ValueListenable<EntityState<List<String>>> listSuggestionsState,
+    void Function(String) onSelected,
     LayerLink link,
   ) {
     return OverlayEntry(
@@ -27,8 +28,8 @@ class OverlayEntryController {
 }
 
 class _SuggestionWidget extends StatelessWidget {
-  final ListenableState<EntityState<List<String>>> listSuggestionsState;
-  final Function(String) onSelected;
+  final ValueListenable<EntityState<List<String>>> listSuggestionsState;
+  final void Function(String) onSelected;
   final LayerLink layerLink;
 
   const _SuggestionWidget({

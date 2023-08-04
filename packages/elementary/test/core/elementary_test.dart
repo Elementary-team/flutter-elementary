@@ -163,8 +163,8 @@ void main() {
                   widget,
                 ],
               ),
-              Row(
-                key: const ValueKey<String>('secondRow'),
+              const Row(
+                key: ValueKey<String>('secondRow'),
               ),
             ],
           ),
@@ -174,8 +174,8 @@ void main() {
         MaterialApp(
           home: Column(
             children: [
-              Row(
-                key: const ValueKey<String>('firstRow'),
+              const Row(
+                key: ValueKey<String>('firstRow'),
               ),
               Row(
                 key: const ValueKey<String>('secondRow'),
@@ -303,7 +303,7 @@ class ElementaryWidgetTest
   }
 }
 
-class IElementaryWidgetModelMock extends IWidgetModel {}
+class IElementaryWidgetModelMock implements IWidgetModel {}
 
 class ElementaryWidgetModelMock extends DiagnosticableMock
     with MockWidgetModelMixin<ElementaryWidgetTest, ElementaryModelMock>

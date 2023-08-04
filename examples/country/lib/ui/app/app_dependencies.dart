@@ -4,7 +4,7 @@ import 'package:country/ui/app/app.dart';
 import 'package:country/ui/screen/country_list_screen/country_list_screen_model.dart';
 import 'package:country/utils/error/default_error_handler.dart';
 import 'package:dio/dio.dart';
-import 'package:elementary/elementary.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

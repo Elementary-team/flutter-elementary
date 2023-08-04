@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+## 0.0.3
+### Added
+* support Elementary 3.0.0 changes
 
 ## 0.0.2
 ### Added

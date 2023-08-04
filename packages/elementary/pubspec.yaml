@@ -1,13 +1,13 @@
 name: elementary
 description: This is architecture library with the main goal to split code between different responsibility layers, make code clear, simple, readable and easy testable.
-version: 2.0.0
+version: 3.0.0
 repository: "https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary"
 issue_tracker: "https://github.com/Elementary-team/flutter-elementary/issues"
 homepage: "https://github.com/Elementary-team/flutter-elementary"
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.17.0"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
@@ -18,8 +18,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  mocktail: ^0.3.0
-  mjk_lint_rules: ^1.0.1
+  mocktail: ^1.0.0
+  mjk_lint_rules: ^2.0.0
 
 flutter:
   uses-material-design: true

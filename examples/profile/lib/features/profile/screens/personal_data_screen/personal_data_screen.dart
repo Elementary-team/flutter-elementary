@@ -1,4 +1,5 @@
 import 'package:elementary/elementary.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:profile/assets/colors/colors.dart';
 import 'package:profile/assets/strings/personal_data_screen_strings.dart';
@@ -133,7 +134,7 @@ class _FullNameWidget extends StatelessWidget {
   final TextEditingController secondNameEditingController;
   final TextEditingController birthdayEditingController;
   final GlobalKey formKey;
-  final Function(BuildContext) onDateTap;
+  final void Function(BuildContext) onDateTap;
   final VoidCallback nextButtonCallback;
   final String? Function(String?) surnameValidator;
   final String? Function(String?) nameValidator;
@@ -203,7 +204,7 @@ class _FullNameWidget extends StatelessWidget {
 class _DateWidget extends StatelessWidget {
   final TextEditingController controller;
   final String? Function(String?) validator;
-  final Function(BuildContext) onDateTap;
+  final void Function(BuildContext) onDateTap;
 
   const _DateWidget({
     required this.controller,
