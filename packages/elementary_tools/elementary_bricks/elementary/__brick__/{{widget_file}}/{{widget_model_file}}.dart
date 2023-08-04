@@ -7,7 +7,7 @@ import '{{widget_file}}.dart';
 import '{{model_file}}.dart';
 
 /// Public contract of [{{widget_model_class}}]
-abstract class {{widget_model_interface}} extends IWidgetModel {
+abstract interface class {{widget_model_interface}} implements IWidgetModel {
 }
 
 /// Default factory for [{{widget_model_class}}]
