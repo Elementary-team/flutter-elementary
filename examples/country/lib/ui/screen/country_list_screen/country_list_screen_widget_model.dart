@@ -4,6 +4,7 @@ import 'package:country/ui/screen/country_list_screen/country_list_screen.dart';
 import 'package:country/ui/screen/country_list_screen/country_list_screen_model.dart';
 import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -51,9 +52,9 @@ class CountryListScreenWidgetModel
   void onErrorHandle(Object error) {
     super.onErrorHandle(error);
 
-    if (error is DioError &&
-        (error.type == DioErrorType.connectionTimeout ||
-            error.type == DioErrorType.receiveTimeout)) {
+    if (error is DioException &&
+        (error.type == DioExceptionType.connectionTimeout ||
+            error.type == DioExceptionType.receiveTimeout)) {
       ScaffoldMessenger.of(context)
           .showSnackBar(const SnackBar(content: Text('Connection troubles')));
     }

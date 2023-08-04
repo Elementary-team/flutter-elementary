@@ -11,7 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
-  elementary: ^3.0.0-dev
+  elementary: ^3.0.0
+  elementary_helper: ^1.0.1
   cupertino_icons: ^1.0.5
   dio: ^5.0.3
   retrofit: ^4.0.1
@@ -31,11 +32,11 @@ dev_dependencies:
   # golden tests
   golden_toolkit: ^0.15.0
   # mocking
-  mocktail: ^0.3.0
+  mocktail: ^1.0.0
   # analyzer
   mjk_lint_rules: ^1.0.1
   # testing elementary
-  elementary_test: ^2.0.0-dev
+  elementary_test: ^2.0.0
 
 flutter:
   uses-material-design: true

@@ -6,7 +6,8 @@ publish_to: none
 dependencies:
   async: ^2.8.2
   bloc: ^8.0.2
-  elementary: ^3.0.0-dev
+  elementary: ^3.0.0
+  elementary_helper: ^1.0.1
   equatable: ^2.0.3
   flutter:
     sdk: flutter
@@ -19,7 +20,7 @@ dependencies:
 dev_dependencies:
   build_runner: ^2.1.5
   dart_code_metrics: ^5.5.1
-  elementary_test: ^2.0.0-dev
+  elementary_test: ^2.0.0
   flutter_test:
     sdk: flutter
   mjk_lint_rules: ^1.0.1

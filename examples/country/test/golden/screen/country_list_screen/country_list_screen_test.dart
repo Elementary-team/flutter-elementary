@@ -2,7 +2,7 @@ import 'package:country/domain/country/country.dart';
 import 'package:country/res/theme/app_typography.dart';
 import 'package:country/ui/screen/country_list_screen/country_list_screen.dart';
 import 'package:country/ui/screen/country_list_screen/country_list_screen_widget_model.dart';
-import 'package:elementary/elementary.dart';
+import 'package:elementary_helper/elementary_helper.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:golden_toolkit/golden_toolkit.dart';
 import 'package:mocktail/mocktail.dart';
