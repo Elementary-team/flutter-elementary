@@ -1,5 +1,9 @@
 # Elementary Plugin Changelog
 
+## [0.0.6]
+### Added
+support for 2023.3 IDE
+
 ## [0.0.4]
 ### Added
 support for 2022.2.1 IDE
