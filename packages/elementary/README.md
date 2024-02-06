@@ -38,7 +38,7 @@ of how it works internally for a simple screen, and what the user sees every mom
 ## Technical Overview
 
 Elementary uses a classical layers from the MVVM pattern, such as View, View Model, and Model. There are special
-entities which represent these layers: ElementaryWidget as a View layer, WidgetModel as a View Mode layer, and
+entities which represent these layers: ElementaryWidget as a View layer, WidgetModel as a View Model layer, and
 ElementaryModel as a Model layer.
 
 At the same time Elementary follows the Flutter-similar approach, so all these things are managed by Element.
@@ -93,7 +93,7 @@ Can be useful for general handling errors such as showing snack-bars.
 
 #### Contract
 
-It is a good to use an interface for a Widget Model, to make the code more testable and describe the contract
+It is good to use an interface for a Widget Model, to make the code more testable and describe the contract
 in explicit way.
 
 ```dart
