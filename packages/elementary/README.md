@@ -158,7 +158,7 @@ class ExampleWidgetModel extends WidgetModel<ExampleScreen, ExampleModel> implem
   final _exampleState = EntityStateNotifier<ExampleEntity>();
 
   @override
-  ListenableState<EntityState<ExampleEntity>> get exampleState => _countryListState;
+  ListenableState<EntityState<ExampleEntity>> get exampleState => _exampleState;
 
   @override
   void initWidgetModel() {
