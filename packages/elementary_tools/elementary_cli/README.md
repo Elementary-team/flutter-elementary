@@ -6,6 +6,10 @@ CLI utilities for Elementary
 #### Directly using cli
 Run `dart pub global activate elementary_cli` or `flutter pub global activate elementary_cli`
 
+#### Creating an Elementary Module
+
+Run `elementary_tools generate module -n [name] -p [root path] -s`
+
 #### Using with elementary plugin for VSCode
 Run `dart pub global activate elementary_cli`
 
