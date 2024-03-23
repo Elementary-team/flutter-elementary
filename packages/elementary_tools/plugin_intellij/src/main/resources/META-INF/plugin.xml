@@ -25,10 +25,9 @@
         <projectService serviceImplementation="ru.elementaryteam.elementarypluginintellij.services.MyProjectService"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="ru.elementaryteam.elementarypluginintellij.listeners.MyProjectManagerListener"
-                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
-    </applicationListeners>
+    <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="ru.elementaryteam.elementarypluginintellij.activity.MyProjectActivity"/>
+    </extensions>
 
 
     <!--
