@@ -1,6 +1,10 @@
 # Elementary Plugin Changelog
 
 ## [0.0.6]
+### Changed
+Plugin migrated from deprecated ProjectManagerListener to ProjectActivity.
+
+## [0.0.6]
 ### Added
 support for 2023.3 IDE
 
