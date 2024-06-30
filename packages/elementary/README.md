@@ -24,92 +24,76 @@ for Flutter applications.
 
 ## Description
 
-The current implementation follows the rules of the [MVVM](https://learn.microsoft.com/en-us/dotnet/architecture/maui/mvvm#the-mvvm-pattern) architecture pattern, is inspired by internal Flutter's implementation, and tries to have positive things
-from the [Business Logic Component](https://www.youtube.com/watch?v=RS36gBEp8OI) architecture pattern and Clean Architecture.
+The current implementation follows the rules of the [MVVM](https://learn.microsoft.com/en-us/dotnet/architecture/maui/mvvm#the-mvvm-pattern) architecture pattern, is inspired by the internal implementation of Flutter, and incorporates positive aspects from the [Business Logic Component](https://www.youtube.com/watch?v=RS36gBEp8OI) architecture pattern and Clean Architecture principles.
+
 
 #### Benefits of using
 
-- **The code is split into layers with clear responsibilities.** 
-It makes starting working with the library easy even for newbie developers.
+- **Clear Layer Separation:** 
+The code is divided into layers with distinct responsibilities, making it easy even for newbie developers to get started with the library.
 
-- **Layers are highly independent of each other.** 
-It also serves to decouple purposes, which helps to keep code easy testable and maintainable. An additional benefit for teams - different persons can 
-effectively share work in different layers while one feature is developed.
+- **High Independence Between Layers:** 
+This decoupling simplifies testing and maintenance. It also allows team members to work independently on different layers while developing a single feature, that leads to decreasing time-to-feature.
 
-- **Easy to test -> more cases are covered.**
-This approach is compatible with different types of tests: unit, widget, golden, e2e. Writing tests using Elementary costs almost nothing of additional effort, that is
-the best motivation to do it.
+- **Ease of Testing:**
+The easier it is to test, the more cases are covered. This approach supports various test types, such as unit, widget, golden, and end-to-end tests. Writing tests with Elementary requires minimal additional effort, providing strong motivation to do it.
 
-- **The widget part is fully declarative and gets rid of any kind of logic.**
-Declarative UI is one of the beauties of Flutter, and Elementary supports this as it is possible, for any logic there are other layers!
+- **Fully Declarative Widget Layer:**
+The widget layer remains purely declarative, devoid of any logic. This aligns with Flutter's focus on declarative UI, with other layers handling the logic.
 
-- **Efficient rebuilds.**
-Flutter has highly optimized approaches to work with rebuild because it is a key part of performant applications. Keeping rebuilds efficient is the crucial part of any
-Flutter application. Elementary relies on the publisher-subscriber pattern for properties that help to avoid unnecessary rebuilds.
-
+- **Efficient rebuilds:**
+Flutter’s optimized rebuild strategies are crucial for performance. Elementary uses the publisher-subscriber pattern for properties, minimizing unnecessary rebuilds and enhancing application efficiency.
 
 ## Overview
 
-Without technical details of the implementation, a good way to demonstrate the work of the library is the following scheme:
-in the WidgetModel we decide what to show to the user, and which business processes are running behind the scenes.
+A good way to demonstrate the library's functionality without technical details is with this scheme: in the WidgetModel, we determine what to display to the user and manage the business processes running behind the scenes.
 
 <img src="https://i.ibb.co/rk4sxDf/3.gif" alt="Elementary scheme">
 
 ## Crossroad
 
-If you aren't interested in the technical details of implementation, and why concrete decisions were made, just try this simple guideline of how to quickly start
-using the library.
+If you’re not interested in the technical implementation details or the reasons behind specific decisions, follow this simple guideline to quickly start using the library.
 
-Those who want to know these things - welcome to the following part of this documentation.
+For those interested in the technical details and rationale behind our decisions, welcome to the next section of this documentation.
 
 ## Technical Overview
 
-Elementary follows classical layering from the MVVM pattern. It has a View, View Model, and Model layers. Each of these layers is represented by a special
-entity: `ElementaryWidget` represents the View layer, `WidgetModel` represents the View Model layer, and `ElementaryModel` represents the Model layer.
+Elementary follows classical MVVM layering, comprising the View, ViewModel, and Model layers. Each layer is represented by a specific entity: `ElementaryWidget` for the View layer, `WidgetModel` for the ViewModel layer, and `ElementaryModel` for the Model layer.
 
-At the same time, this chain of entities should be naturally integrated into the Flutter trees. To achieve it following decisions were made:
+To naturally integrate this chain of entities into the Flutter trees, the following decisions were made:
 
-- An `ElementaryWidget` like all other widgets is just a configuration and an immutable description of the part of the user interface.
-- An `ElementaryWidget` is a component widget (a widget represented by a [ComponentElement](https://api.flutter.dev/flutter/widgets/ComponentElement-class.html)), which means the widget describes its subtree as a combination of other widgets.
+- An `ElementaryWidget`, like all other widgets, is simply a configuration and an immutable description of a part of the user interface.
+- An `ElementaryWidget` is a component widget (represented by a [ComponentElement](https://api.flutter.dev/flutter/widgets/ComponentElement-class.html)), meaning it describes its subtree as a combination of other widgets.
 - A representation of an `ElementaryWidget` in the Element tree is a special [Element](https://api.flutter.dev/flutter/widgets/Element-class.html) called `Elementary`.
-- `Elementary` creates a `WidgetModel` using a factory method from `ElementaryWidget` and then stores and manages this `WidgetModel`.
-- From the previous statement following the lifecycle of the `WidgetModel` is connected to the `Elementary` lifecycle.
+- `Elementary` creates a `WidgetModel` using a factory method from `ElementaryWidget` and then stores and manages it.
+- The lifecycle of the `WidgetModel` is connected to the `Elementary` lifecycle, as indicated in the previous statement.
 - A `WidgetModel` depends on an `ElementaryModel`, stores it, and manages its lifecycle.
-- When a subtree should be described, `Elementary` delegates it to the `build` method of `ElementaryWidget` at the same time providing `WidgetModel` there.
-So this is a representation of `UI=f(State)` in a form `subtree=build(WM)`.
+- When a subtree needs to be described, `Elementary` delegates to the `build` method of `ElementaryWidget`, providing the `WidgetModel`. This represents `UI=f(State)` in the form `subtree=build(WM)`.
 
-The following schema demonstrates how all these things work when we insert ElementaryWidget into the tree.
+The following diagram illustrates how these components work when an ElementaryWidget is inserted into the tree:
 
 // TODO: change the schema to the more clear one
 <img src="https://i.ibb.co/yyZYwcd/elementary-scheme.png" alt="Elementary scheme">
 
 ### WidgetModel
 
-In the MVVM concept the View Model is a working horse: it connects View and Model, orchestrates business processes, and contains presentation logic.
-That is the reason why `WidgetModel` is the key part of the responsibility chain in Elementary.
+In the MVVM concept, the ViewModel is the workhorse: it connects the View and Model, orchestrates business processes, and contains presentation logic. This is why `WidgetModel` is the key part of the responsibility chain in Elementary.
 
 #### WidgetModel's properties
 
-Flutter has a lot of internal optimizations and can be highly effective. But there is no magic, and we need to care about performance too.
-A thing that every one of us, and in every application, works with is rebuilds. It is [crucial](https://docs.flutter.dev/perf/best-practices#control-build-cost) to make them efficient. The most efficient way to do it - is to rebuild only those parts that should be changed.
+Flutter has many internal optimizations and can be highly effective, but there’s no magic to make every code efficient; we also need to care about performance. One aspect that everyone encounters in every application is rebuilds. It is [crucial](https://docs.flutter.dev/perf/best-practices#control-build-cost) to make them efficient. The most efficient approach is to rebuild only the parts that need to change.
 
-At the same time, MVVM is convenient to use when there is a binding between parts of UI and View Model properties.
+At the same time, MVVM is convenient to use when there is binding between UI parts and ViewModel properties.
 
-Based on this Elementary aims to use properties that work in the [Observer](https://refactoring.guru/design-patterns/observer) design pattern paradigm. In this case,
-a property is the subject (publisher). In the widget layer, we use a builder subscribed to the property and be an observer (dependent/subscriber).
+Based on this, Elementary aims to use properties that follow the [Observer](https://refactoring.guru/design-patterns/observer) design pattern paradigm. In this case, a property acts as the subject (publisher). In the widget layer, we use a builder subscribed to the property, functioning as the observer (dependent/subscriber).
 
-There is no mandatory requirement on which implementation of this pattern to use - it can be ChangeNotifiers, Streams, or whatever else, based on your preferences.
-But for your convenience, there are a few implementations provided with Elementary. To find them, check the [support library](https://pub.dev/packages/elementary_helper).
+There’s no mandatory requirement for which implementation of this pattern to use—it can be ChangeNotifiers, Streams, or any other preferred method. However, for your convenience, a few implementations are provided with Elementary. To find them, check the [support library](https://pub.dev/packages/elementary_helper).
 
-Properties are not supposed to be changed, or initiate a visual change when they are changed, can be a simple getter or field.
+Properties that are not intended to change or initiate a visual update can simply be getters or fields.
 
 #### WidgetModel's lifecycle
 
-As it was mentioned earlier, `WidgetModel` has its lifecycle synchronized with the lifecycle of the `Element` it belongs.
-If you are familiar with the lifecycle of [State](https://api.flutter.dev/flutter/widgets/State-class.html) in [StatefulWidget](https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html), it will be easy for you - they are pretty much the same.
-The one significant difference: methods `didUpdateWidget` and `didChangeDependencies` do not initiate an automatic rebuild of
-the subtree. The reason for this - Elementary aims to avoid unnecessary rebuilds and with the help of the property-publisher approach, you can efficiently rebuild only the parts of UI required for update. So their only purpose is to notify you that those
-things happen, and the final decision on what and how to rebuild is up to you.
+As mentioned earlier, the `WidgetModel` has its lifecycle synchronized with the lifecycle of the `Element` to which it belongs. If you're familiar with the lifecycle of [State](https://api.flutter.dev/flutter/widgets/State-class.html) in a [StatefulWidget](https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html), it will be easy for you — they are quite similar. The one significant difference is that the methods `didUpdateWidget` and `didChangeDependencies` do not automatically initiate a rebuild of the subtree. The reason for this is that Elementary aims to avoid unnecessary rebuilds, and with the property-publisher approach, you can efficiently rebuild only the parts of the UI that require updates. So, the sole purpose of these methods is to notify you that these events occur, and the final decision on what and how to rebuild is up to you.
 
 ##### Methods:
 
