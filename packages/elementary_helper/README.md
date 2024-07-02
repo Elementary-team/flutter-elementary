@@ -19,14 +19,11 @@
 
 ## Description
 
-To make Elementary easier to use, some helpers have been added. Among them are custom implementations of
-the Pub-Sub pattern and wrappers to make easier testable interaction with Flutter from Widget Model
+To make Elementary easier to use, some helpers have been added. Among them are custom implementations of the observer pattern and wrappers to facilitate easier and more testable interactions with Flutter from the `WidgetModel`.
 
 ### StateNotifier
 
-Behaviour is similar to ValueNotifier, but with no requirement to set initial value.
-Due to this the returned value is Nullable. StateNotifier's subscribers are notified whenever a state change occurs.
-Also, the subscriber is called first time at the moment of subscription. For emit new value there is a method accept.
+The behavior is similar to `ValueNotifier` but with no requirement to set an initial value. Due to this, the returned value is nullable. `StateNotifier`'s subscribers are notified whenever a state change occurs. Additionally, the subscriber is called for the first time at the moment of subscription. Use `accept` to emit a new value.
 
 ```dart
 final _somePropertyWithIntegerValue = StateNotifier<int>();
@@ -34,16 +31,15 @@ final _somePropertyWithIntegerValue = StateNotifier<int>();
 void someFunctionChangeValue() {
   // do something, get new value
   // ...............................................................
-  final newValue = 10;
+  final newValue = _doSomething();
   // and then change value of property
-  _somePropertyWithIntegerValue.accept(10);
+  _somePropertyWithIntegerValue.accept(newValue);
 }
 ```
 
 ### EntityStateNotifier
 
-Variant of ValueNotifier that uses a special EntityState object as the state value. EntityState has three states:
-content, loading, error. All states can contain data, for cases when you want to keep previous values, e.g. pagination.
+A variant of `ValueNotifier` that uses a special `EntityState` object as the state value. `EntityState` has three states: `content`, `loading`, and `error`. All states can contain data, for cases when you want to keep previous values, such as pagination.
 
 ```dart
 final _countryListState = EntityStateNotifier<Iterable<Country>>();
@@ -68,8 +64,7 @@ Future<void> _loadCountryList() async {
 
 ### StateNotifierBuilder
 
-The StateNotifierBuilder is a widget that uses a StateNotifier as its data source. A builder function of the
-StateNotifierBuilder must return the widget based on the current value passed.
+The `StateNotifierBuilder` is a widget that uses a `StateNotifier` as its data source. A builder function of the `StateNotifierBuilder` must return a widget based on the current value passed.
 
 ```dart
 void somewhereInTheBuildFunction() {
@@ -86,9 +81,7 @@ void somewhereInTheBuildFunction() {
 
 ### EntityStateNotifierBuilder
 
-The EntityStateNotifierBuilder is a widget that uses a EntityStateNotifier as its data source.
-Depending on the state, different builders are called: errorBuilder for error, loadingBuilder for error,
-builder for content.
+The `EntityStateNotifierBuilder` is a widget that uses an `EntityStateNotifier` as its data source. Depending on the state, different builders are called: `errorBuilder` for error, `loadingBuilder` for loading, and `builder` for content.
 
 ```dart
 @override
@@ -112,8 +105,7 @@ Widget build(ICountryListWidgetModel wm) {
 ```
 
 ### DoubleSourceBuilder
-One of the multi-sources builders. It uses two ListenableStates as sources of data.
-The builder function is called when any of sources changes.
+One of the multi-source builders, it uses two `ListenableState` objects as sources of data. The builder function is called whenever any of the sources change.
 
 ```dart
 void somewhereInTheBuildFunction() {
@@ -130,8 +122,7 @@ void somewhereInTheBuildFunction() {
 ```
 
 ### DoubleValueListenableBuilder
-One of the multi-sources builders. It uses two ValueListenable as sources of data.
-The builder function is called when any of sources changes.
+One of the multi-source builders, it uses two `ValueListenable` objects as sources of data. The builder function is called whenever any of the sources change.
 
 ```dart
 void somewhereInTheBuildFunction() {
@@ -148,8 +139,7 @@ void somewhereInTheBuildFunction() {
 ```
 
 ### TripleSourceBuilder
-One of the multi-sources builders. It uses three ListenableStates as sources of data.
-The builder function is called when any of sources changes.
+One of the multi-source builders, it uses three `ListenableState` objects as sources of data. The builder function is called whenever any of the sources change.
 
 ```dart
 void somewhereInTheBuildFunction() {
@@ -167,8 +157,7 @@ void somewhereInTheBuildFunction() {
 ```
 
 ### TripleValueListenableBuilder
-One of the multi-sources builders. It uses three ValueListenable as sources of data.
-The builder function is called when any of sources changes.
+One of the multi-source builders, it uses three `ValueListenable` objects as sources of data. The builder function is called whenever any of the sources change.
 
 ```dart
 void somewhereInTheBuildFunction() {
@@ -186,8 +175,7 @@ void somewhereInTheBuildFunction() {
 ```
 
 ### MultiListenerRebuilder
-Widget that rebuild part of the ui when one of Listenable changes. The builder function in this widget has no values,
-and you need to get the values directly in function's body.
+A widget that rebuilds part of the UI when one of the `Listenable` objects changes. The builder function in this widget does not take any values as parameters; you need to get the values directly within the function's body.
 
 ```dart
 void somewhereInTheBuildFunction() {
@@ -220,14 +208,14 @@ void somewhereInTheBuildFunction() {
 
 ## Contributors thanks
 
-Big thanks to all these people, who put their effort to help the project.
+Big thanks to all these people, who put their effort into helping the project.
 
 ![contributors](https://contributors-img.firebaseapp.com/image?repo=Elementary-team/flutter-elementary)
 <a href="https://github.com/Elementary-team/flutter-elementary/graphs/contributors"></a>
 
 Special thanks to:
 
-[Dmitry Krutskikh](https://github.com/dkrutskikh), [Konoshenko Vlad](https://github.com/vlkonoshenko),
+[Dmitry Krutskikh](https://github.com/dkrutskikh), [Konoshenko Vlad](https://github.com/vlkonoshenko), and 
 [Denis Grafov](https://github.com/grafovdenis) for the early adoption and the first production feedback;
 
 [Alex Bukin](https://github.com/AlexeyBukin) for IDE plugins;
