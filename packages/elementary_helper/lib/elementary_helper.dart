@@ -1,5 +1,6 @@
 library elementary_helper;
 
+export 'package:elementary_helper/src/mixins/notifier_subscriptions_mixin.dart';
 export 'package:elementary_helper/src/relations/builder/entity_state_notifier_builder.dart';
 export 'package:elementary_helper/src/relations/builder/multi_sources/double_source_builder.dart';
 export 'package:elementary_helper/src/relations/builder/multi_sources/double_value_listenable_builder.dart';

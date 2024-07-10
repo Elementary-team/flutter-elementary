@@ -28,9 +28,16 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage>
+    with NotifierSubscriptionsMixin {
   final _counterNotifier = ValueNotifier<int>(0);
-  final _colorNotifier = ValueNotifier<Color>(Colors.red);
+  late final _colorNotifier = addNotifier(ValueNotifier<Color>(Colors.red));
+
+  @override
+  void dispose() {
+    _counterNotifier.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
