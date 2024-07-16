@@ -72,8 +72,7 @@ To naturally integrate this chain of entities into the Flutter trees, the follow
 
 The following diagram illustrates how these components work when an ElementaryWidget is inserted into the tree:
 
-// TODO: change the schema to the more clear one
-<img src="https://i.ibb.co/yyZYwcd/elementary-scheme.png" alt="Elementary scheme">
+<img src="https://i.ibb.co/hYcYRbs/elementary-In-Tree.gif" alt="Elementary scheme in tree">
 
 ### WidgetModel
 
