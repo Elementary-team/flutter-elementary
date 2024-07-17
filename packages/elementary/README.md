@@ -86,7 +86,9 @@ At the same time, MVVM is convenient to use when there is binding between UI par
 
 Based on this, Elementary aims to use properties that follow the [Observer](https://refactoring.guru/design-patterns/observer) design pattern paradigm. In this case, a property acts as the subject (publisher). In the widget layer, we use a builder subscribed to the property, functioning as the observer (dependent/subscriber).
 
-There’s no mandatory requirement for which implementation of this pattern to use—it can be ChangeNotifiers, Streams, or any other preferred method. However, for your convenience, a few implementations are provided with Elementary. To find them, check the [support library](https://pub.dev/packages/elementary_helper).
+<img src="https://i.ibb.co/ww5T5Tm/property-rebuild.gif" alt="Property rebuild scheme">
+
+There’s no mandatory requirement for which implementation of this pattern to use — it can be ChangeNotifiers, Streams, or any other preferred method. However, for your convenience, a few implementations are provided with Elementary. To find them, check the [support library](https://pub.dev/packages/elementary_helper).
 
 Properties that are not intended to change or initiate a visual update can simply be getters or fields.
 
