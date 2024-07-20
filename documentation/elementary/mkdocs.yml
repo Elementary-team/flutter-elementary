@@ -1,0 +1,21 @@
+site_name: Elementary
+theme:
+  name: material
+  favicon: images/favicon.png
+  logo: assets/logo.png
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+
+nav:
+  - Home: index.md
+  - Elementary: elementary.md
+  - Elementary-helper: helper.md
+  - Elementary-test: tests.md
+  - About: about.md
