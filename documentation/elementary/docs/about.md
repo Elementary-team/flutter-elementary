@@ -36,4 +36,6 @@ Special sponsor of the project:
 <img src="https://surf.dev/wp-content/themes/surf/assets/img/logo.svg" alt="Surf"/>
 </a>
 
+## Contacts
+
 For all questions regarding sponsorship/collaboration connect with [Mikhail Zotyev](https://github.com/MbIXjkee).
