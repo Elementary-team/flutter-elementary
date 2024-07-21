@@ -30,5 +30,11 @@ nav:
     - Elementary-test:
       - Intro: libs/elementary-test/intro.md
       - Overview: libs/elementary-test/overview.md
+  - Tutorials:
+    - Quick Start:
+      - Tooling: tutorials/qs/tooling.md
+      - Dependencies: tutorials/qs/dependencies.md
+      - Implementation: tutorials/qs/implementation.md
+      - Tests: tutorials/qs/tests.md
   - License: license.md
   - About: about.md
