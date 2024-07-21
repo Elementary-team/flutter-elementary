@@ -27,5 +27,7 @@ nav:
       - Intro: libs-overview/elementary-helper/intro.md
       - Publishers: libs-overview/elementary-helper/publishers.md
       - Subscribers: libs-overview/elementary-helper/subscribers.md
-    - Elementary-test: libs-overview/elementary-test/tests.md
+    - Elementary-test:
+      - Intro: libs-overview/elementary-test/intro.md
+      - Overview: libs-overview/elementary-test/overview.md
   - About: about.md
