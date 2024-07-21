@@ -23,6 +23,9 @@ nav:
       - ElementaryModel: libs-overview/elementary/model.md
       - ElementaryWidget: libs-overview/elementary/widget.md
       - Recommendations: libs-overview/elementary/recommendations.md
-    - Elementary-helper: libs-overview/elementary-helper/helper.md
+    - Elementary-helper:
+      - Intro: libs-overview/elementary-helper/intro.md
+      - Publishers: libs-overview/elementary-helper/publishers.md
+      - Subscribers: libs-overview/elementary-helper/subscribers.md
     - Elementary-test: libs-overview/elementary-test/tests.md
   - About: about.md
