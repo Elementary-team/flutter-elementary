@@ -17,17 +17,18 @@ nav:
   - Home: index.md
   - Libraries overview:
     - Elementary:
-      - Intro: libs-overview/elementary/intro.md
-      - Overview: libs-overview/elementary/overview.md
-      - Widget Model: libs-overview/elementary/widget-model.md
-      - ElementaryModel: libs-overview/elementary/model.md
-      - ElementaryWidget: libs-overview/elementary/widget.md
-      - Recommendations: libs-overview/elementary/recommendations.md
+      - Intro: libs/elementary/intro.md
+      - Overview: libs/elementary/overview.md
+      - Widget Model: libs/elementary/widget-model.md
+      - ElementaryModel: libs/elementary/model.md
+      - ElementaryWidget: libs/elementary/widget.md
+      - Recommendations: libs/elementary/recommendations.md
     - Elementary-helper:
-      - Intro: libs-overview/elementary-helper/intro.md
-      - Publishers: libs-overview/elementary-helper/publishers.md
-      - Subscribers: libs-overview/elementary-helper/subscribers.md
+      - Intro: libs/elementary-helper/intro.md
+      - Publishers: libs/elementary-helper/publishers.md
+      - Subscribers: libs/elementary-helper/subscribers.md
     - Elementary-test:
-      - Intro: libs-overview/elementary-test/intro.md
-      - Overview: libs-overview/elementary-test/overview.md
+      - Intro: libs/elementary-test/intro.md
+      - Overview: libs/elementary-test/overview.md
+  - License: license.md
   - About: about.md
