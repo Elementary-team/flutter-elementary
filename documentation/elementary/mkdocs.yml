@@ -15,7 +15,14 @@ theme:
 
 nav:
   - Home: index.md
-  - Elementary: elementary.md
-  - Elementary-helper: helper.md
-  - Elementary-test: tests.md
+  - Libraries overview:
+    - Elementary:
+      - Intro: libs-overview/elementary/intro.md
+      - Overview: libs-overview/elementary/overview.md
+      - Widget Model: libs-overview/elementary/widget-model.md
+      - ElementaryModel: libs-overview/elementary/model.md
+      - ElementaryWidget: libs-overview/elementary/widget.md
+      - Recommendations: libs-overview/elementary/recommendations.md
+    - Elementary-helper: libs-overview/elementary-helper/helper.md
+    - Elementary-test: libs-overview/elementary-test/tests.md
   - About: about.md
