@@ -220,8 +220,6 @@ Note: My preference is to implement it as a bunch of pure functions that return 
 #### Widget as a View description
 `ElementaryWidget` represents a View layer in the triad `ElementaryWidget-WidgetModel-ElementaryModel`. In the MVVM concept, [views are responsible](https://learn.microsoft.com/en-us/dotnet/architecture/maui/mvvm#view) for defining the structure, layout, and appearance of what the user sees on screen.
 
-`ElementaryWidget` represents a View layer in the triad `ElementaryWidget-WidgetModel-ElementaryModel`. In the MVVM concept, [views are responsible](https://learn.microsoft.com/en-us/dotnet/architecture/maui/mvvm#view) for defining the structure, layout, and appearance of what the user sees on screen.
-
 It is important to remember that Flutter is a declarative framework, and any Flutter widget is not a view, but a configuration/description. So, it is more accurate to say that `ElementaryWidget` is a view description, a component widget that uses other widgets to describe a composition that needs to be shown to the user. By hiding how the framework works behind the widget concept, we can simplify to equate `ElementaryWidget` with View.
 
 The significant difference from other composition widgets is the simplified build process. Since business logic and presentation logic are encapsulated in the Model and Widget Model, it is only left to the widget to follow the `UI = f(s)` principle and describe this UI based on the `WidgetModel` contract. Therefore, the build method doesn't have context and accepts only the `WidgetModel` contract as an argument.
