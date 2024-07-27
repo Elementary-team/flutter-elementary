@@ -3,99 +3,84 @@
 Using a chosen tool create classes for ElementaryModel, WidgetModel, ElementaryWidget.
 
 === "Plugin for IntelliJ"
+ 
+    **1.** Choose the location where the ElementaryModel, ElementaryWidgetModel, and ElementaryWidget will be located.
 
-    To create an Elementary Module using the Elementary Plugin for IntelliJ follow the next steps:
-    **1.** Choose the location where the Elementary module will be located.
+    **2.** Open the Context Menu on that dirrectory.
 
-    **2.** Open the Context Menu.
+    **3.** Choose 'New' -> 'Elementary Module'.
 
-    **3.** Click 'New'.
+    **4.** Enter the name of your module. 
 
-    **4.** Select 'Elementary Module'.
+    !!! tip
+        This name will be used for ElementaryModel, ElementaryWidgetModel, and ElementaryWidget. For example, if the name is ‘example’, the classes will be named ExampleModel, ExampleWidgetModel, and ExampleWidget.
 
-    **5.** Enter the name of your module.
+    **5.** If you want to create a separate directory for these files inside the chosen location, check the ‘Create subdirectory’ box.
 
-    **6.** If you want to create a separate directory for these files check the 'Create subdirectory' box.
+    !!! success
+        After these steps, ElementaryModel, ElementaryWidgetModel, and ElementaryWidget are created and prepared for you.
 
-    This will create three required template files for ElementaryModel, ElementaryWidgetModel, and ElementaryWidget.
+    !!! bug
+        IntelliJ IDEAs sometimes has a bug where created files are not displayed in the project immediately. Try collapsing and expanding the directory in the Project tab or use ‘Open in Finder/Explorer’.
 
 === "Plugin for VSCode"
 
+    **1.** Choose the location where the ElementaryModel, ElementaryWidgetModel, and ElementaryWidget will be located.
 
-    To create an Elementary Module open the Context Menu
-    at the location where you want to create the Module, select 'Generate Elementary Module'
-    and enter the name of your module.
+    **2.** Open the Context Menu on that dirrectory.
 
-    This will create three required template files for ElementaryModel, ElementaryWidgetModel, and ElementaryWidget.
+    **3.** Select 'Generate Elementary Module'.
 
+    **4.** Enter the name of your module. 
+
+    !!! tip
+        This name will be used for ElementaryModel, ElementaryWidgetModel, and ElementaryWidget. For example, if the name is ‘example’, the classes will be named ExampleModel, ExampleWidgetModel, and ExampleWidget.
+
+    **5.** If you want to create a separate directory for these files  inside chosen location, choose ‘Yes’ in the next dialog.
+
+    !!! success
+        After these steps, ElementaryModel, ElementaryWidgetModel, and ElementaryWidget are created and prepared for you.
 
 === "Elementary brick"
-
-    **If you don't have [Mason](https://pub.dev/packages/mason_cli) installed, you need to install it by running the command:**
-
-    ```
-    dart pub global activate mason_cli
-    ```
-
-    The next step is to initialize Mason, run:
+ 
+    **1.** Run:
 
     ```
-    mason init
-    ```
-    Then install Elementary by running the command:
+    mason make elementary
+    ``` 
 
-    _Install locally_
-    ```
-    mason add elementary
-    ```
-    _Install globally_
+    **2.** Enter the name of your module. 
 
-    ```
-    mason add -g elementary
-    ```
+    !!! tip
+        This name will be used for ElementaryModel, ElementaryWidgetModel, and ElementaryWidget. For example, if the name is ‘example’, the classes will be named ExampleModel, ExampleWidgetModel, and ExampleWidget.
 
+
+    **3.**  Enter a suffix for WidgetModel, for example, _'WidgetModel'_ or _'Wm'_.
+
+    !!! success
+        After these steps, ElementaryModel, ElementaryWidgetModel, and ElementaryWidget are created and prepared for you.
 
 === "Elementary cli"
 
-    **To direct usage run**
+    **1.** In the console, navigate to the location where you want to create ElementaryModel, ElementaryWidgetModel, and ElementaryWidget. 
 
-    ```
-    dart pub global activate elementary_cli  
+    !!! note
+        Otherwise, you have to set the ‘root path’ parameter for the ‘generate’ command to define the path.
+   
+    **2.** Run:
+
     ``` 
-    or
+    elementary_tools generate module -n {==[name]==} -p {==[root path]==} -s
+    ``` 
 
-    ```
-    flutter pub global activate elementary_cli
-    ```
+    where
 
-    **To use [elementary_cli](https://pub.dev/packages/elementary_cli) as a library in the pubspec.yaml file add**
-    ```
-    dependencies:
-        elementary_cli: $actual_version
-    ```
+    {==[name]==} is the name of your module, for example, _'TestScreen'_,
 
-    **or run:**
+    {==[root path]==} - path where ElementaryModel, ElementaryWidgetModel, and ElementaryWidget should be located (optional).
 
-    With Dart:
-
-    ```
-    dart pub add elementary_cli
-    ```
-
-    With Flutter:
-
-    ```
-    flutter pub add elementary_cli
-    ```
-
-    After this run:
-
-    ```
-    flutter pub get
-    ```
-
-
-TODO: describe manual creation.
+    !!! success
+        After these steps, ElementaryModel, ElementaryWidgetModel, and ElementaryWidget are created and prepared for you.
 
 ### ElementaryModel:
 

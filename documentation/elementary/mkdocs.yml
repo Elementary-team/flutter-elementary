@@ -14,6 +14,7 @@ theme:
       accent: indigo
   features:
     - content.code.copy
+    - content.tooltips
 
 nav:
   - Home: index.md
@@ -43,6 +44,17 @@ nav:
 
 # Extensions
 markdown_extensions:
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - abbr
+  - attr_list
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid
@@ -54,3 +66,16 @@ markdown_extensions:
       slugify: !!python/object/apply:pymdownx.slugs.slugify
         kwds:
           case: lower
+  - pymdownx.snippets:
+      auto_append:
+        - includes/abbreviations.md
+
+extra:
+#  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/mbixjkee
+    - icon: fontawesome/brands/telegram
+      link: https://t.me/flutter_elementary
