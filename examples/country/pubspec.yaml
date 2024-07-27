@@ -14,27 +14,29 @@ dependencies:
   elementary: ^3.0.0
   elementary_helper: ^1.0.1
   cupertino_icons: ^1.0.5
-  dio: ^5.0.3
-  retrofit: ^4.0.1
-  provider: ^6.0.0
+  # http
+  dio: ^5.5.0+1
+  retrofit: ^4.1.0
   # json annotation
-  json_annotation: ^4.8.0
+  json_annotation: ^4.9.0
+  # loading shimmer
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   # codegen for retrofit
-  retrofit_generator: ^6.0.0+1
+  retrofit_generator: ^8.1.2
   # codegen builder - flutter pub run build_runner build
-  build_runner: ^2.2.1
+  build_runner: ^2.4.9
   # serialization json
-  json_serializable: ^6.5.4
+  json_serializable: ^6.8.0
   # golden tests
   golden_toolkit: ^0.15.0
   # mocking
-  mocktail: ^1.0.0
+  mocktail: ^1.0.4
   # analyzer
-  mjk_lint_rules: ^2.0.0
+  mjk_lint_rules: ^3.0.1
   # testing elementary
   elementary_test: ^2.0.0
 

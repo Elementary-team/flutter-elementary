@@ -1,12 +1,12 @@
 // ignore_for_file: avoid_catches_without_on_clauses
 
-import 'package:country/ui/screen/country_list_screen/country_list_screen_model.dart';
+import 'package:country/features/presentation/screens/country_list_screen/country_list_screen_model.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../unit_helper.dart';
 
-/// Тесты для [CountryListScreenModel]
+/// Tests for [CountryListScreenModel].
 void main() {
   late CountryRepositoryMock countryRepositoryMock;
   late ErrorHandlerMock errorHandlerMock;
@@ -19,33 +19,36 @@ void main() {
     model = CountryListScreenModel(countryRepositoryMock, errorHandlerMock);
   });
 
-  test('loadCountries should get countries from repository', () {
-    when(() => countryRepositoryMock.getAllCountries())
-        .thenAnswer((invocation) => Future.value([]));
+  group('CountryListScreenModel', () {
+    test('loadCountries should get countries from repository', () async {
+      when(() => countryRepositoryMock.loadAllCountries())
+          .thenAnswer((invocation) => Future.value([]));
 
-    model.loadCountries();
-
-    verify(() => countryRepositoryMock.getAllCountries()).called(1);
-  });
-
-  test('loadCountries should transfer exception to handler', () async {
-    final error = Exception('test');
-    when(() => countryRepositoryMock.getAllCountries())
-        .thenAnswer((invocation) => Future.error(error));
-
-    try {
       await model.loadCountries();
-    } catch (_) {}
 
-    verify(() => errorHandlerMock.handleError(error)).called(1);
-  });
+      verify(() => countryRepositoryMock.loadAllCountries()).called(1);
+    });
 
-  test('loadCountries should rethrow exception', () {
-    final error = Exception('test');
+    test('loadCountries should transfer exception to handler', () async {
+      final error = Exception('test');
+      when(() => countryRepositoryMock.loadAllCountries())
+          .thenAnswer((invocation) => Future.error(error));
 
-    when(() => countryRepositoryMock.getAllCountries())
-        .thenAnswer((invocation) => Future.error(error));
+      try {
+        await model.loadCountries();
+      // ignore: empty_catches
+      } catch (e) {}
 
-    expect(() => model.loadCountries(), throwsA(error));
+      verify(() => errorHandlerMock.handleError(error)).called(1);
+    });
+
+    test('loadCountries should rethrow exception', () async {
+      final error = Exception('test');
+
+      when(() => countryRepositoryMock.loadAllCountries())
+          .thenAnswer((invocation) => Future.error(error));
+
+      await expectLater(() async => model.loadCountries(), throwsA(error));
+    });
   });
 }
