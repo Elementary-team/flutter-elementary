@@ -12,6 +12,8 @@ theme:
       scheme: default
       primary: indigo
       accent: indigo
+  features:
+    - content.code.copy
 
 nav:
   - Home: index.md
@@ -38,3 +40,17 @@ nav:
       - Tests: tutorials/qs/tests.md
   - License: license.md
   - About: about.md
+
+# Extensions
+markdown_extensions:
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
