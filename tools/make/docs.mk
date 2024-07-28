@@ -1,4 +1,4 @@
-.PHONY: serve-docs
+.PHONY: init-docs serve-docs
 
 init-docs:
 	@echo "Requires to have python and pip installed"
