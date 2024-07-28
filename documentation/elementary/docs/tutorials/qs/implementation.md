@@ -157,7 +157,7 @@ Using a chosen tool create classes for ElementaryModel, WidgetModel, ElementaryW
     !!! success
         After these steps you can start with implementation.
 
-### ElementaryModel:
+## ElementaryModel:
 
 Open the created file to ElementaryModel and implement all the business logic in a free style. It can be a work in place with a business domain model, operating with a repository, or proxying to a responsible service, or use-case, etc.
 
