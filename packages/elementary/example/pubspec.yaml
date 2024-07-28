@@ -9,12 +9,8 @@ environment:
 dependencies:
   elementary:
     path: ../
-  elementary_helper:
-    path: ../../elementary_helper
   flutter:
     sdk: flutter
-
-  provider: ^6.0.2
 
 dev_dependencies:
   mjk_lint_rules: ^2.0.0
