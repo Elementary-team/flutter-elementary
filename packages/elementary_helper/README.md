@@ -1,7 +1,7 @@
 # Elementary-helper
 ###
 <p align="center">
-    <img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo">
+    <a href="https://documentation.elementaryteam.dev/libs/elementary-helper/intro/"><img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo"></a>
 </p>
 
 ###

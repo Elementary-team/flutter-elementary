@@ -1,7 +1,7 @@
 # Elementary
 ###
 <p align="center">
-    <img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo">
+    <a href="https://documentation.elementaryteam.dev/libs/elementary/intro/"><img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo"></a>
 </p>
 
 ###
@@ -52,7 +52,7 @@ A good way to demonstrate the library's functionality without technical details 
 
 ## Crossroad
 
-If you’re not interested in the technical implementation details or the reasons behind specific decisions, follow this [simple guideline](https://github.com/Elementary-team/flutter-elementary/blob/main/packages/elementary/documentation/quick_start.md) to quickly start using the library.
+If you’re not interested in the technical implementation details or the reasons behind specific decisions, follow this [simple guideline](https://documentation.elementaryteam.dev/tutorials/qs/tooling/) to quickly start using the library.
 
 For those interested in the technical details and rationale behind our decisions, welcome to the next section of this documentation.
 
