@@ -39,7 +39,7 @@ Elementary is a simple and reliable way to build applications with MVVM in Flutt
 
 ## Documentation
 
-Learn more at our website with [documentation](https://documentation.elementaryteam.dev/").
+Learn more at our website with [documentation](https://documentation.elementaryteam.dev/).
 
 ## Environment
 
