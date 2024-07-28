@@ -17,23 +17,19 @@
 
 ## Description
 
-A handy testing library for the apps built with Elementary.
+A handy testing library for apps built with Elementary.
 
 ## Overview
 
-This library offers some handy tools to test WidgetModel from the Elementary package.
+This library offers some handy tools to test `WidgetModel` from the Elementary package.
 
 ### testWidgetModel method
 
-The main testing tool is the testWidgetModel function that executes a test.
-The parameters it requires are the name of a test, the function preparing WidgetModel for testing,
-and the function of the test itself. 
+The main testing tool is the `testWidgetModel` function, which executes a test. The parameters it requires are the name of the test, the function preparing the `WidgetModel` for testing, and the test function itself.
 
-### testFunction
+### a testFunction parameter
 
-This is a function of a test itself. When passed the WidgetModel, this function describes its behavior and verifies
-the result. The function also uses a tester to manipulate the phases of a WidgetModel life cycle,
-and the BuildContext mock.
+This is a function of the test itself. When passed the `WidgetModel`, this function describes its behavior and verifies the result. The function also uses a tester to manipulate the phases of the `WidgetModel` lifecycle and a `BuildContext` mock.
 
 ## How to use
 ```dart
@@ -106,14 +102,14 @@ void main() {
 
 ## Contributors thanks
 
-Big thanks to all these people, who put their effort to help the project.
+Big thanks to all these people, who put their effort into helping the project.
 
 ![contributors](https://contributors-img.firebaseapp.com/image?repo=Elementary-team/flutter-elementary)
 <a href="https://github.com/Elementary-team/flutter-elementary/graphs/contributors"></a>
 
 Special thanks to:
 
-[Dmitry Krutskikh](https://github.com/dkrutskikh), [Konoshenko Vlad](https://github.com/vlkonoshenko),
+[Dmitry Krutskikh](https://github.com/dkrutskikh), [Konoshenko Vlad](https://github.com/vlkonoshenko), and 
 [Denis Grafov](https://github.com/grafovdenis) for the early adoption and the first production feedback;
 
 [Alex Bukin](https://github.com/AlexeyBukin) for IDE plugins;
@@ -124,8 +120,8 @@ All members of the Surf Flutter Team for actively using and providing feedback.
 
 Special sponsor of the project:
 
-<a href="https://surf.ru/">
-<img src="https://surf.ru/wp-content/themes/surf/assets/img/logo.svg" alt="Surf"/>
+<a href="https://surf.dev/">
+<img src="https://surf.dev/wp-content/themes/surf/assets/img/logo.svg" alt="Surf"/>
 </a>
 
 For all questions regarding sponsorship/collaboration connect with [Mikhail Zotyev](https://github.com/MbIXjkee).

@@ -1,11 +1,6 @@
-import 'package:country/ui/app/app.dart';
-import 'package:country/ui/app/app_dependencies.dart';
-import 'package:flutter/widgets.dart';
+import 'package:country/runner.dart';
 
-void main() {
-  runApp(
-    const AppDependencies(
-      app: App(),
-    ),
-  );
+/// An entry point of the app.
+Future<void> main() async {
+  await run();
 }

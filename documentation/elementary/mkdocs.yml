@@ -1,0 +1,81 @@
+site_name: Elementary
+theme:
+  name: material
+  favicon: images/favicon.png
+  logo: assets/logo.png
+  palette:
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+  features:
+    - content.code.copy
+    - content.tooltips
+
+nav:
+  - Home: index.md
+  - Libraries overview:
+    - Elementary:
+      - Intro: libs/elementary/intro.md
+      - Overview: libs/elementary/overview.md
+      - Widget Model: libs/elementary/widget-model.md
+      - ElementaryModel: libs/elementary/model.md
+      - ElementaryWidget: libs/elementary/widget.md
+      - Recommendations: libs/elementary/recommendations.md
+    - Elementary-helper:
+      - Intro: libs/elementary-helper/intro.md
+      - Publishers: libs/elementary-helper/publishers.md
+      - Subscribers: libs/elementary-helper/subscribers.md
+    - Elementary-test:
+      - Intro: libs/elementary-test/intro.md
+      - Overview: libs/elementary-test/overview.md
+  - Tutorials:
+    - Quick Start:
+      - Tooling: tutorials/qs/tooling.md
+      - Dependencies: tutorials/qs/dependencies.md
+      - Implementation: tutorials/qs/implementation.md
+      - Tests: tutorials/qs/tests.md
+  - License: license.md
+  - About: about.md
+
+# Extensions
+markdown_extensions:
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - abbr
+  - attr_list
+  - pymdownx.snippets
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+      combine_header_slug: true
+      slugify: !!python/object/apply:pymdownx.slugs.slugify
+        kwds:
+          case: lower
+  - pymdownx.snippets:
+      auto_append:
+        - includes/abbreviations.md
+
+extra:
+#  generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary
+    - icon: fontawesome/brands/x-twitter
+      link: https://x.com/mbixjkee
+    - icon: fontawesome/brands/telegram
+      link: https://t.me/flutter_elementary

@@ -26,7 +26,7 @@ mason make elementary
 
 ## Sponsor
 
-Our main sponsor is [Surf](https://surf.ru/).
+Our main sponsor is [Surf](https://surf.dev/).
 
 ## Maintainer
 

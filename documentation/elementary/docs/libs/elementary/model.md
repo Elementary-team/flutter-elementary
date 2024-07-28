@@ -1,0 +1,5 @@
+For the MVVM concept [Model classes are](https://learn.microsoft.com/en-us/dotnet/architecture/maui/mvvm#model):
+
+non-visual classes that encapsulate the app's data. Therefore, the model can be thought of as representing the app's domain model, which usually includes a data model along with business and validation logic. Examples of model objects include data transfer objects (DTOs), Plain Old CLR Objects (POCOs), and generated entity and proxy objects. They are typically used in conjunction with services or repositories that encapsulate data access and caching.
+
+So based on that, `ElementaryModel` is the single point of interaction with business logic for the related `WidgetModel`. It encapsulates all required business logic for the `WidgetModel` and provides it as a contract. Summarizing it, for every `WidgetModel`, a corresponding `ElementaryModel` is the single business logic dependency. Apart from that, there is no other requirement for the `ElementaryModel` implementation, and internally it can be built as you prefer.

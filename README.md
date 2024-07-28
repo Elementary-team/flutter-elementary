@@ -28,38 +28,31 @@ This repository is a home to packages and tools from the Elementary library fami
 | [elementary_test](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_test)                |   [![Pub Version](https://img.shields.io/pub/v/elementary_test?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_test)   |
 | [elementary_cli](https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary_tools/elementary_cli) |    [![Pub Version](https://img.shields.io/pub/v/elementary_cli?logo=dart&logoColor=white)](https://pub.dev/packages/elementary_cli)    |
 
-## Elementary overview
+## Elementary Overview
 
-Elementary is a simple and reliable way to build applications with MVVM in Flutter.
-Benefits from using:
+Elementary is a simple and reliable way to build applications with MVVM in Flutter. Benefits of using Elementary include:
 
-- maximum Flutter-like, you don't need to spend a lot of time learning the library if you are already familiar with the
-  standard Flutter approaches;
-- splitting code into different layers by responsibility, that bring low coupling, make code simpler as well as more
-  readable;
-- high testability of all layers from widgets to business logic;
-- speed boost for a team consisting of more than one person, due to the easy sharing of independent task-parts among
-  team members.
+- **Maximum Flutter-like**: You don't need to spend a lot of time learning the library if you are already familiar with the standard Flutter approaches.
+- **Code separation by responsibility**: Splitting code into different layers reduces coupling, making the code simpler and more readable.
+- **High testability**: All layers, from widgets to business logic, are highly testable.
+- **Team efficiency**: It boosts speed for teams consisting of more than one person, due to the easy sharing of independent task parts among team members.
 
 ## Environment
 
-For reduce amount of boilerplate and the manual work, for Elementary there are few options:
+To reduce the amount of boilerplate and manual work, Elementary offers a few options:
 
-- [elementary_cli](https://pub.dev/packages/elementary_cli) - command line util helps with boilerplate generation;
-- [plugin for IntelliJ](https://plugins.jetbrains.com/plugin/18099-elementary) - plugin for IntelliJ IDE family,
-based on elementary_cli;
-- [plugin for VSCode](https://marketplace.visualstudio.com/items?itemName=ElementaryTeam.elementary) - plugin for VSCode,
-based on elementary_cli;
-- [elementary brick](https://brickhub.dev/bricks/elementary) - command line util helps with boilerplate generation,
-based on mason.
+- [elementary_cli](https://pub.dev/packages/elementary_cli): A command line utility that helps with boilerplate generation.
+- [Plugin for IntelliJ](https://plugins.jetbrains.com/plugin/18099-elementary): A plugin for the IntelliJ IDE family, based on elementary_cli.
+- [Plugin for VSCode](https://marketplace.visualstudio.com/items?itemName=ElementaryTeam.elementary): A plugin for VSCode, based on elementary_cli.
+- [elementary brick](https://brickhub.dev/bricks/elementary): A command line utility that helps with boilerplate generation, based on Mason.
 
 ## Examples
 
-[Country](https://github.com/Elementary-team/flutter-elementary/tree/main/examples/country) - general example how to use elementary for development;
+- [Country](https://github.com/Elementary-team/flutter-elementary/tree/main/examples/country): A general example of how to use Elementary for development.
 
-[Elementary with Redux](https://github.com/Elementary-team/flutter-elementary/tree/main/examples/elementary_redux) - example how to use elementary + redux;
+- [Elementary with Redux](https://github.com/Elementary-team/flutter-elementary/tree/main/examples/elementary_redux): An example of how to use Elementary with Redux.
 
-[Profile](https://github.com/Elementary-team/flutter-elementary/tree/main/examples/profile) - example shows the feature with the process that spread by separate screens, and also how to use elementary + bloc;
+- [Profile](https://github.com/Elementary-team/flutter-elementary/tree/main/examples/profile): An example demonstrating a feature that spans separate screens, and how to use Elementary with Bloc.
 
 ## Maintainer
 
@@ -72,14 +65,14 @@ based on mason.
 
 ## Contributors thanks
 
-Big thanks to all these people, who put their effort to help the project.
+Big thanks to all these people, who put their effort into helping the project.
 
 ![contributors](https://contributors-img.firebaseapp.com/image?repo=Elementary-team/flutter-elementary)
 <a href="https://github.com/Elementary-team/flutter-elementary/graphs/contributors"></a>
 
 Special thanks to:
 
-[Dmitry Krutskikh](https://github.com/dkrutskikh), [Konoshenko Vlad](https://github.com/vlkonoshenko),
+[Dmitry Krutskikh](https://github.com/dkrutskikh), [Konoshenko Vlad](https://github.com/vlkonoshenko), and 
 [Denis Grafov](https://github.com/grafovdenis) for the early adoption and the first production feedback;
 
 [Alex Bukin](https://github.com/AlexeyBukin) for IDE plugins;
@@ -90,8 +83,8 @@ All members of the Surf Flutter Team for actively using and providing feedback.
 
 Special sponsor of the project:
 
-<a href="https://surf.ru/">
-<img src="https://surf.ru/wp-content/themes/surf/assets/img/logo.svg" alt="Surf"/>
+<a href="https://surf.dev/">
+<img src="https://surf.dev/wp-content/themes/surf/assets/img/logo.svg" alt="Surf"/>
 </a>
 
 For all questions regarding sponsorship/collaboration connect with [Mikhail Zotyev](https://github.com/MbIXjkee).
