@@ -2,7 +2,9 @@
 
 Run this command
 
-```flutter pub add elementary```
+```
+flutter pub add elementary
+```
 
 or manually add dependency to your project pubspec.yaml
 
@@ -15,7 +17,9 @@ dependencies:
 
 Run this command
 
-```flutter pub add elementary_helper```
+```
+flutter pub add elementary_helper
+```
 
 or manually add dependency to your project pubspec.yaml
 
@@ -28,7 +32,9 @@ dependencies:
 
 Run this command
 
-```flutter pub add elementary_test```
+```
+flutter pub add elementary_test
+```
 
 or manually add dependency to your project pubspec.yaml
 

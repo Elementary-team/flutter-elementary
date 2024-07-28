@@ -82,6 +82,74 @@ Using a chosen tool create classes for ElementaryModel, WidgetModel, ElementaryW
     !!! success
         After these steps, ElementaryModel, ElementaryWidgetModel, and ElementaryWidget are created and prepared for you.
 
+=== "Manual creation"
+    
+    **1.** Choose the location where the ElementaryModel, ElementaryWidgetModel, and ElementaryWidget will be located.
+    
+    **2.** Create files for  ElementaryModel, ElementaryWidgetModel, and ElementaryWidget.
+    
+    **3.** First, create the ElementaryModel in its designated file.
+    
+    ``` dart
+    import 'package:elementary/elementary.dart';
+    
+    class ExampleModel extends ElementaryModel {
+        ExampleModel();
+    }
+    ```
+    
+    **4.** Then, create the interface for WidgetModel in its designated file.
+    
+    ``` dart
+    abstract interface class IExampleWidgetModel implements IWidgetModel {}
+    ```
+    
+    **5.** Now, create the ElementaryWidget in its designated file.
+    
+    ``` dart
+    import 'package:elementary/elementary.dart';
+    import 'package:flutter/material.dart';
+    import 'example_wm.dart';
+    
+    class ExampleWidget extends ElementaryWidget<IExampleWidgetModel> {
+      const ExampleWidget({
+        Key? key,
+        WidgetModelFactory wmFactory = defaultExampleWidgetModelFactory,
+      }) : super(wmFactory, key: key);
+    
+      @override
+      Widget build(IExampleWidgetModel wm) {
+        return Placeholder();
+      }
+    }
+    ``` 
+    
+    **6.** Now your widget requires a wmFactory, so you can proceed to create the WidgetModel and the default factory for it. Create it in the same file where you created the interface.
+    
+    ``` dart
+    import 'package:elementary/elementary.dart';
+    import 'package:flutter/material.dart';
+    import 'example_model.dart';
+    import 'example_widget.dart';
+    
+    abstract interface class IExampleWidgetModel implements IWidgetModel {
+    }
+    
+    ExampleWidgetModel defaultExampleWidgetModelFactory(BuildContext context) {
+      final errorHandler = DefaultDebugErrorHandler();
+      final model = ExampleModel(errorHandler);
+      return ExampleWidgetModel(model);
+    }
+    
+    class ExampleWidgetModel extends WidgetModel<ExampleWidget, ExampleModel>
+        implements IExampleWidgetModel {
+    
+      ExampleWidgetModel(ExampleModel model) : super(model);
+    }
+    ``` 
+    !!! success
+        After these steps you can start with implementation.
+
 ### ElementaryModel:
 
 Implement all business logic for current feature in model, free style. 
