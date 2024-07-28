@@ -152,13 +152,13 @@ Using a chosen tool create classes for ElementaryModel, WidgetModel, ElementaryW
 
 ### ElementaryModel:
 
-Implement all business logic for current feature in model, free style. 
+Implement all business logic for current feature in model, free style. We'll take as a reference a simple model, that fetch data using a repository directlyю
 
 TODO: more details, examples.
 
 ## WidgetModel:
 
-Implement all presentation logic for current feature in widget model.
+Implement all presentation logic for current feature in widget model. As a sample, we will take a widget model that simply loads data using the model on start, and shows a snack bar in case of connectivity issues.
 
 TODO: more details, examples.
 
