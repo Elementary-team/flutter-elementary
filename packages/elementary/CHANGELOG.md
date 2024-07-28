@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 3.1.1
+### Changed
+* Documentation update.
+
 ## 3.1.0
 ### Added
 * [BREAKING CHANGE] support dart 3 version:
