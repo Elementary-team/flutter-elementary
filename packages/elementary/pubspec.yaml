@@ -1,6 +1,6 @@
 name: elementary
 description: This is architecture library with the main goal to split code between different responsibility layers, make code clear, simple, readable and easy testable.
-version: 3.0.0
+version: 3.1.1
 repository: "https://github.com/Elementary-team/flutter-elementary/tree/main/packages/elementary"
 issue_tracker: "https://github.com/Elementary-team/flutter-elementary/issues"
 homepage: "https://github.com/Elementary-team/flutter-elementary"
