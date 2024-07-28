@@ -1,3 +1,10 @@
+## Define the part
+
+Deside what part of the user interface you are going to work on. Choose a name that accurately describes it, you will use it when creating files.
+
+!!! tip
+    You can choose any part of the UI that makes semantic sense and has its own presentation and business logic: the whole screen, a tab, even a small button. But in most common cases, it is a screen.
+
 ## Create classes:
 
 Using a chosen tool create classes for ElementaryModel, WidgetModel, ElementaryWidget.
