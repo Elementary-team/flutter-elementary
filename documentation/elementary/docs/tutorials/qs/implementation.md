@@ -249,6 +249,30 @@ class CountryListScreenWidgetModel
 
 ## ElementaryWidget:
 
-Based on the contract of Widget Model, describe UI.
+Open the created file to ElementaryWidget and describe what the user should see based on the state of the WidgetModel. This is the easiest part, just accurately describe the screen, wrapping parts of it with builders that should react to changes in status.
 
-TODO: more details, examples.
+```dart
+class CountryListScreen extends ElementaryWidget<ICountryListWidgetModel> {
+  const CountryListScreen({
+    Key? key,
+    WidgetModelFactory wmFactory = countryListScreenWidgetModelFactory,
+  }) : super(wmFactory, key: key);
+
+  @override
+  Widget build(ICountryListWidgetModel wm) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Country list'),
+      ),
+      body: EntityStateNotifierBuilder<Iterable<Country>>(
+        listenableEntityState: wm.countryListState,
+        loadingBuilder: (_, __) => const _LoadingWidget(),
+        errorBuilder: (_, __, ___) => const _ErrorWidget(),
+        builder: (_, countries) => _CountryList(
+          countries: countries,
+        ),
+      ),
+    );
+  }
+}
+```
