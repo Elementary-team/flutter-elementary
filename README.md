@@ -1,7 +1,7 @@
 # Flutter Elementary repository
 ###
 <p align="center">
-    <img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo">
+    <a href="https://documentation.elementaryteam.dev/"><img src="https://i.ibb.co/jgkB4ZN/Elementary-Logo.png" alt="Elementary Logo"></a>
 </p>
 
 ###
@@ -36,6 +36,10 @@ Elementary is a simple and reliable way to build applications with MVVM in Flutt
 - **Code separation by responsibility**: Splitting code into different layers reduces coupling, making the code simpler and more readable.
 - **High testability**: All layers, from widgets to business logic, are highly testable.
 - **Team efficiency**: It boosts speed for teams consisting of more than one person, due to the easy sharing of independent task parts among team members.
+
+## Documentation
+
+Learn more at our website with [documentation](https://documentation.elementaryteam.dev/").
 
 ## Environment
 
