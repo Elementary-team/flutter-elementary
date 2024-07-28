@@ -7,12 +7,13 @@ import 'package:country/features/presentation/screens/country_list_screen/countr
 import 'package:country/features/presentation/screens/country_list_screen/country_list_screen_model.dart';
 import 'package:country/features/presentation/screens/country_list_screen/country_list_screen_widget_model.dart';
 import 'package:country/utils/wrappers/scaffold_messenger_wrapper.dart';
+import 'package:dio/dio.dart';
 import 'package:elementary/elementary.dart';
 import 'package:elementary_test/elementary_test.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
-/// Тесты для [CountryListScreenWidgetModel]
+/// Tests for [CountryListScreenWidgetModel].
 void main() {
   late _MockCountryListScreenModel model;
   late _MockScaffoldMessengerWrapper scaffoldMessengerWrapper;
@@ -32,61 +33,86 @@ void main() {
     return wm;
   }
 
-  testWidgetModel<CountryListScreenWidgetModel, CountryListScreen>(
-    'countryListState should be in loading after initialization',
-    setUpWm,
-    (wm, tester, context) async {
-      final completer = Completer<List<Country>>();
-      when(() => model.loadCountries()).thenAnswer((_) => completer.future);
+  group('CountryListScreenWidgetModel', () {
+    testWidgetModel<CountryListScreenWidgetModel, CountryListScreen>(
+      'countryListState should be in loading after initialization',
+      setUpWm,
+      (wm, tester, context) async {
+        final completer = Completer<List<Country>>();
+        when(() => model.loadCountries()).thenAnswer((_) => completer.future);
 
-      tester.init();
+        tester.init();
 
-      expect(wm.countryListState.value.isLoadingState, true);
-    },
-  );
+        expect(wm.countryListState.value.isLoadingState, true);
+      },
+    );
 
-  testWidgetModel<CountryListScreenWidgetModel, CountryListScreen>(
-    'countryListState should be in error if loading failed',
-    setUpWm,
-    (wm, tester, context) async {
-      final testException = Exception('test error');
-      when(() => model.loadCountries()).thenAnswer(
-        (_) => Future.delayed(
-          const Duration(milliseconds: 1),
-          () => throw testException,
-        ),
-      );
+    testWidgetModel<CountryListScreenWidgetModel, CountryListScreen>(
+      'countryListState should be in error if loading failed',
+      setUpWm,
+      (wm, tester, context) async {
+        final testException = Exception('test error');
+        when(() => model.loadCountries()).thenAnswer(
+          (_) => Future.delayed(
+            const Duration(milliseconds: 1),
+            () => throw testException,
+          ),
+        );
 
-      tester.init();
-      await Future<void>.delayed(const Duration(milliseconds: 10));
+        tester.init();
+        await Future<void>.delayed(const Duration(milliseconds: 10));
 
-      expect(wm.countryListState.value.isErrorState, true);
-      expect(wm.countryListState.value.errorOrNull, testException);
-    },
-  );
+        expect(wm.countryListState.value.isErrorState, true);
+        expect(wm.countryListState.value.errorOrNull, testException);
+      },
+    );
 
-  testWidgetModel<CountryListScreenWidgetModel, CountryListScreen>(
-    'countryListState should provide loaded data',
-    setUpWm,
-    (wm, tester, context) async {
-      final country = Country(name: 'test', flag: 'test');
-      when(() => model.loadCountries()).thenAnswer(
-        (_) => Future.delayed(
-          const Duration(milliseconds: 1),
-          () => [country],
-        ),
-      );
+    testWidgetModel<CountryListScreenWidgetModel, CountryListScreen>(
+      'countryListState should provide loaded data',
+      setUpWm,
+      (wm, tester, context) async {
+        final country = Country(name: 'test', flag: 'test');
+        when(() => model.loadCountries()).thenAnswer(
+          (_) => Future.delayed(
+            const Duration(milliseconds: 1),
+            () => [country],
+          ),
+        );
 
-      tester.init();
-      await Future<void>.delayed(const Duration(milliseconds: 10));
+        tester.init();
+        await Future<void>.delayed(const Duration(milliseconds: 10));
 
-      expect(wm.countryListState.value.isLoadingState, false);
-      expect(wm.countryListState.value.isErrorState, false);
-      final providedData = wm.countryListState.value.data;
-      expect(providedData, isNotNull);
-      expect(providedData!.contains(country), true);
-    },
-  );
+        expect(wm.countryListState.value.isLoadingState, false);
+        expect(wm.countryListState.value.isErrorState, false);
+        final providedData = wm.countryListState.value.data;
+        expect(providedData, isNotNull);
+        expect(providedData!.contains(country), true);
+      },
+    );
+
+    testWidgetModel<CountryListScreenWidgetModel, CountryListScreen>(
+      'should show snack when connection troubles',
+      setUpWm,
+      (wm, tester, context) async {
+        when(() => model.loadCountries()).thenAnswer((_) => Future.value([]));
+        when(() => scaffoldMessengerWrapper.showSnackBar(context, any()))
+            .thenReturn(null);
+
+        tester.init();
+        wm.onErrorHandle(
+          DioException(
+            requestOptions: RequestOptions(),
+            type: DioExceptionType.connectionTimeout,
+          ),
+        );
+
+        verify(
+          () => scaffoldMessengerWrapper.showSnackBar(
+              context, 'Connection troubles'),
+        );
+      },
+    );
+  });
 }
 
 class _MockCountryListScreenModel extends Mock
