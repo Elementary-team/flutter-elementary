@@ -72,7 +72,7 @@ Depends on your IDE and personal preferences choose one of the ways:
     ```
 
     **To use [elementary_cli](https://pub.dev/packages/elementary_cli) as a library in the pubspec.yaml file add**
-    ```
+    ```yaml
     dependencies:
         elementary_cli: $actual_version
     ```

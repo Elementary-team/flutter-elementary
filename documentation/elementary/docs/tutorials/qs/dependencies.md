@@ -8,7 +8,7 @@ flutter pub add elementary
 
 or manually add dependency to your project pubspec.yaml
 
-```
+```yaml
 dependencies:
   elementary: $actual_version
 ```
@@ -23,7 +23,7 @@ flutter pub add elementary_helper
 
 or manually add dependency to your project pubspec.yaml
 
-```
+```yaml
 dependencies:
   elementary_helper: $actual_version
 ```
@@ -38,7 +38,7 @@ flutter pub add elementary_test
 
 or manually add dependency to your project pubspec.yaml
 
-```
+```yaml
 dependencies:
   elementary_test: $actual_version
 ```
