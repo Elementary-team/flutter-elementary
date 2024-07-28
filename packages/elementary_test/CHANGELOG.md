@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 2.0.1
+### Changed
+* Documentation update.
+
 ## 2.0.0
 * supported `elementary` version increased to `^3.0.0`;
 
