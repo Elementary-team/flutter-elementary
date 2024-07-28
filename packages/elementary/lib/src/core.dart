@@ -587,7 +587,7 @@ abstract class ElementaryModel {
   }
 }
 
-/// Mock that helps to prevent [NoSuchMethodError] exception when the
+/// Mixin that helps to prevent [NoSuchMethodError] exception when the
 /// ElementaryModel is mocked.
 @visibleForTesting
 mixin MockElementaryModelMixin implements ElementaryModel {
@@ -595,7 +595,7 @@ mixin MockElementaryModelMixin implements ElementaryModel {
   set _wmHandler(void Function(Object)? _) {}
 }
 
-/// Mock that helps to prevent [NoSuchMethodError] exception when the
+/// Mixin that helps to prevent [NoSuchMethodError] exception when the
 /// WidgetModel is mocked.
 @visibleForTesting
 mixin MockWidgetModelMixin<W extends ElementaryWidget,
