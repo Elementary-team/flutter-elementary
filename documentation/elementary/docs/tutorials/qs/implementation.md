@@ -159,15 +159,93 @@ Using a chosen tool create classes for ElementaryModel, WidgetModel, ElementaryW
 
 ### ElementaryModel:
 
-Implement all business logic for current feature in model, free style. We'll take as a reference a simple model, that fetch data using a repository directlyю
+Open the created file to ElementaryModel and implement all the business logic in a free style. It can be a work in place with a business domain model, operating with a repository, or proxying to a responsible service, or use-case, etc.
 
-TODO: more details, examples.
+We'll take as a reference a simple ElementaryModel, that fetches data using a repository directly. In this model we
+create a method to load data. Inside the method, we catch exceptions and call `handleError` to track a problem with the error handler and notify the widget model about it (can be helpful for centralize logic of showing snack bars, etc). Rethrow the caught exception to handle it finally at the WidgetModel level.
+
+```dart
+class CountryListScreenModel extends ElementaryModel {
+  final ICountryRepository _countryRepository;
+
+  CountryListScreenModel(
+    this._countryRepository,
+    ErrorHandler errorHandler,
+  ) : super(errorHandler: errorHandler);
+
+  Future<List<Country>> loadCountries() async {
+    try {
+      final res = await _countryRepository.loadAllCountries();
+      return res;
+    } on Exception catch (e) {
+      handleError(e);
+      rethrow;
+    }
+  }
+}
+```
 
 ## WidgetModel:
 
-Implement all presentation logic for current feature in widget model. As a sample, we will take a widget model that simply loads data using the model on start, and shows a snack bar in case of connectivity issues.
+Open the created file to WidgetModel and implement all presentation logic and connect it with ElementaryModel.
 
-TODO: more details, examples.
+As a sample, we will take a widget model that simply loads data using the model on start, and shows a snack bar in case of connectivity issues. For managing the state of the loading list of countries we will use a publisher, provided by `elementary_helper` package. We create a private field inside the WidgetModel to store and manage this state and provide access via the `countryListState` getter. At start, use the `initWidgetModel` lifecycle method to initiate loading without waiting for the result. The `_loadCountryList` set the state of this data to loading, and call to the model for get data, waiting for result. If the loading finishes successfully, we set a content status for `countryListState` by providing the loaded data. If the loading finishes with an error, we set an error status for `countryListState` by providing information about the error. Every time when the model calls `handleError` the `onErrorHandle` calls. If error that we get is related to connectivity problems, we show a snack bar.
+
+```dart
+class CountryListScreenWidgetModel
+    extends WidgetModel<CountryListScreen, CountryListScreenModel>
+    implements ICountryListWidgetModel {
+  final ScaffoldMessengerWrapper _scaffoldMessengerWrapper;
+
+  final _countryListState = EntityStateNotifier<List<Country>>();
+
+  @override
+  EntityValueListenable<List<Country>> get countryListState =>
+      _countryListState;
+
+  CountryListScreenWidgetModel(
+    super.model,
+    this._scaffoldMessengerWrapper,
+  );
+
+  @override
+  void initWidgetModel() {
+    super.initWidgetModel();
+
+    unawaited(_loadCountryList());
+  }
+
+  @override
+  void dispose() {
+    _countryListState.dispose();
+    
+    super.dispose();
+  }
+
+  @override
+  void onErrorHandle(Object error) {
+    super.onErrorHandle(error);
+
+    if (error is DioException &&
+        (error.type == DioExceptionType.connectionTimeout ||
+            error.type == DioExceptionType.receiveTimeout)) {
+      _scaffoldMessengerWrapper.showSnackBar(context, 'Connection troubles');
+    }
+  }
+
+  Future<void> _loadCountryList() async {
+    final previousData = _countryListState.value.data;
+    _countryListState.loading(previousData);
+
+    try {
+      final res = await model.loadCountries();
+      _countryListState.content(res);
+    } on Exception catch (e) {
+      _countryListState.error(e, previousData);
+    }
+  }
+}
+```
 
 ## ElementaryWidget:
 
