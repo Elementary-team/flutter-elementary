@@ -1,6 +1,5 @@
 package ru.elementaryteam.elementarypluginintellij
 
-import com.intellij.execution.process.mediator.util.blockingGet
 import com.intellij.openapi.actionSystem.DataContext
 import com.intellij.openapi.project.Project
 import io.flutter.FlutterMessages
@@ -26,8 +25,6 @@ class ElementaryCliChecker {
 
             println("checkIsCliInstalled")
 
-            val hasElementaryCliInstalled: Boolean// Boolean? = null
-
 //            ATTENTION!!!
 //            both variants lead to crush - research
 //            runBlocking(Dispatchers.IO + Job()) {
@@ -44,24 +41,9 @@ class ElementaryCliChecker {
                 "list",
             )
 
-            val deferred = CompletableDeferred<Boolean>()
-
-            // we expect it to run smoothly with no exceptions
-            // so no try/catch
-            sdk.flutterPub(root, *pubGlobalList).start(
-                { output ->
-                    val hasElementaryInList = output.stdoutLines.any { line: String ->
-                        // original line looks like "elementary_cli 1.0.0"
-                        // but version may change over time
-                        line.startsWith("elementary_cli ")
-                    }
-                    deferred.complete(hasElementaryInList)
-                },
-                null
-            )
-
-            hasElementaryCliInstalled = deferred.blockingGet()
-            // end of section hasElementaryCliInstalled
+            val hasElementaryCliInstalled = runBlocking {
+                checkElementaryCli(sdk, root, pubGlobalList)
+            }
 
             if (!hasElementaryCliInstalled) {
 
@@ -92,6 +74,22 @@ class ElementaryCliChecker {
             }
 
             return !hasElementaryCliInstalled
+        }
+
+        suspend fun checkElementaryCli(sdk: FlutterSdk, root: PubRoot?, pubGlobalList: Array<String>): Boolean {
+            val deferred = CompletableDeferred<Boolean>()
+
+            sdk.flutterPub(root, *pubGlobalList).start(
+                { output ->
+                    val hasElementaryInList = output.stdoutLines.any { line: String ->
+                        line.startsWith("elementary_cli ")
+                    }
+                    deferred.complete(hasElementaryInList)
+                },
+                null
+            )
+
+            return deferred.await()
         }
 
 //        suspend fun hasElementaryCliInstalled(
