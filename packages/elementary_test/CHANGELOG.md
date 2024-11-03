@@ -1,8 +1,11 @@
 # Changelog
 
 ## Unreleased
-# Added
+### Added
 * Mocked context is mounted by default.
+* Method handleError for emulating a call of onErrorHandle in WM tests.
+### Changed
+* WMTester documentation updated.
 
 ## 2.0.1
 ### Changed
