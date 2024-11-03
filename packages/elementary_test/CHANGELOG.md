@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+# Added
+* Mocked context is mounted by default.
 
 ## 2.0.1
 ### Changed

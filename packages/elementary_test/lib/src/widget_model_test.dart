@@ -60,6 +60,7 @@ void testWidgetModel<WM extends WidgetModel, W extends ElementaryWidget>(
     () async {
       final wm = setupWm();
       final element = _WMTestableElement<WM, W>(wm);
+      when(() => element.mounted).thenReturn(true);
       await testFunction(wm, element, element);
     },
     testOn: testOn,

@@ -35,44 +35,25 @@ This is a function of the test itself. When passed the `WidgetModel`, this funct
 ```dart
 void main() {
   late TestPageModelMock model;
-  late ThemeWrapperMock theme;
-  late TextThemeMock textTheme;
 
   TestPageWidgetModel setUpWm() {
-    textTheme = TextThemeMock();
-    when(() => textTheme.headline4).thenReturn(null);
-    theme = ThemeWrapperMock();
-    when(() => theme.getTextTheme(any())).thenReturn(textTheme);
     model = TestPageModelMock();
     when(() => model.value).thenReturn(0);
     when(() => model.increment()).thenAnswer((invocation) => Future.value(1));
 
-    return TestPageWidgetModel(model, theme);
+    return TestPageWidgetModel(model);
   }
 
   testWidgetModel<TestPageWidgetModel, TestPageWidget>(
-    'counterStyle should be headline4',
+    'calculatingState should return true while incrementing before the answer was recieved',
     setUpWm,
-        (wm, tester, context) {
-      final style = TextStyleMock();
-      when(() => textTheme.headline4).thenReturn(style);
-
-      tester.init();
-
-      expect(wm.counterStyle, style);
-    },
-  );
-  
-  testWidgetModel<TestPageWidgetModel, TestPageWidget>(
-    'when call increment and before get answer valueState should be loading',
-    setUpWm,
-        (wm, tester, context) async {
+    (wm, tester, context) async {
       tester.init();
 
       when(() => model.increment()).thenAnswer(
-            (invocation) => Future.delayed(
+        (invocation) => Future.delayed(
           const Duration(milliseconds: 30),
-              () => 1,
+          () => 1,
         ),
       );
 
@@ -82,13 +63,49 @@ void main() {
         const Duration(milliseconds: 10),
       );
 
-      final value = wm.valueState.value;
+      expect(wm.calculatingState.value, isTrue);
+    },
+  );
 
-      expect(value, isNotNull);
-      expect(value!.isLoading, isTrue);
+  testWidgetModel<TestPageWidgetModel, TestPageWidget>(
+    'calculatingState should return false after get the answer of incrementing',
+    setUpWm,
+    (wm, tester, context) async {
+      tester.init();
+
+      when(() => model.increment()).thenAnswer(
+        (invocation) => Future.delayed(
+          const Duration(milliseconds: 30),
+          () => 1,
+        ),
+      );
+
+      unawaited(wm.increment());
+
+      await Future<void>.delayed(
+        const Duration(milliseconds: 31),
+      );
+
+      expect(wm.calculatingState.value, isFalse);
+    },
+  );
+
+  testWidgetModel<TestPageWidgetModel, TestPageWidget>(
+    'should happen smth depend on lifecycle',
+    setUpWm,
+    (wm, tester, context) async {
+      tester.init();
+
+      // Emulate didChangeDependencies happened.
+      tester.didChangeDependencies();
+
+      // Test what ever we expect happened in didChangeDependencies;
+      // ...
     },
   );
 }
+
+class TestPageModelMock extends Mock with MockElementaryModelMixin implements TestPageModel {}
 ```
 
 ## Maintainer
