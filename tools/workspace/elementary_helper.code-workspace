@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"name": "🛠️ Elementary Helper",
+			"path": "../../packages/elementary_helper"
+		}
+	],
+	"settings": {
+		"dart.lineLength": 80,
+	}
+}
