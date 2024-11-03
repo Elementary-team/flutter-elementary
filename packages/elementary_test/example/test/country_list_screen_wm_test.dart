@@ -1,61 +1,27 @@
-// ignore_for_file: avoid_implementing_value_types
+// ignore_for_file: avoid_implementing_value_types, cascade_invocations
 
 import 'dart:async';
 
-import 'package:counter/impl/screen/test_page_model.dart';
-import 'package:counter/impl/screen/test_page_widget.dart';
-import 'package:counter/impl/screen/test_page_widget_model.dart';
+import 'package:counter/main.dart';
 import 'package:elementary/elementary.dart';
-import 'package:elementary_helper/elementary_helper.dart';
 import 'package:elementary_test/elementary_test.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
 /// Тесты для [TestPageWidgetModel]
 void main() {
   late TestPageModelMock model;
-  late ThemeWrapperMock theme;
-  late TextThemeMock textTheme;
 
   TestPageWidgetModel setUpWm() {
-    textTheme = TextThemeMock();
-    when(() => textTheme.headlineMedium).thenReturn(null);
-    theme = ThemeWrapperMock();
-    when(() => theme.getTextTheme(any())).thenReturn(textTheme);
     model = TestPageModelMock();
     when(() => model.value).thenReturn(0);
     when(() => model.increment()).thenAnswer((invocation) => Future.value(1));
 
-    return TestPageWidgetModel(model, theme);
+    return TestPageWidgetModel(model);
   }
 
   testWidgetModel<TestPageWidgetModel, TestPageWidget>(
-    'counterStyle should be headline4',
-    setUpWm,
-    (wm, tester, context) {
-      final style = TextStyleMock();
-      when(() => textTheme.headlineMedium).thenReturn(style);
-
-      tester.init();
-
-      expect(wm.counterStyle, style);
-    },
-  );
-
-  testWidgetModel<TestPageWidgetModel, TestPageWidget>(
-    'counterStyle should be not null when headline4 not found',
-    setUpWm,
-    (wm, tester, context) {
-      tester.init();
-
-      expect(wm.counterStyle, isNotNull);
-    },
-  );
-
-  testWidgetModel<TestPageWidgetModel, TestPageWidget>(
-    'when call increment and before get answer valueState should be loading',
+    'calculatingState should return true while incrementing before the answer was recieved',
     setUpWm,
     (wm, tester, context) async {
       tester.init();
@@ -73,10 +39,44 @@ void main() {
         const Duration(milliseconds: 10),
       );
 
-      final value = wm.valueState.value;
+      expect(wm.calculatingState.value, isTrue);
+    },
+  );
 
-      expect(value, isNotNull);
-      expect(value.isLoadingState, isTrue);
+  testWidgetModel<TestPageWidgetModel, TestPageWidget>(
+    'calculatingState should return false after get the answer of incrementing',
+    setUpWm,
+    (wm, tester, context) async {
+      tester.init();
+
+      when(() => model.increment()).thenAnswer(
+        (invocation) => Future.delayed(
+          const Duration(milliseconds: 30),
+          () => 1,
+        ),
+      );
+
+      unawaited(wm.increment());
+
+      await Future<void>.delayed(
+        const Duration(milliseconds: 31),
+      );
+
+      expect(wm.calculatingState.value, isFalse);
+    },
+  );
+
+  testWidgetModel<TestPageWidgetModel, TestPageWidget>(
+    'should happen smth depend on lifecycle',
+    setUpWm,
+    (wm, tester, context) async {
+      tester.init();
+
+      // Emulate didChangeDependencies happened.
+      tester.didChangeDependencies();
+
+      // Test what ever we expect happened in didChangeDependencies;
+      // ...
     },
   );
 }
@@ -84,18 +84,3 @@ void main() {
 class TestPageModelMock extends Mock
     with MockElementaryModelMixin
     implements TestPageModel {}
-
-class ThemeWrapperMock extends Mock implements ThemeWrapper {}
-
-class TextThemeMock extends DiagnosticableMock implements TextTheme {}
-
-class TextStyleMock extends DiagnosticableMock implements TextStyle {
-  @override
-  // ignore: must_call_super
-  void debugFillProperties(
-    DiagnosticPropertiesBuilder properties, {
-    String prefix = '',
-  }) {}
-}
-
-class DiagnosticableMock extends Mock with Diagnosticable {}
