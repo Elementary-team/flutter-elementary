@@ -427,6 +427,13 @@ abstract class WidgetModel<W extends ElementaryWidget,
   void setupTestElement(BuildContext? testElement) {
     _element = testElement;
   }
+
+  /// Provides a way to call protected [onErrorHandle] in tests.
+  /// MUST be used only for testing purposes.
+  @visibleForTesting
+  void handleTestError(Object error) {
+    onErrorHandle(error);
+  }
 }
 
 /// An element for managing a widget whose display depends on the Widget Model.
