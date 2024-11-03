@@ -3,6 +3,10 @@
 ## Unreleased
 * 
 
+## 3.1.2
+### Added
+* method for proxying to onErrorHandle during tests;
+
 ## 3.1.1
 ### Changed
 * Documentation update.

@@ -183,6 +183,13 @@ void main() {
 
       expect(wm.context, same(element));
     });
+
+    test('handleTestError should proxy call to onErrorHandle', () {
+      final error = Exception('test error');
+      wm = ElementaryWidgetModelTestKeepError(model)..handleTestError(error);
+
+      expect((wm as ElementaryWidgetModelTestKeepError)._error, same(error));
+    });
   });
 }
 
@@ -205,6 +212,19 @@ class ElementaryWidgetModelTest
     extends WidgetModel<ElementaryWidgetTest, ElementaryModelMock>
     implements IElementaryWidgetModelTest {
   ElementaryWidgetModelTest(ElementaryModelMock model) : super(model);
+}
+
+class ElementaryWidgetModelTestKeepError extends ElementaryWidgetModelTest {
+  late final Object _error;
+
+  ElementaryWidgetModelTestKeepError(super.model);
+
+  @override
+  void onErrorHandle(Object error) {
+    super.onErrorHandle(error);
+
+    _error = error;
+  }
 }
 
 class ElementaryModelMock extends Mock
