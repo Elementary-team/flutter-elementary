@@ -118,6 +118,9 @@ abstract class WMTester<WM extends WidgetModel, W extends ElementaryWidget> {
   void unmount();
 
   /// Emulates notification WidgetModel about an error from the Model.
+  /// 
+  /// See also:
+  /// [WidgetModel.onErrorHandle];
   void handleError(Object error);
 }
 
@@ -169,6 +172,6 @@ class _WMTestableElement<WM extends WidgetModel, W extends ElementaryWidget>
 
   @override
   void handleError(Object error) {
-    // TODO(mjk): implement after adding the method to main package.
+    _wm.handleTestError(error);
   }
 }
