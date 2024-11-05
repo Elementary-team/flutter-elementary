@@ -3,6 +3,14 @@
 ## Unreleased
 * 
 
+## 3.2.0
+### Changed
+* This version is the same as 3.1.2 but fix wrong semantic versioning of 3.1.2
+
+## 3.1.2
+### Added
+* method for proxying to onErrorHandle during tests;
+
 ## 3.1.1
 ### Changed
 * Documentation update.

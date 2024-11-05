@@ -60,6 +60,7 @@ void testWidgetModel<WM extends WidgetModel, W extends ElementaryWidget>(
     () async {
       final wm = setupWm();
       final element = _WMTestableElement<WM, W>(wm);
+      when(() => element.mounted).thenReturn(true);
       await testFunction(wm, element, element);
     },
     testOn: testOn,
@@ -74,25 +75,53 @@ void testWidgetModel<WM extends WidgetModel, W extends ElementaryWidget>(
 /// Interface for emulating BuildContext behaviour.
 class WMContext extends Mock implements BuildContext {}
 
-/// Interface for control wm stage in test.
+/// Interface for controlling WidgetModel's stage during tests.
+/// Every method in this interface represents possible changes with Widget Model
+/// and allows to emulate this happened.
+///
+/// For additional information check the lifecycle of the [WidgetModel].
 abstract class WMTester<WM extends WidgetModel, W extends ElementaryWidget> {
-  /// Initialize widget model to work.
+  /// Emulates initializing WidgetModel to work.
+  ///
+  /// Represents processes happen with WidgetModel when it is inseted into the
+  /// tree, before the first build of the subtree.
   void init({W? initWidget});
 
-  /// Change the widget used to configure this element.
+  /// Emulates changing a widget instance associated
+  /// with the according Elementary.
   void update(W newWidget);
 
-  /// Called when a dependency of this element changes.
+  /// Emulates changing of dependencies WidgetModel has subscribed
+  /// by BuildContext.
   void didChangeDependencies();
 
-  /// Transition from the "inactive" to the "active" lifecycle state.
+  /// Emulates the transition from the "inactive"
+  /// to the "active" lifecycle state.
+  ///
+  /// In real work happens when the WidgetModel is reinserted into
+  /// the tree after having been removed via [deactivate].
   void activate();
 
-  /// Transition from the "active" to the "inactive" lifecycle state.
+  /// Emulates the transition from the "active"
+  /// to the "inactive" lifecycle state.
+  ///
+  /// In real work happens when the WidgetModel is removed from the tree.
   void deactivate();
 
-  /// Transition from the "inactive" to the "defunct" lifecycle state.
+  /// Emulates the transition from the "inactive"
+  /// to the "defunct" lifecycle state.
+  ///
+  /// In real work happens when the WidgetModel is removed from the
+  /// tree permanently.
+  /// See also:
+  /// [WidgetModel.dispose];
   void unmount();
+
+  /// Emulates notification WidgetModel about an error from the Model.
+  /// 
+  /// See also:
+  /// [WidgetModel.onErrorHandle];
+  void handleError(Object error);
 }
 
 class _WMTestableElement<WM extends WidgetModel, W extends ElementaryWidget>
@@ -139,5 +168,10 @@ class _WMTestableElement<WM extends WidgetModel, W extends ElementaryWidget>
       ..dispose()
       ..setupTestElement(null)
       ..setupTestWidget(null);
+  }
+
+  @override
+  void handleError(Object error) {
+    _wm.handleTestError(error);
   }
 }

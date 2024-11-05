@@ -1,0 +1,31 @@
+{
+	"folders": [
+		{
+			"name": "🚀 Elementary",
+			"path": "../../packages/elementary"
+		},
+		{
+			"name": "🛠️ Elementary Helper",
+			"path": "../../packages/elementary_helper"
+		},
+		{
+			"name": "🧪 Elementary Test",
+			"path": "../../packages/elementary_test"
+		},
+		{
+			"name": "⚙️ Elementary CLI",
+			"path": "../../packages/elementary_tools/elementary_cli"
+		},
+		{
+			"name": "📁  All files",
+			"path": "../../."
+		},
+		{
+			"name": "📚  Workspaces",
+			"path": "."
+		}
+	],
+	"settings": {
+		"dart.lineLength": 80,
+	}
+}
