@@ -20,7 +20,6 @@ class ElementaryCliChecker {
             project: Project,
             sdk: FlutterSdk,
             root: PubRoot?,
-            context: DataContext
         ): Boolean {
 
             println("checkIsCliInstalled")

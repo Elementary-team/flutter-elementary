@@ -28,7 +28,7 @@ class ElementaryModuleGeneratorMenuAction : FlutterSdkAction() {
         val view = LangDataKeys.IDE_VIEW.getData(context) ?: return
         val dir = view.orChooseDirectory ?: return
 
-        if (ElementaryCliChecker.checkIsCliInstalled(project, sdk, root, context)) {
+        if (ElementaryCliChecker.checkIsCliInstalled(project, sdk, root)) {
             return
         }
 
