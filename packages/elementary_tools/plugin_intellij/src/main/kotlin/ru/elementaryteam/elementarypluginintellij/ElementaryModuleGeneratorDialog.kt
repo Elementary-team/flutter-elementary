@@ -1,6 +1,7 @@
 package ru.elementaryteam.elementarypluginintellij
 
-import com.intellij.openapi.fileChooser.FileChooserDescriptor
+import com.intellij.openapi.fileChooser.FileChooser
+import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.ui.TextFieldWithBrowseButton
@@ -56,8 +57,19 @@ class ElementaryModuleGeneratorDialog(
 
         dirPicker = TextFieldWithBrowseButton()
 
-        val fileChooserDescriptor = FileChooserDescriptor(false, true, false, false, false, false)
-        dirPicker.addBrowseFolderListener("Title", "Description", project, fileChooserDescriptor)
+        val fileChooserDescriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor().apply {
+            title = "Title"
+            description = "Description"
+        }
+
+        dirPicker.addActionListener {
+            val chosenFile: VirtualFile? = FileChooser.chooseFile(fileChooserDescriptor, project, null)
+            if (chosenFile != null) {
+                dirPicker.text = chosenFile.path
+
+            }
+        }
+
         dirPicker.text = resourceDir.virtualFile.path
         dirPicker.setTextFieldPreferredWidth(80)
 
