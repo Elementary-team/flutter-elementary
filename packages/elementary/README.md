@@ -12,7 +12,7 @@
     <a href="https://app.codecov.io/gh/Elementary-team/flutter-elementary"><img src="https://img.shields.io/codecov/c/github/Elementary-team/flutter-elementary?flag=elementary&logo=codecov&logoColor=white" alt="Coverage Status"></a>
     <a href="https://pub.dev/packages/elementary"><img src="https://badgen.net/pub/points/elementary" alt="Pub points"></a>
     <a href="https://pub.dev/packages/elementary"><img src="https://badgen.net/pub/likes/elementary" alt="Pub Likes"></a>
-    <a href="https://pub.dev/packages/elementary"><img src="https://badgen.net/pub/popularity/elementary" alt="Pub popularity"></a>
+    <a href="https://pub.dev/packages/elementary"><img src="https://img.shields.io/pub/dm/elementary" alt="Downloads"></a>
     <a href="https://github.com/Elementary-team/flutter-elementary/graphs/contributors"><img src="https://badgen.net/github/contributors/Elementary-team/flutter-elementary" alt="Contributors"></a>
     <a href="https://github.com/Elementary-team/flutter-elementary/blob/main/LICENSE"><img src="https://badgen.net/github/license/Elementary-team/flutter-elementary" alt="License"></a>
 </p>

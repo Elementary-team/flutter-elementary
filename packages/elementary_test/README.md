@@ -11,7 +11,7 @@
     <a href="https://pub.dev/packages/elementary_test"><img src="https://img.shields.io/pub/v/elementary_test?logo=dart&logoColor=white" alt="Pub Version"></a>
     <a href="https://pub.dev/packages/elementary_test"><img src="https://badgen.net/pub/points/elementary_test" alt="Pub points"></a>
     <a href="https://pub.dev/packages/elementary_test"><img src="https://badgen.net/pub/likes/elementary_test" alt="Pub Likes"></a>
-    <a href="https://pub.dev/packages/elementary_test"><img src="https://badgen.net/pub/popularity/elementary_test" alt="Pub popularity"></a>
+    <a href="https://pub.dev/packages/elementary_test"><img src="https://img.shields.io/pub/dm/elementary_test" alt="Downloads"></a>
 </p>
 
 
