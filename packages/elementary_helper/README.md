@@ -222,7 +222,7 @@ Special thanks to:
 
 All members of the Surf Flutter Team for actively using and providing feedback.
 
-## Sponsorship
+## Sponsorship & Support
 
 Special sponsor of the project:
 
@@ -231,3 +231,12 @@ Special sponsor of the project:
 </a>
 
 For all questions regarding sponsorship/collaboration connect with [Mikhail Zotyev](https://github.com/MbIXjkee).
+
+We appreciate any form of support, whether it's a financial donation, a public sharing, or a star on GitHub and a like on Pub. If you want to provide financial support, there are several ways you can do it:
+
+  - [GH Sponsors](https://github.com/sponsors/MbIXjkee)
+  - [Buy me a coffee](https://buymeacoffee.com/mbixjkee)
+  - [Patreon](https://www.patreon.com/MbIXJkee)
+  - [Boosty](https://boosty.to/mbixjkee)
+
+Thank you for all your support!
