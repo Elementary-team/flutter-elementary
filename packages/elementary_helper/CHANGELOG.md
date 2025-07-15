@@ -3,6 +3,10 @@
 ## Unreleased
 * 
 
+## 1.0.3
+### Added
+* Topics to make it easier to find the package in pub.dev search.
+
 ## 1.0.2
 ### Changed
 * Documentation update.
