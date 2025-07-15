@@ -3,6 +3,10 @@
 ## Unreleased
 * 
 
+## 2.1.1
+### Added
+* Topics to make it easier to find the package in pub.dev search.
+
 ## 2.1.0
 ### Added
 * Mocked context is mounted by default.
