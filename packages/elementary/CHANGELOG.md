@@ -3,6 +3,10 @@
 ## Unreleased
 * 
 
+## 3.2.1
+### Added
+* Topics to make it easier to find the package in pub.dev search.
+
 ## 3.2.0
 ### Changed
 * This version is the same as 3.1.2 but fix wrong semantic versioning of 3.1.2
