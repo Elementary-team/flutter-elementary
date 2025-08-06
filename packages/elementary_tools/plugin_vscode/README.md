@@ -1,21 +1,27 @@
-# Elementary README
+## Introduction
 
-<!-- TODO Rewrite -->
-Extension for better experience with Elementary
+Elementary plugin is aimed to solve boilerplate code routine by generation of basic templates for [Elementary][elementary].
 
-## Dependencies installation
-* Dart-Code: `npm install git+https://github.com/Dart-Code/Dart-Code.git`
+[elementary]: https://github.com/Elementary-team/flutter-elementary
+
+## Installation
+
+Elementary plugin can be [installed from the Visual Studio Code Marketplace][plugin] or by [searching within VS Code][plugin-search].
+
+[plugin]: https://marketplace.visualstudio.com/items?itemName=ElementaryTeam.elementary
+[plugin-search]: https://code.visualstudio.com/docs/editor/extension-gallery#_search-for-an-extension
 
 ## Features
 
-<!-- TODO add more features -->
-* Elementary module generator
+* Generate basic template for Elementary's Widget - WidgetModel - Model 
 
 ## Requirements
 
 * Install and activate [Elementary CLI][cli] to global pub
+* Install [Dart Code][dart-code] extension for VS Code
 
-[cli]: https://github.com/Elementary-team/flutter-elementary/tree/elementary_tools/packages/elementary_tools/elementary_cli
+[cli]: https://pub.dev/packages/elementary_cli
+[dart-code]: https://marketplace.visualstudio.com/items?itemName=Dart-Code.dart-code
 
 ## Extension Settings
 
@@ -23,26 +29,8 @@ This extension contributes the following settings:
 
 * `elementary.enable`: enable/disable this extension
 
-<!--
-* `elementary.testingDirectory`: set to testing directory path to
-generate tests there or leave empty to generate tests side-by-side
-with source files
--->
-
-## Known Issues
-
-* Elementary CLI is not automatically installed
-
 ## Release Notes
 
-* [See full changelog][changelog]
+For full release notes, please see the [CHANGELOG][changelog].
 
 [changelog]: https://github.com/Elementary-team/flutter-elementary/blob/main/packages/elementary_tools/plugin_vscode/CHANGELOG.md
-### 0.0.3
-* Added snippets for widget, widget model, and model 
-
-### 0.0.2
-* Automatic activation elementary_cli
-
-### 0.0.1
-* Added Elementary module generation
