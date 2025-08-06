@@ -1,22 +1,27 @@
 import * as vscode from 'vscode';
-import * as utils from '../utils/generate_command_utils';
+import * as gen from '../utils/generate';
+import * as editor from '../utils/editor';
+import * as fs from '../utils/file_system';
 
-/// UI for 'generate module' cli command 
+/**
+ * Represents the command to generate a new Elementary module.
+ * @param args arguments passed to the command
+ * @returns 
+ */
 export async function generateModuleCommand(...args: any[]) {
-
   // Step 1: getting work folder
-  let dirRaw = utils.getDirArgument(args);
+  let dirRaw = fs.getDirArgument(args);
   if (dirRaw === null) { return; }
   let dir = dirRaw!;
 
   // Step 2: getting package name
   let nameInputOptions: vscode.InputBoxOptions = {
     title: "New Elementary Module Name",
-    prompt: "Please, enter module name:  (my_cool_module) ",
-    placeHolder: "my_cool_module",
-    value: "my_cool_module",
+    prompt: "Please, enter module name:",
+    placeHolder: "module_name",
+    value: "new_module_name",
     validateInput: (value: string) => {
-      if (!utils.isModuleName(value)) {
+      if (!gen.isModuleName(value)) {
         return "Please, provide a valid name";
       }
     },
@@ -42,11 +47,13 @@ export async function generateModuleCommand(...args: any[]) {
   let subdirOption = shouldCreateSubdir ? '--create-subdirectory' : '--no-create-subdirectory';
   let cliOptions = ['--path', dir!.fsPath, '--name', nameValue, subdirOption];
 
-  let targetFilesRaw = await utils.runGenerateCommand('module', 'Generating elemantary module', ...cliOptions);
+  let targetFilesRaw = await gen.cliGenerateCommand('module', ...cliOptions);
 
-  if (targetFilesRaw === null) { return; }
+  if (targetFilesRaw === undefined) {
+    return;
+  }
 
   // Step 4: show target file in editor
-  utils.openGeneratedFilesInEditor(targetFilesRaw);
+  editor.openFilesInEditor(targetFilesRaw);
 }
 

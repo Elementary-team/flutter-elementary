@@ -31,7 +31,6 @@ with source files
 
 ## Known Issues
 
-* Nothing serious for now ^-^
 * Elementary CLI is not automatically installed
 
 ## Release Notes
