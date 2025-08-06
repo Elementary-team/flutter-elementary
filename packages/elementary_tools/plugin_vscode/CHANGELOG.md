@@ -1,4 +1,9 @@
 # Elementary Extension Changelog
+
+## [0.1.0]
+### Changed
+- Migrated from private to public API of the Dart-Code plugin
+
 ## [0.0.3]
 ### Added
 - Snippets for widget, widget model, and model
