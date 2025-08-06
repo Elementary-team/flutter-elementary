@@ -9,7 +9,7 @@
 		"type": "git",
 		"directory": "packages/elementary_tools/plugin_vscode"
 	},
-	"icon": "media/logo.png",
+	"icon": "assets/logo.png",
 	"categories": [
 		"Snippets",
 		"Other"
