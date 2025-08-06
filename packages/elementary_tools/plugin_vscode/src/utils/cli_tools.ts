@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
+import { cwd } from "process";
 import { lt } from "semver";
 import { runDartCommand } from './dart_process';
 import { dartSdkApi } from './dart_extension_api';
-
 
 const packageName = 'elementary_cli';
 const packageTargetVersion = '2.0.0';
@@ -69,7 +69,7 @@ async function getInstalledVersion(): Promise<string | undefined> {
 
 async function installCli(): Promise<void> {
     try {
-        await dartSdkApi.runPub(process.cwd(), [
+        await dartSdkApi.runPub(cwd(), [
             "global",
             "activate",
             packageName,
