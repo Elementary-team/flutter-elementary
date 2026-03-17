@@ -131,7 +131,9 @@ final class SequentialExecutionHandler extends _ExecutionHandler {
       } catch (e) {
         // we don't need to handle anything here
       } finally {
-        _queue.removeFirst();
+        if (!_isDisposed) {
+          _queue.removeFirst();
+        }
       }
 
       if (_queue.isEmpty) {
@@ -232,7 +234,7 @@ class _Task<T> {
     _isDisposed = true;
   }
 
-  Future<void> _guard(Object error, StackTrace stackTrace) async {
+  void _guard(Object error, StackTrace stackTrace) {
     assert(
       false,
       'An unhandled error occurred in the execution task zone.\nError: $error',
