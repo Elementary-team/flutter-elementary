@@ -197,6 +197,46 @@ void somewhereInTheBuildFunction() {
 }
 ```
 
+### Executor
+
+`Executor` is a mixin for `ElementaryModel` that wraps async operations with error handling and lifecycle management. Errors are automatically forwarded to `handleError`, and all in-flight tasks are cancelled when the model is disposed.
+
+```dart
+class MyModel extends ElementaryModel with Executor {
+  Future<List<Item>> loadItems() => exec(() async {
+    return await _repository.fetchItems();
+  });
+}
+```
+
+The returned `Future` completes with the result on success, or completes with the error (and additionally calls `handleError`) on failure. Tasks that are still running when the model is disposed do not complete — their futures remain pending and are collected by the GC together with the model.
+
+> **Note:** Do not await the result of `exec` from outside the wm/model's own scopes (e.g. from a global service). Such a caller would be permanently suspended after disposal and would not be collected by the GC as part of the model's cycle.
+
+### SequentialExecutor
+
+A sequential variant of `Executor`. Operations submitted via `exec` are guaranteed to run **one at a time**, in the order they were submitted. A new operation does not start until the previous one has finished (even if the previous one threw).
+
+```dart
+class MyModel extends ElementaryModel with SequentialExecutor {
+  Future<void> submitForm(FormData data) => exec(() async {
+    await _repository.save(data);
+  });
+}
+```
+
+This is useful when you run a series of operations that mutate state and need a guarantee that each one finishes before the next begins, avoiding race conditions and ensuring the state is updated consistently.
+
+If the handler is disposed while operations are queued, the queued tasks are discarded and will not run.
+
+### ExecutionHandler
+
+A standalone class that provides the same behaviour as the `Executor` mixin, but without any dependency on `ElementaryModel`. Use it when you need execution handling outside of the Elementary MVVM stack.
+
+### SequentialExecutionHandler
+
+A standalone class that provides the same behaviour as the `SequentialExecutor` mixin, but without any dependency on `ElementaryModel`. Operations are executed one at a time in submission order.
+
 ## Maintainer
 
 <a href="https://github.com/MbIXjkee">
