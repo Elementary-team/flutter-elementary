@@ -134,7 +134,7 @@ final class SequentialExecutionHandler extends _ExecutionHandler {
         // Handling error is not here. We just need to have a fact that future
         // has finished, without propagating errors.
         // ignore: avoid_catches_without_on_clauses
-      } catch (e) {
+      } catch (_) {
         // we don't need to handle anything here
       } finally {
         if (!_isDisposed) {
