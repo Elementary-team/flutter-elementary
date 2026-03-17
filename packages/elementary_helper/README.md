@@ -199,7 +199,7 @@ void somewhereInTheBuildFunction() {
 
 ### Executor
 
-`Executor` is a mixin for `ElementaryModel` that wraps async operations with error handling and lifecycle management. Errors are automatically forwarded to `handleError`, and all in-flight tasks are cancelled when the model is disposed.
+ `Executor` is a mixin for `ElementaryModel` that wraps async operations with error handling and lifecycle management. Errors are automatically forwarded to `handleError`, and in-flight task results are ignored once the model is disposed (the underlying async operations are not cooperatively cancelled).
 
 ```dart
 class MyModel extends ElementaryModel with Executor {
@@ -209,7 +209,7 @@ class MyModel extends ElementaryModel with Executor {
 }
 ```
 
-The returned `Future` completes with the result on success, or completes with the error (and additionally calls `handleError`) on failure. Tasks that are still running when the model is disposed do not complete — their futures remain pending and are collected by the GC together with the model.
+ The returned `Future` completes with the result on success, or completes with the error (and additionally calls `handleError`) on failure. Tasks that are still running when the model is disposed will never complete their associated `Future`s — those futures remain pending (even though the underlying async operations may continue running) and are collected by the GC together with the model.
 
 > **Note:** Do not await the result of `exec` from outside the wm/model's own scopes (e.g. from a global service). Such a caller would be permanently suspended after disposal and would not be collected by the GC as part of the model's lifecycle.
 
