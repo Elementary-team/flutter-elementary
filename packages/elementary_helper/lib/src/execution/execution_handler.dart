@@ -5,7 +5,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/foundation.dart';
 
 /// A mixin that provides execution handling capabilities to Elementary models.
-// This mixin is just proxing to ExecutionHandler, so it is not tested directly.
+// This mixin is just proxying to ExecutionHandler, so it is not tested directly.
 // coverage:ignore-start
 mixin Executor on ElementaryModel {
   late final _handler = ExecutionHandler(
@@ -30,7 +30,7 @@ mixin Executor on ElementaryModel {
 
 /// A mixin that provides sequential execution handling capabilities to
 /// Elementary models.
-// This mixin is just proxing to ExecutionHandler, so it is not tested directly.
+// This mixin is just proxying to ExecutionHandler, so it is not tested directly.
 // coverage:ignore-start
 mixin SequentialExecutor on ElementaryModel {
   late final _handler = SequentialExecutionHandler(
