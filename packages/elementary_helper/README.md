@@ -211,7 +211,7 @@ class MyModel extends ElementaryModel with Executor {
 
 The returned `Future` completes with the result on success, or completes with the error (and additionally calls `handleError`) on failure. Tasks that are still running when the model is disposed do not complete — their futures remain pending and are collected by the GC together with the model.
 
-> **Note:** Do not await the result of `exec` from outside the wm/model's own scopes (e.g. from a global service). Such a caller would be permanently suspended after disposal and would not be collected by the GC as part of the model's cycle.
+> **Note:** Do not await the result of `exec` from outside the wm/model's own scopes (e.g. from a global service). Such a caller would be permanently suspended after disposal and would not be collected by the GC as part of the model's lifecycle.
 
 ### SequentialExecutor
 
