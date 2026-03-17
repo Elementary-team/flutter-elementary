@@ -24,6 +24,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  elementary: ^3.2.0
 
 dev_dependencies:
   flutter_test:
