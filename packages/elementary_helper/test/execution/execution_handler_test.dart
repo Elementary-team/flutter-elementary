@@ -175,7 +175,7 @@ void main() {
         firstCompleted = true;
       });
 
-      bool secondStarted = false;
+      var secondStarted = false;
       final f2 = handler.exec(() async {
         secondStarted = true;
       });
