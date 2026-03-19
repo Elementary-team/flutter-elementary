@@ -101,6 +101,41 @@ void main() {
         expect(operationCompleted, isFalse);
       },
     );
+
+    test(
+      'zone guard: calls errorHandler and completes future with error '
+      'for async error that escapes the zone while task is still running',
+      () => _runAbsorbingGuardAssertions(() async {
+        final error = Exception('zone escape');
+        final blocker = Completer<void>();
+
+        final future = handler.exec<void>(() async {
+          unawaited(Future.error(error));
+          await blocker.future;
+        });
+
+        await expectLater(future, throwsA(same(error)));
+        expect(capturedErrors, [error]);
+
+        blocker.complete();
+      }),
+    );
+
+    test(
+      'zone guard: calls errorHandler only when task already completed '
+      '— does not attempt to re-complete the future',
+      () => _runAbsorbingGuardAssertions(() async {
+        final error = Exception('late zone escape');
+
+        final result = await handler.exec<int>(() async {
+          scheduleMicrotask(() => scheduleMicrotask(() => throw error));
+          return 42;
+        });
+
+        expect(result, 42);
+        expect(capturedErrors, [error]);
+      }),
+    );
   });
 
   group('SequentialExecutionHandler', () {
@@ -253,4 +288,24 @@ void main() {
       },
     );
   });
+}
+
+Future<void> _runAbsorbingGuardAssertions(Future<void> Function() body) {
+  final completer = Completer<void>();
+  runZonedGuarded(
+    () async {
+      try {
+        await body();
+        completer.complete();
+      } catch (e, s) {
+        completer.completeError(e, s);
+      }
+    },
+    (error, stackTrace) {
+      // AssertionError from _guard is expected in debug mode — absorb it.
+      if (error is AssertionError) return;
+      completer.completeError(error, stackTrace);
+    },
+  );
+  return completer.future;
 }
