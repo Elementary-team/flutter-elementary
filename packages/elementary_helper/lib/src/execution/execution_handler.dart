@@ -241,16 +241,16 @@ class _Task<T> {
   }
 
   void _guard(Object error, StackTrace stackTrace) {
-    assert(
-      false,
-      'An unhandled error occurred in the execution task zone.\nError: $error',
-    );
-
     _errorHandler.call(error, stackTrace);
 
     if (_isCompletable) {
       // shouldn't be but just in case
       _completer.completeError(error, stackTrace);
     }
+
+    assert(
+      false,
+      'An unhandled error occurred in the execution task zone.\nError: $error',
+    );
   }
 }
