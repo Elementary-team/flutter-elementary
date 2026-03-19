@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 1.1.0
 ### Added
 * Execution helpers for resolving multiple execution intentions more easily, bringing lifecycle management and queueing, and avoiding race conditions.
 
